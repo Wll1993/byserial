@@ -12,7 +12,7 @@ namespace BYSerial.Models
     public class ReceivePara: NotificationObject
     {
 
-        private bool _IsText = false;
+        private bool _IsText = true;
 
         public bool IsText
         {
@@ -23,7 +23,7 @@ namespace BYSerial.Models
                 this.RaisePropertyChanged("IsText");
             }
         }
-        private bool _IsHex = true;
+        private bool _IsHex = false;
 
         public bool IsHex
         {
@@ -35,7 +35,7 @@ namespace BYSerial.Models
             }
         }
 
-        private bool _AutoFeed = false;
+        private bool _AutoFeed = true;
 
         public bool AutoFeed
         {
@@ -46,6 +46,8 @@ namespace BYSerial.Models
                 this.RaisePropertyChanged("AutoFeed");
             }
         }
+
+       
         private bool _DisplaySend = false;
 
         public bool DisplaySend

@@ -17,14 +17,14 @@ using BYSerial.Views;
 
 namespace BYSerial.ViewModels
 {
-    public class MainWindowViewModel:NotificationObject
+    public class MainWindowViewModel : NotificationObject
     {
         public SerialPort _serialPort;
 
 
         public MainWindowViewModel()
         {
-            SerialPortList =new ObservableCollection<string>( SerialPort.GetPortNames().ToList());
+            SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
             if (SerialPortList.Count > 0)
             {
                 _ComPortState = SerialPortList[PortNameIndex] + " ClOSED";
@@ -41,13 +41,13 @@ namespace BYSerial.ViewModels
 
 
             OnSendCommand = new DelegateCommand();
-            OnSendCommand.ExecuteAction=new Action<object>(SendCommand);
+            OnSendCommand.ExecuteAction = new Action<object>(SendCommand);
             OnLogCommand = new DelegateCommand();
-            OnLogCommand.ExecuteAction=new Action<object>(OnLogClick);
-            OnStartCommand = new DelegateCommand(); 
-            OnStartCommand.ExecuteAction=new Action<object>(OnStartClick);
-            OnPauseCommand = new DelegateCommand(); 
-            OnPauseCommand.ExecuteAction=new Action<object>(OnPauseClick);
+            OnLogCommand.ExecuteAction = new Action<object>(OnLogClick);
+            OnStartCommand = new DelegateCommand();
+            OnStartCommand.ExecuteAction = new Action<object>(OnStartClick);
+            OnPauseCommand = new DelegateCommand();
+            OnPauseCommand.ExecuteAction = new Action<object>(OnPauseClick);
             OnStopCommand = new DelegateCommand();
             OnStopCommand.ExecuteAction = new Action<object>(OnStopClick);
             OnClearCommand = new DelegateCommand();
@@ -59,14 +59,14 @@ namespace BYSerial.ViewModels
             ChangeToChCmd.ExecuteAction = new Action<object>(ChangeToCh);
             ChangeToEnCmd = new DelegateCommand();
             ChangeToEnCmd.ExecuteAction = new Action<object>(ChangeToEn);
-            ShowToolBoxCmd= new DelegateCommand();
-            ShowToolBoxCmd.ExecuteAction=new Action<object>(ShowToolBox);
+            ShowToolBoxCmd = new DelegateCommand();
+            ShowToolBoxCmd.ExecuteAction = new Action<object>(ShowToolBox);
             ShowAsciiCmd = new DelegateCommand();
             ShowAsciiCmd.ExecuteAction = new Action<object>(ShowAscii);
             ShowOptionsCmd = new DelegateCommand();
-            ShowOptionsCmd.ExecuteAction=new Action<object>(ShowOptions);
-            ShowAboutCmd =new DelegateCommand();
-            ShowAboutCmd.ExecuteAction=new Action<object>(ShowAbout);
+            ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
+            ShowAboutCmd = new DelegateCommand();
+            ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
             ShowDonateCmd = new DelegateCommand();
             ShowDonateCmd.ExecuteAction = new Action<object>(ShowDonate);
             #endregion
@@ -102,14 +102,14 @@ namespace BYSerial.ViewModels
             AboutWindow window = new AboutWindow();
             window.Show();
         }
-        public DelegateCommand ShowDonateCmd { get;private set; }
+        public DelegateCommand ShowDonateCmd { get; private set; }
         private void ShowDonate(object para)
         {
             DonateWindow window = new DonateWindow();
             window.Show();
         }
 
-        public DelegateCommand ChangeToChCmd { get;private set; }
+        public DelegateCommand ChangeToChCmd { get; private set; }
         private void ChangeToCh(object para)
         {
             // TODO: 切换系统资源文件
@@ -118,7 +118,7 @@ namespace BYSerial.ViewModels
             Application.Current.Resources.MergedDictionaries[0] = dict;
             //if (GlobalPara.MyConfig != null) GlobalPara.MyConfig.Language = 0;
         }
-        public DelegateCommand ChangeToEnCmd { get;private set; }
+        public DelegateCommand ChangeToEnCmd { get; private set; }
         private void ChangeToEn(object para)
         {
             ResourceDictionary dict = new ResourceDictionary();
@@ -130,7 +130,8 @@ namespace BYSerial.ViewModels
 
         private void BackDetectSerialPortChange()
         {
-            Task task = Task.Factory.StartNew(new Action(() => {
+            Task task = Task.Factory.StartNew(new Action(() =>
+            {
                 while (true)
                 {
                     if (!IsStartCan) continue;
@@ -153,79 +154,90 @@ namespace BYSerial.ViewModels
 
         private void SendCommand(object parameter)
         {
-                try
-                {
-                    
-                    // string cmd = SendTxt.Replace("", " ");
-                    if (SendTxt.Trim() == "") return ;
-                    string txtsend = SendTxt.Trim().Replace(" ", "").ToUpper();
-                    if (SendPara.FormatSend)
-                    {
-                        if (SendPara.FormatCRNL)
-                        {
-                            txtsend += "\r\n";
-                        }
-                        else if (SendPara.FormatNLCR)
-                        {
-                            txtsend += "\n\r";
-                        }
-                        else if (SendPara.FormatNewLine)
-                        {
-                            txtsend += "\r";
-                        }
-                        else if (SendPara.FormatCarReturn)
-                        {
-                            txtsend += "\n";
-                        }
-                    }
-                    int byteNum = 0;   //�˴η��˼����ֽ�
+            try
+            {
 
-                    if (SendPara.IsHex)
+                // string cmd = SendTxt.Replace("", " ");
+                if (SendTxt.Trim() == "") return;
+                string txtsend = SendTxt.Trim().Replace(" ", "").ToUpper();
+                if (SendPara.FormatSend)
+                {
+                    if (SendPara.FormatCRNL)
+                    {
+                        txtsend += "\r\n";
+                    }
+                    else if (SendPara.FormatNLCR)
+                    {
+                        txtsend += "\n\r";
+                    }
+                    else if (SendPara.FormatNewLine)
+                    {
+                        txtsend += "\r";
+                    }
+                    else if (SendPara.FormatCarReturn)
+                    {
+                        txtsend += "\n";
+                    }
+                }
+                int byteNum = 0;
+
+                if (SendPara.IsHex)
+                {
+                    if (SendPara.AutoCRC)
+                    {
+                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
+                        byte[] btSend = Util.DataConvertUtility.HexStringToByte(strcrc);
+                        _serialPort.Write(btSend, 0, btSend.Length);
+                        byteNum = btSend.Length;
+                    }
+                    else
                     {
                         byte[] btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
                         _serialPort.Write(btSend, 0, btSend.Length);
                         byteNum = btSend.Length;
                     }
-                    else if (SendPara.IsText)
-                    {
-                        _serialPort.Write(txtsend);
-                        byteNum = Encoding.ASCII.GetBytes(txtsend).Length;
-                    }
 
-                    if (ReceivePara.DisplaySend)
-                    {
-                        if (ReceivePara.AutoFeed)
-                        {
-                            if (SendPara.IsHex)
-                            {
-                                txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
-                            }
-                            else
-                            {
-                                txtsend += "\r\n";
-                            }
-                        }
-                        if (ReceivePara.DisplayTime)
-                        {
-                            txtsend = "[SEND]" + DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
-                        }
-                        ReceiveTxt += txtsend;
-                        if (LogPara.SaveLogMsg)
-                        {
-                            SaveLogAsync(txtsend);
-                        }
-                    }
-
-                    //�Ѿ������˼����ֽ�
-                    _SendedBytesNum += byteNum;
-                    SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
-                    AddSendHistory(SendTxt);
                 }
-                catch (Exception ex)
+                else if (SendPara.IsText)
                 {
-                    MessageBox.Show(ex.Message);
+                    _serialPort.Write(txtsend);
+                    byteNum = Encoding.ASCII.GetBytes(txtsend).Length;
                 }
-            
+
+                if (ReceivePara.DisplaySend)
+                {
+                    if (ReceivePara.AutoFeed)
+                    {
+                        if (SendPara.IsHex)
+                        {
+                            txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
+                        }
+                        else
+                        {
+                            txtsend += "\r\n";
+                        }
+                    }
+                    if (ReceivePara.DisplayTime)
+                    {
+                        txtsend = "[SEND]" + DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
+                    }
+                    ReceiveTxt += txtsend;
+                    if (LogPara.SaveLogMsg)
+                    {
+                        SaveLogAsync(txtsend);
+                    }
+                }
+
+
+                _SendedBytesNum += byteNum;
+                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
+                AddSendHistory(SendTxt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
 
@@ -291,7 +303,7 @@ namespace BYSerial.ViewModels
                 {
                     if (_serialPort.IsOpen) _serialPort.Close();
                 }
-                
+
 
                 bool bdtr = false; bool brts = false;
 
@@ -324,7 +336,7 @@ namespace BYSerial.ViewModels
                 SendCmdIsEnable = true;
                 PauseBtnBackColor = GlobalPara.TransparentBrush;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 ComPortState = SerialPortList[PortNameIndex] + " Can't open!";
@@ -332,23 +344,23 @@ namespace BYSerial.ViewModels
             }
         }
 
-       public DelegateCommand OnHideLeftCommand { private set; get; }
+        public DelegateCommand OnHideLeftCommand { private set; get; }
         private void OnHideLeft(Object parameter)
         {
-            if(LeftSetingVisual== Visibility.Visible)
+            if (LeftSetingVisual == Visibility.Visible)
             {
                 LeftSetingVisual = Visibility.Collapsed;
             }
             else
             {
                 LeftSetingVisual = Visibility.Visible;
-            }    
+            }
         }
 
         private Visibility _LeftSetingVisual = Visibility.Visible;
         public Visibility LeftSetingVisual
         {
-            get=> _LeftSetingVisual;
+            get => _LeftSetingVisual;
             set
             {
                 _LeftSetingVisual = value;
@@ -452,9 +464,9 @@ namespace BYSerial.ViewModels
                 }
                 if (ReceivePara.DisplayTime)
                 {
-                    receivestr ="[REC]"+ DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
+                    receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
                 }
-                ReceiveTxt += receivestr;
+                ReceiveTxt += "[REC]" + receivestr;
                 _ReceivedBytesNum += bytes.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
                 if (LogPara.SaveLogMsg)
@@ -857,7 +869,7 @@ namespace BYSerial.ViewModels
 
         #endregion
 
-       
+
 
     }
 }

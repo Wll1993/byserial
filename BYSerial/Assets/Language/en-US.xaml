@@ -20,7 +20,8 @@
     <system:String x:Key="mwStopBits">StopBits</system:String>
     <system:String x:Key="mwFlowType">FlowType</system:String>
     <system:String x:Key="mwReceiveSet">ReceiveSettings</system:String>
-    <system:String x:Key="mwAutoFL">AutoFeedLine</system:String>
+    <system:String x:Key="mwAutoFL">AutoWrap</system:String>
+    <system:String x:Key="mwAutoCRC">AutoCalCRC</system:String>
     <system:String x:Key="mwDisSend">DisplaySend</system:String>
     <system:String x:Key="mwDisTime">DisplayTime</system:String>
     <system:String x:Key="mwSendSet">SendSettings</system:String>

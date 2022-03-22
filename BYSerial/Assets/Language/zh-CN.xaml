@@ -22,9 +22,10 @@
     <system:String x:Key="mwFlowType">流控</system:String>
     <system:String x:Key="mwReceiveSet">接收设置</system:String>
     <system:String x:Key="mwAutoFL">自动换行</system:String>
+    <system:String x:Key="mwAutoCRC">自动计算CRC</system:String>
     <system:String x:Key="mwDisSend">显示发送</system:String>
     <system:String x:Key="mwDisTime">显示时间</system:String>
-    <system:String x:Key="mwSendSet">PLC发送设置</system:String>
+    <system:String x:Key="mwSendSet">发送设置</system:String>
     <system:String x:Key="mwLoop">循环发送</system:String>
     <system:String x:Key="mwSend">发送</system:String>
     <system:String x:Key="mvTipSaveLog">保存记录</system:String>

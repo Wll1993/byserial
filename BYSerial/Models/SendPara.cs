@@ -11,18 +11,18 @@ namespace BYSerial.Models
 {
     public class SendPara: NotificationObject
     {
-        private bool _IsText = false;
+        private bool _IsText = true;
 
         public bool IsText
         {
             get => _IsText;
             set
             {
-                _IsText = value;
+                _IsText = value;                
                 this.RaisePropertyChanged("IsText");
             }
         }
-        private bool _IsHex = true;
+        private bool _IsHex = false;
 
         public bool IsHex
         {
@@ -30,10 +30,33 @@ namespace BYSerial.Models
             set
             {
                 _IsHex = value;
+                AutoCRCEnable = value;
+                if (!value) AutoCRC = false;
                 this.RaisePropertyChanged("IsText");
             }
         }
+        private bool _AutoCRCEnable = false;
 
+        public bool AutoCRCEnable
+        {
+            get => _AutoCRCEnable;
+            set
+            {
+                _AutoCRCEnable = value;
+                this.RaisePropertyChanged("AutoCRCEnable");
+            }
+        }
+        private bool _AutoCRC = false;
+
+        public bool AutoCRC
+        {
+            get => _AutoCRC;
+            set
+            {
+                _AutoCRC = value;
+                this.RaisePropertyChanged("AutoCRC");
+            }
+        }
         private bool _IsLoop = false;
 
         public bool IsLoop
