@@ -42,7 +42,7 @@
     <system:String x:Key="donTitle">捐助</system:String>
     <system:String x:Key="donSupport">支持BYSerial</system:String>
     <system:String x:Key="donTip1">BYSerial是免费软件，可以免费下载。捐款完全是自愿的。如果你喜欢这个软件，请考虑捐赠。</system:String>
-    <system:String x:Key="donTip2">注：捐款时，请在备注中写下您的昵称，昵称将在本项目的GitHub仓库中公布。</system:String>
+    <system:String x:Key="donTip2">注：捐款时，请在备注中写下您的昵称，昵称将在本项目的Git仓库中公布。</system:String>
     <system:String x:Key="donChan">捐助通道</system:String>
     <system:String x:Key="donAlipay">支付宝</system:String>
     <system:String x:Key="donWeChat">微信</system:String>
@@ -83,6 +83,6 @@
     <system:String x:Key="tbTitle">工具箱</system:String>
     <system:String x:Key="asciiTitle">ASCII码表</system:String>
     <system:String x:Key="ProTitle">BYSerial</system:String>
-    <system:String x:Key="GitHub">GitHub:https://github.com/xuyuanbao/BaoYuanSerial</system:String>
+    <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
 </ResourceDictionary>

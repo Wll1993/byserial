@@ -11,6 +11,7 @@
 		Width="550" Height="350"
         Name="OptWindow"
         Title="{StaticResource optOption}"
+        ResizeMode="NoResize"
         >
     <Grid Margin="5">
         <Grid.RowDefinitions>

@@ -41,7 +41,7 @@
     <system:String x:Key="donSupport">SupportBYSerial</system:String>
     <system:String x:Key="donTitle">Donate</system:String>
     <system:String x:Key="donTip1">BYSerial is free and free software which can be downloaded for free.The contribution is entirely voluntary.If you like this software please consider donating.</system:String>
-    <system:String x:Key="donTip2">Note</system:String>
+    <system:String x:Key="donTip2">Note:When donating, please write down your nickname in the remarks, which will be published in the GIT warehouse of the project.</system:String>
     <system:String x:Key="donChan">Donatechannels</system:String>
     <system:String x:Key="donAlipay">Alipay</system:String>
     <system:String x:Key="donWeChat">WeChat</system:String>
@@ -82,6 +82,6 @@
     <system:String x:Key="tbTitle">ToolBox</system:String>
     <system:String x:Key="asciiTitle">ASCIITable</system:String>
     <system:String x:Key="ProTitle">BYSerial</system:String>
-    <system:String x:Key="GitHub">GitHub: https://github.com/xuyuanbao/BaoYuanSerial</system:String>
+    <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
 </ResourceDictionary>

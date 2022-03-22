@@ -149,7 +149,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>                       
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center"
 							Text="{DynamicResource mwSPS}" Margin="5,0"/>
@@ -229,10 +229,12 @@
 							CornerRadius="2"/>
                     <RadioButton Grid.Row="1" Grid.Column="0" GroupName="Receive"
 									Content="ASCII" Margin="10,5" VerticalContentAlignment="Center"
+                                 HorizontalAlignment="Left"
 									IsChecked="{Binding ReceivePara.IsText}"/>
                     <RadioButton Grid.Row="1" Grid.Column="1" GroupName="Receive"
-									Content="Hex" Margin="10,5" 
+									Content="Hex" Margin="-5,5,10,5" 
 								 VerticalContentAlignment="Center"	
+                                 HorizontalAlignment="Left"
                                  IsChecked="{Binding ReceivePara.IsHex}"/>
                     <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
 									Content="{DynamicResource mwAutoFL}" Margin="10,5" 
