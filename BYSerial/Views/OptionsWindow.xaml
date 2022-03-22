@@ -1,0 +1,221 @@
+﻿<Window x:Class="BYSerial.Views.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BYSerial.Views"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+		Icon="/Assets/yinyang_64.png"
+		Width="550" Height="350"
+        Name="OptWindow"
+        Title="{StaticResource optOption}"
+        >
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TabControl Background="White" SelectedIndex="{Binding OptionsTabSelectedIndex}"
+					>
+            <TabItem Header="{StaticResource optReceive}" >
+                <Grid Margin="0,5,0,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>                        
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource optMiniInt}" VerticalAlignment="Center"
+							   Margin="0,0,5,5"/>
+                    <hc:NumericUpDown Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"
+								Margin="0,0,5,2"
+								   Value="{Binding ReceivePara.MinimalInterval}"
+								   />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="ms" VerticalAlignment="Center"
+							   Margin="0,0,5,5"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource optTimeFormat}" VerticalAlignment="Center"
+							   Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"
+								Margin="0,0,5,2" Padding="0"
+								Text="{Binding ReceivePara.TimeFormat}" 
+							 ToolTip="HH 24hour,hh 12hour"
+							 />
+                    <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
+							   Margin="0,0,5,0"
+							   Text="{Binding ReceivePara.TimeFormatTip}"
+							   />
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="{StaticResource optSend}" >
+                <Grid >                    
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.3*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Content="{StaticResource optFormatSend}" Grid.ColumnSpan="4"
+								  IsChecked="{Binding SendPara.FormatSend}"
+								  />
+                        <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"								   
+								Text="{StaticResource optFormatTip}" 								 
+								 VerticalAlignment="Stretch"
+								 HorizontalAlignment="Stretch"
+							   Margin="5"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+								   Text="{StaticResource optLineEnd}" VerticalAlignment="Bottom"
+							   Margin="0,0,5,5"/>
+                        <Border Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="4" BorderThickness="1" CornerRadius="3"
+								BorderBrush="Black">
+                        </Border>
+                        <RadioButton Grid.Row="4" Grid.Column="0" GroupName="raLEM" Content="0A"
+								Margin="5,0,0,0"
+								 IsChecked="{Binding SendPara.FormatNewLine}"
+									 />
+                        <RadioButton Grid.Row="4" Grid.Column="1" GroupName="raLEM" Content="0D"
+									  IsChecked="{Binding SendPara.FormatCarReturn}"
+									 />
+                        <RadioButton Grid.Row="4" Grid.Column="2" GroupName="raLEM" Content="0A &amp; 0D"
+									  IsChecked="{Binding SendPara.FormatNLCR}"/>
+                        <RadioButton Grid.Row="4" Grid.Column="3" GroupName="raLEM" Content="0D &amp; 0A"
+									  IsChecked="{Binding SendPara.FormatCRNL}"/>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="{StaticResource optLog}" >
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Content="{StaticResource optSaveLog}" Grid.ColumnSpan="2"
+							  IsChecked="{Binding LogPara.SaveLogMsg}"
+							  />
+                    <TextBlock Grid.Row="1" Text="{StaticResource optFileName}" VerticalAlignment="Center" HorizontalAlignment="Right"
+							   Margin="0,5,5,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"
+							 VerticalAlignment="Stretch" Margin="0,0,5,5"
+							 Text="{Binding LogPara.FileName}"
+							 />
+                    <Button Name="btnOpenFile" Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch"
+							VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
+							HorizontalContentAlignment="Center"  Margin="0,0,5,5"
+							Content="{StaticResource btnOpen}"
+							Command="{Binding OpenFileCommand}"
+							CommandParameter="{Binding ElementName=OptWindow}"
+							/>
+                    <TextBlock Grid.Row="2" Text="{StaticResource optMaxFileSize}" VerticalAlignment="Center" HorizontalAlignment="Right"
+							   Margin="0,5,5,5"/>
+                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"
+							 VerticalAlignment="Stretch" Margin="0,0,5,5"
+								   Value="{Binding LogPara.MaxFileSize}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="MB" VerticalAlignment="Center" HorizontalAlignment="Left"
+							   Margin="0,5,5,5"/>
+                    <CheckBox Grid.Row="3" Content="{StaticResource optEnableWriteBuf}" Grid.ColumnSpan="2"
+							  IsChecked="{Binding LogPara.EnableWriteBuf}"/>
+                    <TextBlock Grid.Row="4" Text="{StaticResource optBufSize}" VerticalAlignment="Center" HorizontalAlignment="Right"
+								   Margin="0,5,5,5"/>
+                    <hc:NumericUpDown Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center"
+							 VerticalAlignment="Stretch" Margin="0,0,5,5"
+								   Value="{Binding LogPara.BufSize}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="KB" VerticalAlignment="Center" HorizontalAlignment="Left"
+								   Margin="0,5,5,5" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{StaticResource optDisplay}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>                        
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="100"/>                        
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Content="{StaticResource optFormatDisColor}" Grid.ColumnSpan="2"/>
+                    <TextBlock Grid.Row="1" Text="{StaticResource optRecTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"
+							   Margin="0,5,5,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"
+							 VerticalAlignment="Stretch" Margin="0,0,5,5"
+							 Name="txtColorReceive" Text="{Binding Path=DisplayPara.ReceiveTxtColor,Mode=TwoWay}"  />
+                    <hc:ColorPicker SelectedBrush="#000000" 
+                                    Name="btnColorReceive" Grid.Row="1" Grid.Column="2" 
+							        VerticalAlignment="Stretch" 
+                                    HorizontalAlignment="Left"
+                                    
+                                    />
+                    <TextBlock Grid.Row="2" Text="{StaticResource optSendTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"
+							   Margin="0,5,5,0"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"
+							 VerticalAlignment="Stretch" Margin="0,0,5,5"
+						 Name="txtColorSend" Text="{Binding DisplayPara.SendTxtColor}"/>
+                    <hc:ColorPicker SelectedBrush="#000000" 
+                                    Name="btnColorSend" Grid.Row="2" Grid.Column="2"
+							VerticalAlignment="Stretch" 
+                                    HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{StaticResource optTip1}"
+							   VerticalAlignment="Center" HorizontalAlignment="Left"
+							   Foreground="Red"
+							   />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" 
+					Margin="0,5,5,0">
+            <Button Name="btnOK" Content="{StaticResource btnOK}" Width="100" VerticalAlignment="Stretch"
+						HorizontalAlignment="Right" HorizontalContentAlignment="Center"
+					Margin="0,0,5,0" IsDefault="True" IsEnabled="True"
+					Command="{Binding Path=OnOKCommand}"
+					CommandParameter="{Binding ElementName=OptWindow}"
+                    Style="{StaticResource ButtonPrimary}"
+					/>
+            <Button Name="btnCancel" Content="{StaticResource btnCancel}" Width="100" VerticalAlignment="Stretch"
+					HorizontalAlignment="Right" HorizontalContentAlignment="Center"
+					Margin="0,0,5,0" IsCancel="True" IsEnabled="True"
+				Command="{Binding Path=OnCancelCommand}"
+				CommandParameter="{Binding ElementName=OptWindow}"
+                    Style="{StaticResource ButtonPrimary}"
+					/>
+            <Button Name="btnApply" Content="{StaticResource btnApply}" Width="100" VerticalAlignment="Stretch" 
+					HorizontalAlignment="Right" HorizontalContentAlignment="Center"
+				    Command="{Binding Path=OnApplyCommand}"
+				    IsEnabled="True" Style="{StaticResource ButtonPrimary}"
+					/>
+
+        </StackPanel>
+    </Grid>
+</Window>

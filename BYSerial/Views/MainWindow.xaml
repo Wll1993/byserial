@@ -1,0 +1,343 @@
+﻿<Window x:Class="BYSerial.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BYSerial"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Icon="/Assets/yinyang_32.png"
+        Title="BYSerial" MinHeight="650" MinWidth="800"
+        Height="650" Width="800"
+        WindowStartupLocation="CenterScreen"
+        >
+    
+    <Grid Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition />
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Menu Background="LightGray">
+            <MenuItem Header="{DynamicResource menuTool}" >
+                <MenuItem 
+                    Header="{DynamicResource menuToolBox}" 
+                    Name="ToolBoxMenu" 
+                    Command="{Binding ShowToolBoxCmd}"
+                    />
+                <MenuItem 
+                    Header="{DynamicResource menuAscii}" 
+                    Name="AsciiCodeMenu" 
+                    Command="{Binding ShowAsciiCmd}"/>
+                <Separator/>
+                <MenuItem 
+                    Name="OptionsMenu" 
+                    Header="{DynamicResource menuOptions}" 
+                    Command="{Binding ShowOptionsCmd}"
+                    />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource menuHelp}">
+                <MenuItem Header="{DynamicResource menuDoc}" />
+                <Separator/>
+                <MenuItem 
+                    Name="AboutMenu" 
+                    Header="{DynamicResource menuAbout}" 
+                    Command="{Binding ShowAboutCmd}"
+                    />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource menuLanguage}" Name="LanguageMenu">
+                <MenuItem Name="ChineseMenu" 
+                          Header="{DynamicResource menuCh}"
+                          Command="{Binding ChangeToChCmd}"
+                          />
+                <Separator/>
+                <MenuItem Name="EnglishMenu" 
+                          Header="{DynamicResource menuEn}"
+                          Command="{Binding ChangeToEnCmd}"
+                          />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource menuDonate}" 
+                      Name="DonateMenu"
+                      Command="{Binding ShowDonateCmd}"
+                      >
+            </MenuItem>
+
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" ToolTip="{DynamicResource mvTipSaveLog}" 
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Command="{Binding OnLogCommand}"
+					Background="{Binding LogBtnBackColor}"
+                    Padding="0"
+					>
+                <Image Source="/Assets/save.png"/>
+            </Button>
+            <Button Grid.Column="1" ToolTip="{DynamicResource mvTipStart}"
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Command="{Binding OnStartCommand}" IsEnabled="{Binding IsStartCan}"				    
+					Padding="0"
+                    >
+                <Image Source="/Assets/start.png"/>
+            </Button>
+            <Button Grid.Column="2" ToolTip="{DynamicResource mvTipPause}"
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Command="{Binding OnPauseCommand}" IsEnabled="{Binding IsPauseCan}"					
+					Background="{Binding PauseBtnBackColor}"
+					Padding="0"
+                    >
+                <Image Source="/Assets/pause.png"/>
+            </Button>
+            <Button Grid.Column="3" ToolTip="{DynamicResource mvTipStop}"
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Command="{Binding OnStopCommand}" IsEnabled="{Binding IsStopCan}"					
+					Padding="0"
+                    >
+                <Image Source="/Assets/stop.png"/>
+            </Button>
+            <Button Grid.Column="4" ToolTip="{DynamicResource mvTipClear}"
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Command="{Binding OnClearCommand}"
+					Padding="0"
+                    >
+                <Image Source="/Assets/clear.png"/>
+            </Button>
+            <Button Grid.Column="5" ToolTip="{DynamicResource mvTipHideLeft}"
+					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
+					Name="btnHideLeft" Padding="0"
+                    Command="{Binding OnHideLeftCommand}"
+					>
+                <Image Source="/Assets/hide-left.png"/>
+            </Button>
+            <Button Name="tlbtnOptions" Grid.Column="6" ToolTip="{DynamicResource mvTipOption}"
+					
+					HorizontalContentAlignment="Stretch" 
+                    Padding="0"
+                    Command="{Binding ShowOptionsCmd}"
+                    >
+                <Image Source="/Assets/options.png"/>
+            </Button>            
+        </Grid>
+        <DockPanel Grid.Row="2" >
+            <Grid DockPanel.Dock="Left" Width="200" Height="520"
+                  Visibility="{Binding LeftSetingVisual}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="4.5*"/>                    
+                </Grid.RowDefinitions>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>                       
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center"
+							Text="{DynamicResource mwSPS}" Margin="5,0"/>
+                    <Border Grid.Row="1" Grid.RowSpan="6" Grid.ColumnSpan="2"
+							BorderThickness="1" BorderBrush="Black"
+							CornerRadius="2"/>
+                    <TextBlock Grid.Row="1" Text="{DynamicResource mwPort}" TextAlignment="Right"
+								VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" 
+								VerticalAlignment="Center" Margin="2"
+								ItemsSource="{Binding SerialPortList}"
+                              SelectedIndex="{Binding PortNameIndex}"
+                              Height="15" Padding="0" FontSize="15"
+								/>
+                    <TextBlock Grid.Row="2" Text="{DynamicResource mwBaudRate}" 
+                               TextAlignment="Right"
+								VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch"
+								VerticalAlignment="Center" Margin="2"
+								ItemsSource="{Binding BaudRateList}" SelectedIndex="{Binding BaudRateIndex}"/>
+                    <TextBlock Grid.Row="3" Text="{DynamicResource mwDataBits}" TextAlignment="Right"
+								VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch"
+								VerticalAlignment="Center" Margin="2"
+							    ItemsSource="{Binding DataBitsList}"
+								SelectedIndex="{Binding DataBitsIndex}"
+								/>
+                    <TextBlock Grid.Row="4" Text="{DynamicResource mwParity}" TextAlignment="Right"
+								VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch"
+								VerticalAlignment="Center" Margin="2"
+								SelectedIndex="{Binding Parity}">
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem Content="Odd"/>
+                        <ComboBoxItem Content="Even"/>
+                        <ComboBoxItem Content="Mark"/>
+                        <ComboBoxItem Content="Space"/>
+                    </ComboBox>
+                    <TextBlock Grid.Row="5" Text="{DynamicResource mwStopBits}" TextAlignment="Right"
+								VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch"
+								VerticalAlignment="Center" Margin="2"
+								SelectedIndex="{Binding StopBits}"
+								>
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem Content="1"/>
+                        <ComboBoxItem Content="2"/>
+                        <ComboBoxItem Content="1.5"/>
+                    </ComboBox>
+                    <TextBlock Grid.Row="6" Text="{DynamicResource mwFlowType}" TextAlignment="Right"
+								VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <ComboBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch"
+								VerticalAlignment="Center" Margin="2"
+								SelectedIndex="{Binding FlowType}"								  
+								>
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem Content="RTS/CTS"/>
+                        <ComboBoxItem Content="DTR/CTS"/>
+                    </ComboBox>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1.1*"/>
+                        <RowDefinition Height="*"/>                        
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+							Text="{DynamicResource mwReceiveSet}" Margin="5,0"/>
+                    <Border Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="2"
+							BorderThickness="1" BorderBrush="Black" Margin="0"
+							CornerRadius="2"/>
+                    <RadioButton Grid.Row="1" Grid.Column="0" GroupName="Receive"
+									Content="ASCII" Margin="10,5" VerticalContentAlignment="Center"
+									IsChecked="{Binding ReceivePara.IsText}"/>
+                    <RadioButton Grid.Row="1" Grid.Column="1" GroupName="Receive"
+									Content="Hex" Margin="10,5" 
+								 VerticalContentAlignment="Center"	
+                                 IsChecked="{Binding ReceivePara.IsHex}"/>
+                    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+									Content="{DynamicResource mwAutoFL}" Margin="10,5" 
+								IsChecked="{Binding ReceivePara.AutoFeed}"/>
+                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+									Content="{DynamicResource mwDisSend}" Margin="10,5" 
+								IsChecked="{Binding ReceivePara.DisplaySend}"/>
+                    <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+									Content="{DynamicResource mwDisTime}" Margin="10,5" 
+								IsChecked="{Binding ReceivePara.DisplayTime}"/>
+
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1.2*"/>                                          
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+							Text="{DynamicResource mwSendSet}" Margin="5,0"/>
+                    <Border Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="3"
+							BorderThickness="1" BorderBrush="Black" Margin="0"
+							CornerRadius="2"/>
+                    <RadioButton Grid.Row="1" Grid.Column="0" GroupName="Send"
+									Content="ASCII" Margin="10,5" 
+									IsChecked="{Binding SendPara.IsText}"
+									/>
+                    <RadioButton Grid.Row="1" Grid.Column="1" GroupName="Send"
+									Content="Hex" Margin="10,5" 
+									IsChecked="{Binding SendPara.IsHex}"/>
+                    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+									Content="{DynamicResource mwLoop}" Margin="10,0,0,10"
+									VerticalAlignment="Stretch" 
+								Name="chbLoop"  >
+
+                    </CheckBox>
+                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" 
+									Margin="5,0,0,10" Padding="0" 
+									Value="{Binding SendPara.LoopInterval}"
+									VerticalContentAlignment="Center"
+									/>
+                    <TextBlock Grid.Row="2" Grid.Column="2"
+									Text="ms" VerticalAlignment="Center" Margin="5,5,5,10" />
+                </Grid>
+            </Grid>
+            <Grid DockPanel.Dock="Right" Margin="5,2,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>                    
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>                    
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
+						 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         Padding="5,0" IsReadOnly="True"
+						 TextWrapping="Wrap" Text="{Binding Path=ReceiveTxt}" 
+						 Name="txtReceive"
+                         TextChanged="txtReceive_TextChanged"
+                         />
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
+						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"
+						 ScrollViewer.VerticalScrollBarVisibility="Auto"
+						 TextWrapping="Wrap" 
+						 Text="{Binding SendTxt}"
+						 />
+                <ComboBox Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,5,5"
+						  SelectedIndex="{Binding SendTxtHisSelIndex}" ItemsSource="{Binding SendTxtHistory}"						 
+						  Name="CbbHistory"
+						  />
+                <Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch" Margin="0,0,5,5"
+						Content="{DynamicResource mwSend}" FontSize="15" Padding="0" 
+						VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+						Command="{Binding OnSendCommand}" 
+						IsEnabled="{Binding SendCmdIsEnable}"
+                        Style="{StaticResource ButtonPrimary}"
+						/>
+            </Grid>
+        </DockPanel>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding ComPortState}" 
+					   VerticalAlignment="Bottom" Margin="5"
+					   Foreground="{Binding ComPortStateColor}"
+					   />
+            <TextBlock Grid.Column="1" Text="{Binding ReceiveBytesStr}" 
+					   Foreground="{Binding ReceiveBytesColor}" 
+					   VerticalAlignment="Bottom" Margin="5"/>
+            <TextBlock Grid.Column="2" Text="{Binding SendBytesStr}" 
+					   Foreground="{Binding SendBytesColor}"
+					   VerticalAlignment="Bottom" Margin="5"/>
+        </Grid>
+    </Grid>
+</Window>
