@@ -26,7 +26,10 @@ namespace BYSerial.ViewModels
         public MainWindowViewModel()
         {
             GlobalPara.GetLocSet();
-            SendTxtHistory=new ObservableCollection<string>(GlobalPara.HisCfg.his);
+            if(GlobalPara.HisCfg.his!=null)
+            {
+                SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
+            }            
              SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
             if (SerialPortList.Count > 0)
             {

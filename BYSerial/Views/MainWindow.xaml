@@ -160,11 +160,12 @@
 							CornerRadius="2"/>
                     <TextBlock Grid.Row="1" Text="{DynamicResource mwPort}" TextAlignment="Right"
 								VerticalAlignment="Center" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" 
-								VerticalAlignment="Center" Margin="2"
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              HorizontalAlignment="Stretch" 
+								VerticalAlignment="Stretch"  Margin="2"
 								ItemsSource="{Binding SerialPortList}"
                               SelectedIndex="{Binding PortNameIndex}"
-                              Height="15" Padding="0" FontSize="15"
+                               Padding="0" FontSize="15"
 								/>
                     <TextBlock Grid.Row="2" Text="{DynamicResource mwBaudRate}" 
                                TextAlignment="Right"

@@ -13,7 +13,7 @@
     <system:String x:Key="menuEn">英语</system:String>
     <system:String x:Key="menuDonate">捐助</system:String>
     <system:String x:Key="mwSPS">串口设置</system:String>
-    <system:String x:Key="mwPort">串口</system:String>
+    <system:String x:Key="mwPort">端口</system:String>
     <system:String x:Key="mwBaudRate">通讯速率</system:String>
     <system:String x:Key="RightStation">右工位</system:String>
     <system:String x:Key="mwDataBits" >数据位</system:String>
@@ -82,8 +82,13 @@
     <system:String x:Key="tbwToDecimal">转换成小数</system:String>
     <system:String x:Key="tbwToInteger">转换成整数</system:String>
     <system:String x:Key="tbTitle">工具箱</system:String>
+    <system:String x:Key="tbImgCov">图片转Base64</system:String>
+    <system:String x:Key="tbCopy">复制</system:String>
+    <system:String x:Key="tbSelImg">选择图片</system:String>
+    <system:String x:Key="tbToImg">Base64转图片</system:String>
     <system:String x:Key="asciiTitle">ASCII码表</system:String>
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
+    
 </ResourceDictionary>

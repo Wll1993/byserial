@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -71,6 +72,7 @@
     <Compile Include="Base\NotificationObject.cs" />
     <Compile Include="GlobalPara.cs" />
     <Compile Include="Models\mycfg.cs" />
+    <Compile Include="Util\BitmapWPF.cs" />
     <Compile Include="Util\DataConvertUtility.cs" />
     <Compile Include="Util\JSONHelper.cs" />
     <Compile Include="Util\LocalizeExtension.cs" />

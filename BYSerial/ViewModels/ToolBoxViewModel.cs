@@ -1,11 +1,13 @@
 ﻿using BYSerial.Base;
 using BYSerial.Util;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Media.Imaging;
 
 namespace BYSerial.ViewModels
 {
@@ -35,6 +37,14 @@ namespace BYSerial.ViewModels
             On16BitHexToIntegerCommand.ExecuteAction = new Action<object>(On16BitHexToInteger);
             On32BitHexToIntegerCommand = new DelegateCommand();
             On32BitHexToIntegerCommand.ExecuteAction = new Action<object>(On32BitHexToInteger);
+            OnCopyCommand = new DelegateCommand();
+            OnCopyCommand.ExecuteAction= new Action<object>(OnCopy);
+            OnSelImgCommand= new DelegateCommand();
+            OnSelImgCommand.ExecuteAction=new Action<object>(OnSelImg);
+            OnImgCovCommand= new DelegateCommand();
+            OnImgCovCommand.ExecuteAction= new Action<object>(OnImgCov);
+            OnBase64CovCommand= new DelegateCommand();
+            OnBase64CovCommand.ExecuteAction = new Action<object>(OnBase64Cov);
         }
 
         #region command
@@ -111,8 +121,52 @@ namespace BYSerial.ViewModels
             StrInteger = BitConverter.ToInt32(bt,0).ToString();
         }
 
+        public DelegateCommand OnCopyCommand { get; }
+        private void OnCopy(object para)
+        {            
+            System.Windows.Clipboard.SetText(StrFullStr);
+        }
 
-
+        public DelegateCommand OnSelImgCommand { get; }
+        private void OnSelImg(object para)
+        {
+            OpenFileDialog ofd = new OpenFileDialog() { Title = "Select Exists Txt File", Multiselect = false };
+            ofd.InitialDirectory = Environment.CurrentDirectory;
+            ofd.Filter = "Png|*.png|Jpg|*.jpg|Jpeg|*.jpeg|Gif|*.gif|Bmp|*.bmp";
+            if (ofd.ShowDialog() == true)
+            {
+                ImgName = ofd.FileName;                
+            }
+        }
+        public DelegateCommand OnImgCovCommand { get; }
+        private void OnImgCov(object para)
+        {
+            try
+            {
+                ImgSel = BitmapWPF.GetBitmapSource(ImgName);
+                Base64Str =BitmapWPF.GetBase64String(ImgName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public DelegateCommand OnBase64CovCommand { get; }
+        private void OnBase64Cov(object para)
+        {
+            try
+            {
+                ImgSel = null;
+                Bitmap bitmap = BitmapWPF.GetBitmapFromBase64String(Base64Str);
+                BitmapSource bmpsrc;
+                BitmapWPF.BitmapToBitmapSource(bitmap,out bmpsrc);
+                ImgSel = bmpsrc;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -267,6 +321,44 @@ namespace BYSerial.ViewModels
                 this.RaisePropertyChanged("Str32BitHex");
             }
         }
+        #endregion
+
+        #region Img
+        private string _ImgName;
+
+        public string ImgName
+        {
+            get { return _ImgName; }
+            set 
+            { 
+                _ImgName = value;
+                RaisePropertyChanged("ImgName");
+            }
+        }
+        private BitmapSource _ImgSel;
+        public BitmapSource ImgSel
+        {
+            get => _ImgSel;
+            set
+            {
+                _ImgSel = value;
+                RaisePropertyChanged("ImgSel");
+            }
+        }
+
+        private string _Base64Str;
+
+        public string Base64Str
+        {
+            get { return _Base64Str; }
+            set 
+            { 
+                _Base64Str = value;
+                RaisePropertyChanged("Base64Str");
+            }
+        }
+
+
         #endregion
     }
 }
