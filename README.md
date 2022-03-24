@@ -16,7 +16,7 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 更新
 ----
 2022-03-22 V1.0  
-1.初始化项目。 
+1.初始化项目。   
 2022-03-24 V1.1  
 1.增加接收信息和发送信息颜色区分。  
 2.保存语言，字符颜色，Log记录路径到本地。  
