@@ -70,6 +70,7 @@
     <Compile Include="Base\DelegateCommand.cs" />
     <Compile Include="Base\NotificationObject.cs" />
     <Compile Include="GlobalPara.cs" />
+    <Compile Include="Models\mycfg.cs" />
     <Compile Include="Util\DataConvertUtility.cs" />
     <Compile Include="Util\JSONHelper.cs" />
     <Compile Include="Util\LocalizeExtension.cs" />

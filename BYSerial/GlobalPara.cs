@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BYSerial.Models;
-
+using BYSerial.Util;
 
 namespace BYSerial
 {
@@ -22,23 +22,38 @@ namespace BYSerial
         public static readonly SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
         public static readonly SolidColorBrush GreenBrush = new SolidColorBrush(Colors.Green);
         public static readonly SolidColorBrush TransparentBrush = new SolidColorBrush(Colors.Transparent);
-        public static LocSet LocSet=new LocSet();
+       
+        public static mycfg MyCfg = new mycfg();
+        public static hiscfg HisCfg = new hiscfg();
 
-        private static string _LangFileName = "Language.cfg"; 
+        private static string _cfgfile = "my.cfg";
+        private static string _hisfile = "his.cfg";
+        
 
         public static void GetLocSet()
         {            
             try
             {
-                if(File.Exists(_LangFileName))
+                if(File.Exists(_cfgfile))
                 {
-                    string lang = File.ReadAllText(_LangFileName).Trim().Substring(0,5);
-                    LocSet.Language = lang;
+                    MyCfg=JSONHelper.DeserializeJsonToObject<mycfg>(File.ReadAllText(_cfgfile));                    
+                    if(MyCfg!=null)
+                    {
+                        LogPara.FileName = MyCfg.LogPath;
+
+                        var converter = new BrushConverter();
+                        DisplayPara.FormatDisColor=MyCfg.FormatDisColor;
+                        DisplayPara.SendColor = (SolidColorBrush)converter.ConvertFromString(MyCfg.SendColor);
+                        DisplayPara.ReceiveColor= (SolidColorBrush)converter.ConvertFromString(MyCfg.RecColor);
+                        Console.WriteLine(Brushes.Black.ToString());
+                    }
+                    
                 }
-                else
+                if(File.Exists(_hisfile))
                 {
-                    File.WriteAllText(_LangFileName, "en-US");
-                }              
+                    HisCfg=JSONHelper.DeserializeJsonToObject<hiscfg>(File.ReadAllText(_hisfile));
+                }
+                            
             }
             catch(Exception ex)
             {
@@ -46,11 +61,18 @@ namespace BYSerial
             }            
         }
        
-        public static void SaveCurLanguage(string lang)
+        public static void SaveCurCfg()
         {
              try
             {
-                File.WriteAllText(_LangFileName, lang);
+                MyCfg.LogPath = LogPara.FileName;
+                MyCfg.FormatDisColor=DisplayPara.FormatDisColor;
+                MyCfg.SendColor=DisplayPara.SendColor.ToString();
+                MyCfg.RecColor=DisplayPara.ReceiveColor.ToString();
+                string txt=JSONHelper.SerializeObject(MyCfg);
+                File.WriteAllText(_cfgfile, txt);
+                txt=JSONHelper.SerializeObject(HisCfg);
+                File.WriteAllText(_hisfile, txt);
             }
             catch(Exception ex)
             {

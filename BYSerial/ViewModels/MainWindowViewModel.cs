@@ -25,7 +25,9 @@ namespace BYSerial.ViewModels
 
         public MainWindowViewModel()
         {
-            SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
+            GlobalPara.GetLocSet();
+            SendTxtHistory=new ObservableCollection<string>(GlobalPara.HisCfg.his);
+             SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
             if (SerialPortList.Count > 0)
             {
                 _ComPortState = SerialPortList[PortNameIndex] + " ClOSED";
@@ -40,7 +42,9 @@ namespace BYSerial.ViewModels
             SendPara = GlobalPara.SendPara;
             LogPara = GlobalPara.LogPara;
             DisplayPara = GlobalPara.DisplayPara;
+            ChangeLang(GlobalPara.MyCfg.Language);
 
+            #region 命令绑定
             OnSendCommand = new DelegateCommand();
             OnSendCommand.ExecuteAction = new Action<object>(SendCommand);
             OnLogCommand = new DelegateCommand();
@@ -55,6 +59,8 @@ namespace BYSerial.ViewModels
             OnClearCommand.ExecuteAction = new Action<object>(OnClearClick);
             OnHideLeftCommand = new DelegateCommand();
             OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft);
+            #endregion
+
             #region 菜单命令
             ChangeToChCmd = new DelegateCommand();
             ChangeToChCmd.ExecuteAction = new Action<object>(ChangeToCh);
@@ -114,19 +120,37 @@ namespace BYSerial.ViewModels
         private void ChangeToCh(object para)
         {
             // TODO: 切换系统资源文件
-            ResourceDictionary dict = new ResourceDictionary();
-            dict.Source = new Uri(@"Assets\Language\zh-CN.xaml", UriKind.Relative);
-            Application.Current.Resources.MergedDictionaries[0] = dict;
-            //if (GlobalPara.MyConfig != null) GlobalPara.MyConfig.Language = 0;
+            ChangeLang("zh-CN");
         }
         public DelegateCommand ChangeToEnCmd { get; private set; }
         private void ChangeToEn(object para)
         {
-            ResourceDictionary dict = new ResourceDictionary();
-            dict.Source = new Uri(@"Assets\Language\en-US.xaml", UriKind.Relative);
-            Application.Current.Resources.MergedDictionaries[0] = dict;
-            //if (GlobalPara.MyConfig != null) GlobalPara.MyConfig.Language = 1;
+            ChangeLang("en-US");
         }
+        private void ChangeLang(string lang)
+        {
+            if(lang == "en-US")
+            {
+                ResourceDictionary dict = new ResourceDictionary();
+                dict.Source = new Uri(@"Assets\Language\en-US.xaml", UriKind.Relative);
+                Application.Current.Resources.MergedDictionaries[0] = dict;
+                if (GlobalPara.MyCfg != null)
+                {
+                    GlobalPara.MyCfg.Language = "en-US";
+                }
+            }
+            else
+            {
+                ResourceDictionary dict = new ResourceDictionary();
+                dict.Source = new Uri(@"Assets\Language\zh-CN.xaml", UriKind.Relative);
+                Application.Current.Resources.MergedDictionaries[0] = dict;
+                if (GlobalPara.MyCfg != null)
+                {
+                    GlobalPara.MyCfg.Language = "zh-CN";
+                }
+            }
+        }
+
         #endregion
 
         private void BackDetectSerialPortChange()
@@ -221,28 +245,30 @@ namespace BYSerial.ViewModels
                     }
                     if (ReceivePara.DisplayTime)
                     {
-                        txtsend = "[SEND]" + DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
+                        txtsend =DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
                     }
                     txtsend = "[SEND]" + txtsend;
                     ////20220324切换为RichTextBox,此处暂丢弃
                     // ReceiveTxt += txtsend;
 
-                    Paragraph pg = new Paragraph();
-                    pg.Margin = new Thickness(3);
-                    pg.Inlines.Add(new Run(txtsend));
-                    if (DisplayPara.FormatDisColor)
-                    {
-                        pg.Foreground = DisplayPara.SendColor;
-                    }
-                    _ReciveFlowDoc.Blocks.Add(pg);
+                    
+                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                        Paragraph pg = new Paragraph();
+                        pg.Margin = new Thickness(1);
+                        pg.Padding = new Thickness(0);
+                        pg.Inlines.Add(new Run(txtsend));
+                        if (DisplayPara.FormatDisColor)
+                        {
+                            pg.Foreground = DisplayPara.SendColor;
+                        }
+                        _ReciveFlowDoc.Blocks.Add(pg);
+                    }));
 
                     if (LogPara.SaveLogMsg)
                     {
                         SaveLogAsync(txtsend);
                     }
                 }
-
-
                 _SendedBytesNum += byteNum;
                 SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
                 AddSendHistory(SendTxt);
@@ -446,7 +472,9 @@ namespace BYSerial.ViewModels
 
         private void OnClearClick(object parameter)
         {
-            ReceiveTxt = "";
+            App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                _ReciveFlowDoc.Blocks.Clear();
+            }));
             _SendedBytesNum = 0;
             _ReceivedBytesNum = 0;
             SendBytesStr = "Tx: 0 Bytes";
@@ -485,16 +513,27 @@ namespace BYSerial.ViewModels
                 }
                 receivestr = "[REC]" + receivestr;
                 ////20220324切换为RichTextBox,此处暂丢弃
-                // ReceiveTxt +=receivestr;
-                Paragraph pg = new Paragraph();
-                pg.Margin = new Thickness(3);
-                pg.Inlines.Add(new Run(receivestr));
-                if (DisplayPara.FormatDisColor)
-                {
-                    pg.Foreground = DisplayPara.SendColor;
-                }
-                _ReciveFlowDoc.Blocks.Add(pg);
-
+                // ReceiveTxt +=receivestr;                
+                App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                    try
+                    {
+                        Paragraph pg = new Paragraph();
+                        pg.Margin = new Thickness(1);
+                        pg.Padding= new Thickness(0);
+                        pg.Inlines.Add(new Run(receivestr));
+                        if (DisplayPara.FormatDisColor)
+                        {
+                            pg.Foreground = DisplayPara.ReceiveColor;
+                        }
+                        _ReciveFlowDoc.Blocks.Add(pg);
+                    }
+                    catch
+                    {
+                        ComPortState = SerialPortList[PortNameIndex] + " Recive Process Error!";
+                        ComPortStateColor = GlobalPara.RedBrush;
+                        return;
+                    }
+                }));
                 _ReceivedBytesNum += bytes.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
                 if (LogPara.SaveLogMsg)
@@ -744,18 +783,6 @@ namespace BYSerial.ViewModels
 
         }
 
-        private string _ReceiveTxt = "";
-
-        public string ReceiveTxt
-        {
-            get => _ReceiveTxt;
-            set
-            {
-                _ReceiveTxt = value;
-                this.RaisePropertyChanged("ReceiveTxt");
-            }
-        }
-
         private string _SendTxt = "";
 
         public string SendTxt
@@ -781,12 +808,13 @@ namespace BYSerial.ViewModels
 
         private void AddSendHistory(string str)
         {
-            if (SendTxtHistory.Count > 15)
+            if (SendTxtHistory.Count > 20)
             {
                 SendTxtHistory.RemoveAt(0);
             }
             if (SendTxtHistory.Contains(str)) return;
             SendTxtHistory.Add(str);
+            GlobalPara.HisCfg.his.Add(str);
         }
 
         private int _SendTxtHisSelIndex = 0;

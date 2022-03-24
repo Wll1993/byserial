@@ -10,6 +10,7 @@
         Title="BYSerial" MinHeight="650" MinWidth="800"
         Height="650" Width="800"
         WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing"
         >
     
     <Grid Margin="2">
@@ -306,22 +307,16 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>                    
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
-						 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                         Padding="5,0" IsReadOnly="True"
-						 TextWrapping="Wrap" Text="{Binding Path=ReceiveTxt}" 
-						 Name="txtReceive" Visibility="Collapsed"
-                         TextChanged="txtReceive_TextChanged"
-                         />
+                
                 <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
 						VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                          VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
 						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                          Padding="5,0" IsReadOnly="True"
-                         TextChanged="txtReceive_TextChanged">
-                    <FlowDocument Name="fdReceive"/>
+                         Name="txtRich"
+                         TextChanged="txtRich_TextChanged">
+                    <FlowDocument Name="fdReceive"                                  
+                                  />
                 </RichTextBox>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
 						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"

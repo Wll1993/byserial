@@ -119,3 +119,5 @@ F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\BYSerial.pdb
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\BYSerial.csprojAssemblyReference.cache
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\ColorPickerWin.g.cs
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\ColorPickerWin.baml
+F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorPickerWin.g.cs
+F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorPickerWin.baml

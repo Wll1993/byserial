@@ -16,11 +16,10 @@ namespace BYSerial.ViewModels
     {
         public OptionsViewModel()
         {
-            _DisplayPara = new DisplayPara(); 
-            _ReceivePara = new ReceivePara();
-            _LogPara = new LogPara();
-            _SendPara = new SendPara();
-
+            _DisplayPara =GlobalPara.DisplayPara; 
+            _ReceivePara =GlobalPara.ReceivePara;
+            _LogPara = GlobalPara.LogPara;
+            _SendPara = GlobalPara.SendPara;
 
 
             OnCancelCommand = new DelegateCommand();

@@ -29,9 +29,14 @@ namespace BYSerial.Views
             this.DataContext = viewModel;
         }
 
-        private void txtReceive_TextChanged(object sender, TextChangedEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            txtReceive.ScrollToEnd();
+            GlobalPara.SaveCurCfg();
+        }
+
+        private void txtRich_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            txtRich.ScrollToEnd();
         }
     }
 }
