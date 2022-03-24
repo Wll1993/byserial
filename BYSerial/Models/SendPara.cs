@@ -138,7 +138,7 @@ namespace BYSerial.Models
             }
         }
         private bool _FormatCRNL = false;
-
+        
         public bool FormatCRNL
         {
             get => _FormatCRNL;
@@ -148,6 +148,6 @@ namespace BYSerial.Models
                 this.RaisePropertyChanged("FormatCRNL");
             }
         }
-
+       
     }
 }

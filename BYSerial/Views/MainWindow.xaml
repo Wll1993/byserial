@@ -87,7 +87,8 @@
             <Button Grid.Column="1" ToolTip="{DynamicResource mvTipStart}"
 					HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"
 					Command="{Binding OnStartCommand}" IsEnabled="{Binding IsStartCan}"				    
-					Padding="0"
+					CommandParameter="{Binding ElementName=fdReceive}"
+                    Padding="0"
                     >
                 <Image Source="/Assets/start.png"/>
             </Button>
@@ -311,9 +312,17 @@
 						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                          Padding="5,0" IsReadOnly="True"
 						 TextWrapping="Wrap" Text="{Binding Path=ReceiveTxt}" 
-						 Name="txtReceive"
+						 Name="txtReceive" Visibility="Collapsed"
                          TextChanged="txtReceive_TextChanged"
                          />
+                <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
+						VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         Padding="5,0" IsReadOnly="True"
+                         TextChanged="txtReceive_TextChanged">
+                    <FlowDocument Name="fdReceive"/>
+                </RichTextBox>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
 						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"
 						 ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -328,7 +337,7 @@
 						HorizontalAlignment="Stretch" Margin="0,0,5,5"
 						Content="{DynamicResource mwSend}" FontSize="15" Padding="0" 
 						VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-						Command="{Binding OnSendCommand}" 
+						Command="{Binding OnSendCommand}"                        
 						IsEnabled="{Binding SendCmdIsEnable}"
                         Style="{StaticResource ButtonPrimary}"
 						/>

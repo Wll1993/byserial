@@ -159,39 +159,40 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>                        
-                        <RowDefinition/>
+                        <RowDefinition Height="*"/>                        
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="100"/>                        
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Content="{StaticResource optFormatDisColor}" Grid.ColumnSpan="2"/>
-                    <TextBlock Grid.Row="1" Text="{StaticResource optRecTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"
-							   Margin="0,5,5,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"
-							 VerticalAlignment="Stretch" Margin="0,0,5,5"
-							 Name="txtColorReceive" Text="{Binding Path=DisplayPara.ReceiveTxtColor,Mode=TwoWay}"  />
-                    <hc:ColorPicker SelectedBrush="#000000" 
-                                    Name="btnColorReceive" Grid.Row="1" Grid.Column="2" 
-							        VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Left"
-                                    
-                                    />
-                    <TextBlock Grid.Row="2" Text="{StaticResource optSendTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"
-							   Margin="0,5,5,0"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"
-							 VerticalAlignment="Stretch" Margin="0,0,5,5"
-						 Name="txtColorSend" Text="{Binding DisplayPara.SendTxtColor}"/>
-                    <hc:ColorPicker SelectedBrush="#000000" 
-                                    Name="btnColorSend" Grid.Row="2" Grid.Column="2"
-							VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Stretch"/>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{StaticResource optTip1}"
-							   VerticalAlignment="Center" HorizontalAlignment="Left"
-							   Foreground="Red"
-							   />
+                    <CheckBox Content="{StaticResource optFormatDisColor}"
+                              IsChecked="{Binding DisplayPara.FormatDisColor}"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Padding="0"
+                                Text="{StaticResource optRecTextColor}" 
+                                VerticalAlignment="Center"/>
+                        <TextBox VerticalContentAlignment="Center" Visibility="Collapsed"
+							Margin="5" Name="txtColorReceive" Width="100" 
+                            Text="{Binding Path=DisplayPara.ReceiveTxtColor,Mode=TwoWay}" />
+                        <Label Margin="5" Width="50" VerticalAlignment="Stretch"
+                               Background="{Binding DisplayPara.ReceiveColor}"
+                               />
+                        <Button Content="选择颜色"
+                                Command="{Binding SelectReceiveColorCmd}"
+                                Style="{StaticResource ButtonPrimary}"
+                                />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <TextBlock Padding="0"
+                                Text="{StaticResource optSendTextColor}" 
+                                VerticalAlignment="Center"/>
+                        <TextBox  VerticalContentAlignment="Center" Visibility="Collapsed"
+							Margin="5" Width="100" Name="txtColorSend"
+						    Text="{Binding DisplayPara.SendTxtColor}"/>
+                        <Label Margin="5" Width="50" VerticalAlignment="Stretch"
+                               Background="{Binding DisplayPara.SendColor}"
+                               />
+                        <Button Content="选择颜色"
+                                Command="{Binding SelectSendColorCmd}"
+                                Style="{StaticResource ButtonPrimary}"
+                                />
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>

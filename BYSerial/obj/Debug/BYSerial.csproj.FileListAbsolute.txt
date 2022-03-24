@@ -63,8 +63,6 @@ D:\xyb\GitProject\BYSerial\BYSerial\bin\Debug\BYSerial.exe
 D:\xyb\GitProject\BYSerial\BYSerial\bin\Debug\BYSerial.pdb
 D:\xyb\GitProject\BYSerial\BYSerial\bin\Debug\HandyControl.dll
 D:\xyb\GitProject\BYSerial\BYSerial\bin\Debug\Newtonsoft.Json.dll
-D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\BYSerial.csproj.AssemblyReference.cache
-D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\BYSerial.csproj.SuggestedBindingRedirects.cache
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\OptionsWindow.g.cs
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\ToolBoxWindow.g.cs
 D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\AboutWindow.g.cs
@@ -118,3 +116,6 @@ F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\BYSerial.csproj.CoreCompileInpu
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\BYSerial.csproj.CopyComplete
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\BYSerial.exe
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\BYSerial.pdb
+D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\BYSerial.csprojAssemblyReference.cache
+D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\ColorPickerWin.g.cs
+D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\Views\ColorPickerWin.baml

@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using BYSerial.Util;
 using BYSerial.Views;
+using System.Windows.Documents;
 
 namespace BYSerial.ViewModels
 {
@@ -38,7 +39,7 @@ namespace BYSerial.ViewModels
             ReceivePara = GlobalPara.ReceivePara;
             SendPara = GlobalPara.SendPara;
             LogPara = GlobalPara.LogPara;
-
+            DisplayPara = GlobalPara.DisplayPara;
 
             OnSendCommand = new DelegateCommand();
             OnSendCommand.ExecuteAction = new Action<object>(SendCommand);
@@ -150,13 +151,14 @@ namespace BYSerial.ViewModels
             }
         }
 
+        private FlowDocument _ReciveFlowDoc=null;
+
         public DelegateCommand OnSendCommand { get; private set; }
 
-        private void SendCommand(object parameter)
+        private void SendCommand(object para)
         {
             try
             {
-
                 // string cmd = SendTxt.Replace("", " ");
                 if (SendTxt.Trim() == "") return;
                 string txtsend = SendTxt.Trim().Replace(" ", "").ToUpper();
@@ -221,7 +223,19 @@ namespace BYSerial.ViewModels
                     {
                         txtsend = "[SEND]" + DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
                     }
-                    ReceiveTxt += txtsend;
+                    txtsend = "[SEND]" + txtsend;
+                    ////20220324切换为RichTextBox,此处暂丢弃
+                    // ReceiveTxt += txtsend;
+
+                    Paragraph pg = new Paragraph();
+                    pg.Margin = new Thickness(3);
+                    pg.Inlines.Add(new Run(txtsend));
+                    if (DisplayPara.FormatDisColor)
+                    {
+                        pg.Foreground = DisplayPara.SendColor;
+                    }
+                    _ReciveFlowDoc.Blocks.Add(pg);
+
                     if (LogPara.SaveLogMsg)
                     {
                         SaveLogAsync(txtsend);
@@ -299,6 +313,9 @@ namespace BYSerial.ViewModels
         {
             try
             {
+                //将显示收发信息的流文档传输过来。
+                _ReciveFlowDoc = parameter as FlowDocument;
+
                 if (_serialPort != null)
                 {
                     if (_serialPort.IsOpen) _serialPort.Close();
@@ -466,7 +483,18 @@ namespace BYSerial.ViewModels
                 {
                     receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
                 }
-                ReceiveTxt += "[REC]" + receivestr;
+                receivestr = "[REC]" + receivestr;
+                ////20220324切换为RichTextBox,此处暂丢弃
+                // ReceiveTxt +=receivestr;
+                Paragraph pg = new Paragraph();
+                pg.Margin = new Thickness(3);
+                pg.Inlines.Add(new Run(receivestr));
+                if (DisplayPara.FormatDisColor)
+                {
+                    pg.Foreground = DisplayPara.SendColor;
+                }
+                _ReciveFlowDoc.Blocks.Add(pg);
+
                 _ReceivedBytesNum += bytes.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
                 if (LogPara.SaveLogMsg)
@@ -667,6 +695,18 @@ namespace BYSerial.ViewModels
         #endregion
 
         #region 绑定属性
+
+        private DisplayPara _DisplayPara;
+        public DisplayPara DisplayPara
+        {
+            get => _DisplayPara;
+            set
+            {
+                _DisplayPara = value;
+                RaisePropertyChanged("DisplayPara");
+            }
+        }
+
         private LogPara _LogPara;
 
         public LogPara LogPara

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\
+D:\xyb\GitProject\BYSerial\BYSerial\obj\Debug\
 BYSerial
 none
 false
 DEBUG;TRACE
-F:\Study\C#\BYSerial\byserial\BYSerial\App.xaml
-6952177466
+D:\xyb\GitProject\BYSerial\BYSerial\App.xaml
+7-1638594389
 
-31-135487731
-15-411329094
-Views\OptionsWindow.xaml;Views\ToolBoxWindow.xaml;Views\AboutWindow.xaml;Views\AsciiCodeWindow.xaml;Views\DonateWindow.xaml;Views\MainWindow.xaml;
+321182175335
+15-1987973874
+Views\ColorPickerWin.xaml;Views\OptionsWindow.xaml;Views\ToolBoxWindow.xaml;Views\AboutWindow.xaml;Views\AsciiCodeWindow.xaml;Views\DonateWindow.xaml;Views\MainWindow.xaml;
 
 False
 

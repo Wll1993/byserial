@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using System.Windows.Media;
 using BYSerial.Base;
 
 namespace BYSerial.Models
@@ -47,5 +46,27 @@ namespace BYSerial.Models
             }
         }
 
+        private SolidColorBrush _ReceiveColor=Brushes.Black;
+
+        public SolidColorBrush ReceiveColor
+        {
+            get { return _ReceiveColor; }
+            set
+            {
+                _ReceiveColor = value;
+                RaisePropertyChanged("ReceiveColor");
+            }
+        }
+        private SolidColorBrush _SendColor = Brushes.Black;
+
+        public SolidColorBrush SendColor
+        {
+            get { return _SendColor; }
+            set
+            {
+                _SendColor = value;
+                RaisePropertyChanged("SendColor");
+            }
+        }
     }
 }

@@ -78,12 +78,19 @@
     <Compile Include="Util\Tool.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\ToolBoxViewModel.cs" />
+    <Compile Include="Views\ColorPickerWin.xaml.cs">
+      <DependentUpon>ColorPickerWin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolBoxWindow.xaml.cs">
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ColorPickerWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\OptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

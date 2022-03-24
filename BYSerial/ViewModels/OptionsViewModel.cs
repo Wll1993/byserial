@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using BYSerial.Base;
 using BYSerial.Models;
+using BYSerial.Views;
 using Microsoft.Win32;
 
 namespace BYSerial.ViewModels
@@ -29,7 +31,13 @@ namespace BYSerial.ViewModels
             OnApplyCommand.ExecuteAction = new Action<object>(OnApply);
             OpenFileCommand = new DelegateCommand();
             OpenFileCommand.ExecuteAction = new Action<object>( OpenFile);
+            SelectReceiveColorCmd = new DelegateCommand();
+            SelectReceiveColorCmd.ExecuteAction = new Action<object>(SelectReceiveColor);
+            SelectSendColorCmd = new DelegateCommand();
+            SelectSendColorCmd.ExecuteAction = new Action<object>(SelectSendColor);
         }
+
+
 
 
         private ReceivePara _ReceivePara;
@@ -100,7 +108,27 @@ namespace BYSerial.ViewModels
 
         public DelegateCommand OpenFileCommand { get; }
 
+        public DelegateCommand SelectReceiveColorCmd { get; }
+        public DelegateCommand SelectSendColorCmd { get; }
 
+        private void SelectReceiveColor(object para)
+        {
+            ColorPickerWin colorPicker = new ColorPickerWin();
+            bool? bret= colorPicker.ShowDialog();
+            if((bool)bret)
+            {
+                DisplayPara.ReceiveColor = colorPicker.SelectedBrush;
+            }
+        }
+        private void SelectSendColor(object para)
+        {
+            ColorPickerWin colorPicker = new ColorPickerWin();
+            bool? bret = colorPicker.ShowDialog();
+            if ((bool)bret)
+            {
+                DisplayPara.SendColor = colorPicker.SelectedBrush;
+            }
+        }
 
         private void OnCancel(object para)
         {
@@ -129,8 +157,8 @@ namespace BYSerial.ViewModels
             GlobalPara.LogPara.BufSize = LogPara.BufSize;
 
             GlobalPara.DisplayPara.FormatDisColor = DisplayPara.FormatDisColor;
-            GlobalPara.DisplayPara.ReceiveTxtColor = DisplayPara.ReceiveTxtColor;
-            GlobalPara.DisplayPara.SendTxtColor = DisplayPara.SendTxtColor;
+            GlobalPara.DisplayPara.ReceiveColor = DisplayPara.ReceiveColor;
+            GlobalPara.DisplayPara.SendColor = DisplayPara.SendColor;
 
             if (window != null)
             {
