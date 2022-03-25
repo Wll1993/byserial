@@ -29,7 +29,11 @@ namespace BYSerial.ViewModels
             if(GlobalPara.HisCfg.his!=null)
             {
                 SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
-            }            
+            }
+            else
+            {
+                GlobalPara.HisCfg.his = new List<string>();
+            }
              SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
             if (SerialPortList.Count > 0)
             {
@@ -212,6 +216,11 @@ namespace BYSerial.ViewModels
 
                 if (SendPara.IsHex)
                 {
+                    if(txtsend.Length%2!=0)
+                    {
+                        MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零","错误提示");
+                        return;
+                    }
                     if (SendPara.AutoCRC)
                     {
                         string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
@@ -415,7 +424,7 @@ namespace BYSerial.ViewModels
         }
 
 
-        private SolidColorBrush _PauseBtnBackColor = new SolidColorBrush(Colors.Red);
+        private SolidColorBrush _PauseBtnBackColor = new SolidColorBrush(Colors.Transparent);
         public SolidColorBrush PauseBtnBackColor
         {
             get => _PauseBtnBackColor;

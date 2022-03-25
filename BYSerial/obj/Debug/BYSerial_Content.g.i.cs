@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/language/zh-cn.xml")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/gs.png")]
 
 

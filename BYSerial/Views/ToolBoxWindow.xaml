@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BYSerial.Views"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         Width="600" Height="400"
         WindowStartupLocation="CenterScreen"
@@ -46,6 +47,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource tbwString}"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                             VerticalContentAlignment="Top" TextWrapping="Wrap"
 							 VerticalAlignment="Stretch" Text="{Binding SrcStrings}"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource tbwCheckVal}"/>
                     <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" 
@@ -85,6 +87,7 @@
 							/>
                     <TextBlock Grid.Row="6" Grid.Column="0" Text="{StaticResource tbwFullStr}"/>
                     <TextBox Grid.Row="6" Grid.Column="1"  VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Top" TextWrapping="Wrap"
 							 Text="{Binding StrFullStr}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                     <Button Grid.Row="6" Grid.Column="2" VerticalAlignment="Stretch"
 							Content="{StaticResource tbCopy}" ToolTip="复制到剪贴板" 
@@ -222,6 +225,80 @@
                                      />
                         </GroupBox>
                     </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{StaticResource tbAnalogToReal}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="1.2*"/>                        
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />                       
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="模拟量" Margin="2"                             
+                              BorderBrush="{StaticResource PrimaryBrush}"
+                              BorderThickness="1"
+                              Style="{StaticResource GroupBoxOriginal}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>                                
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="最大值" Grid.Row="0"/>
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                Text="{Binding Analog.AnalogMax}"/>
+                            <TextBlock Text="最小值" Grid.Row="1"/>
+                            <TextBox Grid.Row="1" Grid.Column="1"
+                                Text="{Binding Analog.AnalogMin}"/>
+                            <TextBlock Text="输入值" Grid.Row="2"/>
+                            <TextBox Grid.Row="2" Grid.Column="1"
+                                Text="{Binding Analog.AnalogValue}"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="工程量" Margin="2"
+                              Grid.Row="2"
+                              BorderBrush="{StaticResource PrimaryBrush}"
+                              BorderThickness="1"
+                              Style="{StaticResource GroupBoxOriginal}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="最大值" Grid.Row="0"/>
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                Text="{Binding Analog.RealMax}"/>
+                            <TextBlock Text="最小值" Grid.Row="1"/>
+                            <TextBox Grid.Row="1" Grid.Column="1"
+                                Text="{Binding Analog.RealMin}"/>
+                            <TextBlock Text="输出值" Grid.Row="2"/>
+                            <TextBox Grid.Row="2" Grid.Column="1"
+                                Text="{Binding Analog.RealValue}"/>
+                        </Grid>
+                    </GroupBox>
+                    <Image Grid.Column="1"
+                           Stretch="Uniform"
+                        Source="/Assets/gs.png"/>
+                    <Button Width="100"
+                        Grid.Row="1" Grid.Column="1"
+                        Style="{StaticResource ButtonPrimary}"
+                        Content="计算"
+                        Command="{Binding AnlogRealCalCmd}"
+                            />
                 </Grid>
             </TabItem>
         </TabControl>

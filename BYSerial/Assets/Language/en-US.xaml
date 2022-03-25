@@ -85,6 +85,7 @@
     <system:String x:Key="tbCopy">Copy</system:String>
     <system:String x:Key="tbSelImg">Sel Img</system:String>    
     <system:String x:Key="tbToImg">ToImage</system:String>
+    <system:String x:Key="tbAnalogToReal">AnalogToReal</system:String>
     <system:String x:Key="asciiTitle">ASCIITable</system:String>
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>

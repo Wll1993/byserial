@@ -71,6 +71,7 @@
     <Compile Include="Base\DelegateCommand.cs" />
     <Compile Include="Base\NotificationObject.cs" />
     <Compile Include="GlobalPara.cs" />
+    <Compile Include="Models\AnalogReal.cs" />
     <Compile Include="Models\mycfg.cs" />
     <Compile Include="Util\BitmapWPF.cs" />
     <Compile Include="Util\DataConvertUtility.cs" />
@@ -173,7 +174,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Assets\ascii.json" />
-    <None Include="Assets\locSet.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -196,6 +196,9 @@
     <Resource Include="Assets\yinyang_64.ico" />
     <Resource Include="Assets\yinyang_64.png" />
     <Resource Include="Assets\zhifubao.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\gs.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

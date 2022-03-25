@@ -86,6 +86,7 @@
     <system:String x:Key="tbCopy">复制</system:String>
     <system:String x:Key="tbSelImg">选择图片</system:String>
     <system:String x:Key="tbToImg">Base64转图片</system:String>
+    <system:String x:Key="tbAnalogToReal">模拟量转工程量</system:String>
     <system:String x:Key="asciiTitle">ASCII码表</system:String>
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>

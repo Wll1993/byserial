@@ -1,4 +1,5 @@
 ﻿using BYSerial.Base;
+using BYSerial.Models;
 using BYSerial.Util;
 using Microsoft.Win32;
 using System;
@@ -7,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace BYSerial.ViewModels
@@ -45,6 +47,8 @@ namespace BYSerial.ViewModels
             OnImgCovCommand.ExecuteAction= new Action<object>(OnImgCov);
             OnBase64CovCommand= new DelegateCommand();
             OnBase64CovCommand.ExecuteAction = new Action<object>(OnBase64Cov);
+            AnlogRealCalCmd=new DelegateCommand();
+            AnlogRealCalCmd.ExecuteAction= new Action<object>(AnlogRealCal);
         }
 
         #region command
@@ -358,6 +362,33 @@ namespace BYSerial.ViewModels
             }
         }
 
+
+        #endregion
+
+        #region AnalogReal
+
+        private AnalogReal _Analog=new AnalogReal();
+
+        public AnalogReal Analog
+        {
+            get { return _Analog; }
+            set { _Analog = value;
+                RaisePropertyChanged("Analog");
+            }
+        }
+        
+        public DelegateCommand AnlogRealCalCmd { get; }
+        private void AnlogRealCal(object para)
+        {
+            try
+            {
+                Analog.RealValue = (Analog.AnalogValue-Analog.AnalogMin)*(Analog.RealMax-Analog.RealMin)/(Analog.AnalogMax-Analog.AnalogMin) +Analog.RealMin;
+            }
+            catch 
+            {
+                MessageBox.Show("请检查输入数值是否有误，分母不可为零","错误提示");
+            }
+        }
 
         #endregion
     }

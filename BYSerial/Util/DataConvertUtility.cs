@@ -147,7 +147,7 @@ namespace BYSerial.Util
       /// <returns></returns>
       public static byte[] HexStringToByte(string strHex)
         {
-            strHex=strHex.Replace(" ", "").Replace(Environment.NewLine,"");  //去除多余空格
+            strHex=strHex.Replace(" ", "").Replace(Environment.NewLine,"");  //去除多余空格            
             int nLen = strHex.Length;
             nLen = nLen / 2;
             byte[] btArrayCmd = new byte[nLen];
