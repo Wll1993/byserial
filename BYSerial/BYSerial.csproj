@@ -72,7 +72,11 @@
     <Compile Include="Base\NotificationObject.cs" />
     <Compile Include="GlobalPara.cs" />
     <Compile Include="Models\AnalogReal.cs" />
+    <Compile Include="Models\AsyncClient.cs" />
     <Compile Include="Models\mycfg.cs" />
+    <Compile Include="Models\TCPPara.cs" />
+    <Compile Include="TCPHelper\ClientAsync.cs" />
+    <Compile Include="TCPHelper\ServerAsync.cs" />
     <Compile Include="Util\BitmapWPF.cs" />
     <Compile Include="Util\DataConvertUtility.cs" />
     <Compile Include="Util\JSONHelper.cs" />

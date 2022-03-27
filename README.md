@@ -21,12 +21,16 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 1.增加接收信息和发送信息颜色区分。  
 2.保存语言，字符颜色，Log记录路径到本地。  
 2022-03-25  
-1.工具箱计算后字符串添加复制到剪贴板功能
+1.工具箱计算后字符串添加复制到剪贴板功能  
 2.工具箱添加图片转Base64功能  
 ![](Img/ImgCov.png)  
 2022-03-26  
 1.增加模拟量转工程量计算  
 ![](Img/Analog.png)  
+2022-03-27  
+1.添加TCPClient/Server  
+![](Img/tcpclient.png)  
+![](Img/tcpserver.png)  
 
 界面
 ----

@@ -15,13 +15,16 @@ using System.Windows.Media;
 using BYSerial.Util;
 using BYSerial.Views;
 using System.Windows.Documents;
+using BYSerial.TCPHelper;
+using System.Net;
+using System.Net.Sockets;
 
 namespace BYSerial.ViewModels
 {
     public class MainWindowViewModel : NotificationObject
     {
         public SerialPort _serialPort;
-
+        
 
         public MainWindowViewModel()
         {
@@ -44,6 +47,7 @@ namespace BYSerial.ViewModels
                 ComPortState = "Not Detected SerialPort";
                 ComPortStateColor = GlobalPara.RedBrush;
             }
+           
             DataBitsIndex = 3;
             ReceivePara = GlobalPara.ReceivePara;
             SendPara = GlobalPara.SendPara;
@@ -169,6 +173,8 @@ namespace BYSerial.ViewModels
                     if (!IsStartCan) continue;
                     Thread.Sleep(500);
                     SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
+                    //添加TCP项
+                    SerialPortList.Add("TCP");
                 }
             }));
         }
@@ -221,24 +227,51 @@ namespace BYSerial.ViewModels
                         MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零","错误提示");
                         return;
                     }
+                    byte[] btSend = new byte[1];
                     if (SendPara.AutoCRC)
                     {
                         string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
-                        byte[] btSend = Util.DataConvertUtility.HexStringToByte(strcrc);
-                        _serialPort.Write(btSend, 0, btSend.Length);
-                        byteNum = btSend.Length;
+                        btSend = Util.DataConvertUtility.HexStringToByte(strcrc);
                     }
                     else
                     {
-                        byte[] btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
-                        _serialPort.Write(btSend, 0, btSend.Length);
-                        byteNum = btSend.Length;
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
                     }
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(btSend, 0, btSend.Length);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(btSend);
+                        }
+                        else if(TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex],btSend);
+                        }
+                    }
+                    byteNum = btSend.Length;
 
                 }
                 else if (SendPara.IsText)
                 {
-                    _serialPort.Write(txtsend);
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(txtsend);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(txtsend);
+                        }
+                        else if(TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend);
+                        }
+                    }
                     byteNum = Encoding.ASCII.GetBytes(txtsend).Length;
                 }
 
@@ -259,11 +292,7 @@ namespace BYSerial.ViewModels
                     {
                         txtsend =DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
                     }
-                    txtsend = "[SEND]" + txtsend;
-                    ////20220324切换为RichTextBox,此处暂丢弃
-                    // ReceiveTxt += txtsend;
-
-                    
+                    txtsend = "[SEND]" + txtsend;                   
                     App.Current.Dispatcher.BeginInvoke(new Action(() => {
                         Paragraph pg = new Paragraph();
                         pg.Margin = new Thickness(1);
@@ -370,26 +399,56 @@ namespace BYSerial.ViewModels
                 {
                     bdtr = true;
                 }
-                _serialPort = new SerialPort();
+                if(PortNameIndex==SerialPortList.Count-1)
+                {
+                    if(TcpPara.bIsTcpClient)
+                    {
+                        if((TcpPara.IP=="")||(TcpPara.Port==0))
+                        {
+                            MessageBox.Show("请填写正确的IP或Port", "错误提示");
+                            return;
+                        }
+                        _TcpClient = new ClientAsync();
+                        _TcpClient.Completed += _TcpClient_Completed;
+                        _TcpClient.Received += _TcpClient_Received;
+                        _TcpClient.ConnectAsync(TcpPara.IP, TcpPara.Port);
+                        
+                    }
+                    else if(TcpPara.bIsTcpServer)
+                    {
+                        if ((TcpPara.IP == "") || (TcpPara.Port == 0))
+                        {
+                            MessageBox.Show("请填写正确的IP或Port", "错误提示");
+                            return;
+                        }
+                        _TcpServer = new ServerAsync();
+                        _TcpServer.Completed += _TcpServer_Completed;
+                        _TcpServer.Received += _TcpServer_Received;
+                        _TcpServer.StartAsync(TcpPara.IP,TcpPara.Port);
+                        IsStartCan = false;
+                    }
+                }
+                else
+                {
+                    _serialPort = new SerialPort();
+                    _serialPort.PortName = SerialPortList[PortNameIndex];
+                    _serialPort.BaudRate = BaudRateList[BaudRateIndex];
+                    _serialPort.Parity = (Parity)this.Parity;
+                    _serialPort.DataBits = DataBitsList[DataBitsIndex];
+                    _serialPort.StopBits = (StopBits)this.StopBits;
+                    _serialPort.DtrEnable = bdtr;
+                    _serialPort.RtsEnable = brts;
+                    _serialPort.DataReceived += _serialPort_DataReceived;
+                    _serialPort.Open();
+                    ComPortState = SerialPortList[PortNameIndex] + " Opened";
 
-                _serialPort.PortName = SerialPortList[PortNameIndex];
-                _serialPort.BaudRate = BaudRateList[BaudRateIndex];
-                _serialPort.Parity = (Parity)this.Parity;
-                _serialPort.DataBits = DataBitsList[DataBitsIndex];
-                _serialPort.StopBits = (StopBits)this.StopBits;
-                _serialPort.DtrEnable = bdtr;
-                _serialPort.RtsEnable = brts;
-
-                _serialPort.DataReceived += _serialPort_DataReceived;
-                _serialPort.Open();
-
-                ComPortState = SerialPortList[PortNameIndex] + " Opened";
-                ComPortStateColor = GlobalPara.GreenBrush;
-                IsStartCan = false;
-                IsStopCan = true;
-                IsPauseCan = true;
-                SendCmdIsEnable = true;
-                PauseBtnBackColor = GlobalPara.TransparentBrush;
+                    ComPortStateColor = GlobalPara.GreenBrush;
+                    IsStartCan = false;
+                    IsStopCan = true;
+                    IsPauseCan = true;
+                    SendCmdIsEnable = true;
+                    PauseBtnBackColor = GlobalPara.TransparentBrush;
+                }
             }
             catch (Exception ex)
             {
@@ -398,6 +457,8 @@ namespace BYSerial.ViewModels
                 ComPortStateColor = GlobalPara.RedBrush;
             }
         }
+
+        
 
         public DelegateCommand OnHideLeftCommand { private set; get; }
         private void OnHideLeft(Object parameter)
@@ -472,12 +533,24 @@ namespace BYSerial.ViewModels
             IsStartCan = true;
             IsPauseCan = false;
             SendCmdIsEnable = false;
-            PauseBtnBackColor = GlobalPara.RedBrush;
-            if (_serialPort != null)
+            PauseBtnBackColor = GlobalPara.TransparentBrush;
+            if(IsSerialTest==Visibility.Visible)
             {
-                if (_serialPort.IsOpen) _serialPort.Close();
-                ComPortState = SerialPortList[PortNameIndex] + " Closed";
-                ComPortStateColor = new SolidColorBrush(Colors.Green);
+                if (_serialPort != null)
+                {
+                    if (_serialPort.IsOpen) _serialPort.Close();
+                    ComPortState = SerialPortList[PortNameIndex] + " Closed";
+                    ComPortStateColor = new SolidColorBrush(Colors.Green);
+                }
+            }
+            else if(TcpPara.bIsTcpClient)
+            {
+                _TcpClient.Close();
+            }
+            else if(TcpPara.bIsTcpServer)
+            {
+                _TcpServer.Close();
+                _TcpPara.TcpClients.Clear();
             }
         }
         public DelegateCommand OnClearCommand { get; }
@@ -746,7 +819,28 @@ namespace BYSerial.ViewModels
         #endregion
 
         #region 绑定属性
-
+        private Visibility _IsSerialTest = Visibility.Visible;
+        /// <summary>
+        /// 是否是串口测试
+        /// </summary>
+        public Visibility IsSerialTest
+        {
+            get { return _IsSerialTest; }
+            set
+            {
+                _IsSerialTest = value;
+                if (_IsSerialTest != Visibility.Visible)
+                {
+                    TcpPara.IsTcpTest=Visibility.Visible;
+                }
+                else
+                {
+                    TcpPara.IsTcpTest=Visibility.Collapsed;
+                }
+                RaisePropertyChanged("IsSerialTest");
+            }
+        }
+       
         private DisplayPara _DisplayPara;
         public DisplayPara DisplayPara
         {
@@ -920,7 +1014,7 @@ namespace BYSerial.ViewModels
                     Util.FileTool.SaveFailLog(ex.Message);
                     return false;
                 }
-                // ����ļ�����,���ļ���С�����趨���ļ���С�����ؽ����ĵ�
+                
                 if (fileInfo != null && fileInfo.Exists)
                 {
                     System.Diagnostics.FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(LogPara.FileName);
@@ -949,7 +1043,205 @@ namespace BYSerial.ViewModels
 
         #endregion
 
+        #region TCP 
+        private TCPPara _TcpPara = new TCPPara();
+        
+        public TCPPara TcpPara
+        {
+            get { return _TcpPara; }
+            set
+            {
+                _TcpPara = value;
+                RaisePropertyChanged("TcpPara");
+            }
+        }
+        #region TCP Client
+        private ClientAsync _TcpClient;
+        private void _TcpClient_Completed(System.Net.Sockets.TcpClient client, EnSocketAction arg2)
+        {
+            try
+            {
+                IPEndPoint iep = client.Client.RemoteEndPoint as IPEndPoint;
+                string key = string.Format("{0}:{1}", iep.Address.ToString(), iep.Port);
+                switch (arg2)
+                {
+                    case EnSocketAction.Connect:
+                        ComPortState = client.Client.RemoteEndPoint.ToString() + " Connected";
+                        ComPortStateColor = GlobalPara.GreenBrush;
+                        IsStartCan = false;
+                        IsStopCan = true;
+                        IsPauseCan = true;
+                        SendCmdIsEnable = true;
+                        PauseBtnBackColor = GlobalPara.TransparentBrush;
+                        break;
+                    case EnSocketAction.SendMsg:
+                        Console.WriteLine("{0}：向{1}发送了一条消息", DateTime.Now, key);
+                    
+                        break;
+                    case EnSocketAction.Close:
+                        Console.WriteLine("服务端连接关闭");
+                        ComPortState = client.Client.RemoteEndPoint.ToString() + " Closed";
+                        ComPortStateColor = GlobalPara.RedBrush;
+                        IsStartCan = true;
+                        IsStopCan = false;
+                        IsPauseCan = false;
+                        SendCmdIsEnable = false;
+                        PauseBtnBackColor = GlobalPara.TransparentBrush;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        private void _TcpClient_Received(TcpClient client, byte[] msg)
+        {
+            try
+            {
+                if (!_IsPauseCan) return;
+                Thread.Sleep(10);              
+                string receivestr = "";
+                if (ReceivePara.IsHex)
+                {
+                    receivestr = DataConvertUtility.BytesToHexStrWithSpace(msg);
+                }
+                else
+                {
+                    receivestr = Encoding.UTF8.GetString(msg);
+                }
 
+                if (ReceivePara.AutoFeed)
+                {
+                    receivestr += "\r\n";
+                }
+                if (ReceivePara.DisplayTime)
+                {
+                    receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
+                }
+                receivestr = "[REC]" + receivestr;                         
+                App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                    try
+                    {
+                        Paragraph pg = new Paragraph();
+                        pg.Margin = new Thickness(1);
+                        pg.Padding = new Thickness(0);
+                        pg.Inlines.Add(new Run(receivestr));
+                        if (DisplayPara.FormatDisColor)
+                        {
+                            pg.Foreground = DisplayPara.ReceiveColor;
+                        }
+                        _ReciveFlowDoc.Blocks.Add(pg);
+                    }
+                    catch
+                    {
+
+                        ComPortState = client.Client.RemoteEndPoint.ToString() + " Recive Error!";
+                        ComPortStateColor = GlobalPara.RedBrush;
+                        return;
+                    }
+                }));
+                _ReceivedBytesNum += msg.Length;
+                ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
+                if (LogPara.SaveLogMsg)
+                {
+                    SaveLogAsync(receivestr);
+                }
+            }
+            catch
+            {
+                ComPortState = client.Client.RemoteEndPoint.ToString() + " Recive Process Error!";
+                ComPortStateColor = GlobalPara.RedBrush;
+            }
+        }
+        #endregion
+
+        #region TCP Server
+        private ServerAsync _TcpServer;
+
+        private ObservableCollection<TcpClient> _TcpClientLst;
+        /// <summary>
+        /// TCP服务器接收到的客户端集合
+        /// </summary>
+        public ObservableCollection<TcpClient> TcpClientLst
+        {
+            get { return _TcpClientLst; }
+            set { _TcpClientLst = value;
+                RaisePropertyChanged("TcpClientLst");
+            }
+        }
+        /// <summary>
+        /// TCPServer 的客户端返回的信息
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="msg"></param>
+        private void _TcpServer_Received(TcpClient client, byte[] msg)
+        {
+            _TcpClient_Received(client, msg);
+        }
+
+        private void _TcpServer_Completed(TcpClient client, EnSocketAction arg2)
+        {
+            try
+            {
+                IPEndPoint iep = client.Client.RemoteEndPoint as IPEndPoint;
+                string key = string.Format("{0}:{1}", iep.Address.ToString(), iep.Port);
+                switch (arg2)
+                {
+                    case EnSocketAction.Connect:
+                        App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                            if (TcpPara.TcpClients.Contains(key))
+                            {
+                                TcpPara.TcpClients.Remove(key);
+                            }
+                            TcpPara.TcpClients.Add(key);
+                            ComPortState = key + " Connected";
+                            if (!IsStartCan)
+                            {
+                                ComPortStateColor = GlobalPara.GreenBrush;
+                                IsStartCan = false;
+                                IsStopCan = true;
+                                IsPauseCan = true;
+                                SendCmdIsEnable = true;
+                                PauseBtnBackColor = GlobalPara.TransparentBrush;
+                            }
+                        }));
+                        break;
+                    case EnSocketAction.SendMsg:
+                       // Console.WriteLine("{0}：向{1}发送了一条消息", DateTime.Now, key);
+
+                        break;
+                    case EnSocketAction.Close:
+                        App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                            if (TcpPara.TcpClients.Contains(key))
+                            {
+                                TcpPara.TcpClients.Remove(key);
+                                ComPortState = key + " Closed";
+                            }                        
+                            if (TcpPara.TcpClients.Count == 0)
+                            {
+                                ComPortState = "No Clients";
+                                ComPortStateColor = GlobalPara.RedBrush; 
+                                SendCmdIsEnable = false;
+                                PauseBtnBackColor = GlobalPara.TransparentBrush;
+                            }
+                            }));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #endregion
 
     }
 }

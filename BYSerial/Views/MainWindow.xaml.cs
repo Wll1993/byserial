@@ -21,6 +21,7 @@ namespace BYSerial.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _IsLoaded = false;
         private MainWindowViewModel viewModel;
         public MainWindow()
         {
@@ -37,6 +38,49 @@ namespace BYSerial.Views
         private void txtRich_TextChanged(object sender, TextChangedEventArgs e)
         {
             txtRich.ScrollToEnd();
+        }
+
+        private void devPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_IsLoaded) return;
+            if(devPort.SelectedIndex==(devPort.Items.Count-1))
+            {
+                viewModel.IsSerialTest = Visibility.Collapsed;                
+            }
+            else
+            {
+                viewModel.IsSerialTest = Visibility.Visible;
+            }
+        }
+
+        private void tcpMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_IsLoaded) return;
+            try
+            {
+                if (tcpMode.SelectedIndex == 0)
+                {
+                    viewModel.TcpPara.IsTcpClient = Visibility.Visible;
+                }
+                else
+                {
+                    viewModel.TcpPara.IsTcpClient = Visibility.Collapsed;
+                }
+                if (viewModel.IsStopCan)
+                {
+                    viewModel.OnStopCommand.ExecuteAction(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _IsLoaded=true;
         }
     }
 }
