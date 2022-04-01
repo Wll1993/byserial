@@ -31,12 +31,15 @@
                 <MenuItem 
                     Header="{DynamicResource menuAscii}" 
                     Name="AsciiCodeMenu" 
-                    Command="{Binding ShowAsciiCmd}"/>
-                <Separator/>
+                    Command="{Binding ShowAsciiCmd}"/>                
                 <MenuItem 
                     Header="{DynamicResource menuColors}" 
                     Name="ColorsMenu" 
                     Command="{Binding ShowColorsCmd}"/>
+                <Separator/>
+                <MenuItem 
+                    Header="{DynamicResource menuScreenColor}"                    
+                    Command="{Binding ShowScreenColorCmd}"/>
                 <Separator/>
                 <MenuItem 
                     Name="OptionsMenu" 

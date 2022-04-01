@@ -83,6 +83,8 @@ namespace BYSerial.ViewModels
             ShowAsciiCmd.ExecuteAction = new Action<object>(ShowAscii);
             ShowColorsCmd=new DelegateCommand();
             ShowColorsCmd.ExecuteAction= new Action<object>(ShowColors);
+            ShowScreenColorCmd=new DelegateCommand();
+            ShowScreenColorCmd.ExecuteAction=new Action<object>(ShowScreenColor);
             ShowOptionsCmd = new DelegateCommand();
             ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
             ShowAboutCmd = new DelegateCommand();
@@ -111,6 +113,13 @@ namespace BYSerial.ViewModels
             ColorsWindow window = new ColorsWindow();
             window.Show();
         }
+        public DelegateCommand ShowScreenColorCmd { get;private set; }
+        private void ShowScreenColor(object para)
+        {
+            ScreenColorPicker window=new ScreenColorPicker();
+            window.Show();
+        }
+
         public DelegateCommand ShowAsciiCmd { get; private set; }
         private void ShowAscii(object para)
         {

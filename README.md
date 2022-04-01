@@ -32,8 +32,10 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 ![](Img/tcpclient.png)  
 ![](Img/tcpserver.png)  
 2022-04-01  
-添加颜色对照表  
+1.添加颜色对照表  
+2.添加ColorPicker    
 ![](Img/brush.png)  
+![](Img/colorpicker.png)  
 
 界面
 ----

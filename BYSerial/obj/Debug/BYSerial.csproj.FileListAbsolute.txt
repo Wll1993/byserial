@@ -123,3 +123,5 @@ F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorPickerWin.g.cs
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorPickerWin.baml
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorsWindow.g.cs
 F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ColorsWindow.baml
+F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ScreenColorPicker.g.cs
+F:\Study\C#\BYSerial\byserial\BYSerial\obj\Debug\Views\ScreenColorPicker.baml

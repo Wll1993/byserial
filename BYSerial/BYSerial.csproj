@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,6 +75,7 @@
     <Compile Include="Models\AnalogReal.cs" />
     <Compile Include="Models\AsyncClient.cs" />
     <Compile Include="Models\mycfg.cs" />
+    <Compile Include="Models\PickScreenColor.cs" />
     <Compile Include="Models\TCPPara.cs" />
     <Compile Include="TCPHelper\ClientAsync.cs" />
     <Compile Include="TCPHelper\ServerAsync.cs" />
@@ -95,6 +97,9 @@
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScreenColorPicker.xaml.cs">
+      <DependentUpon>ScreenColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ToolBoxWindow.xaml.cs">
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OptionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScreenColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,6 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\gs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\straw.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
