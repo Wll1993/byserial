@@ -81,6 +81,8 @@ namespace BYSerial.ViewModels
             ShowToolBoxCmd.ExecuteAction = new Action<object>(ShowToolBox);
             ShowAsciiCmd = new DelegateCommand();
             ShowAsciiCmd.ExecuteAction = new Action<object>(ShowAscii);
+            ShowColorsCmd=new DelegateCommand();
+            ShowColorsCmd.ExecuteAction= new Action<object>(ShowColors);
             ShowOptionsCmd = new DelegateCommand();
             ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
             ShowAboutCmd = new DelegateCommand();
@@ -100,6 +102,13 @@ namespace BYSerial.ViewModels
         private void ShowToolBox(object para)
         {
             ToolBoxWindow window = new ToolBoxWindow();
+            window.Show();
+        }
+
+        public DelegateCommand ShowColorsCmd { get; private set; }
+        private void ShowColors(object para)
+        {
+            ColorsWindow window = new ColorsWindow();
             window.Show();
         }
         public DelegateCommand ShowAsciiCmd { get; private set; }

@@ -89,6 +89,9 @@
     <Compile Include="Views\ColorPickerWin.xaml.cs">
       <DependentUpon>ColorPickerWin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ColorsWindow.xaml.cs">
+      <DependentUpon>ColorsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,10 @@
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ColorPickerWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ColorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

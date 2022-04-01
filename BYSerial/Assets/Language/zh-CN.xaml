@@ -4,6 +4,7 @@
     <system:String x:Key="menuTool">工具</system:String>
     <system:String x:Key="menuToolBox">工具箱</system:String>
     <system:String x:Key="menuAscii">Ascii码</system:String>
+    <system:String x:Key="menuColors">颜色对照表</system:String>
     <system:String x:Key="menuOptions">选项</system:String>
     <system:String x:Key="menuHelp">帮助</system:String>
     <system:String x:Key="menuDoc">帮助文档</system:String>

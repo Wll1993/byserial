@@ -37,6 +37,7 @@
 				HorizontalContentAlignment="Center"
 				HorizontalAlignment="Stretch" Margin="5" Name="btnOK"
                 Style="{StaticResource ButtonPrimary}"
+                Click="btnOK_Click"
                 />
     </Grid>
 </Window>

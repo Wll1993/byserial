@@ -34,6 +34,11 @@
                     Command="{Binding ShowAsciiCmd}"/>
                 <Separator/>
                 <MenuItem 
+                    Header="{DynamicResource menuColors}" 
+                    Name="ColorsMenu" 
+                    Command="{Binding ShowColorsCmd}"/>
+                <Separator/>
+                <MenuItem 
                     Name="OptionsMenu" 
                     Header="{DynamicResource menuOptions}" 
                     Command="{Binding ShowOptionsCmd}"

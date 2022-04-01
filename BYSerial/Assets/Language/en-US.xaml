@@ -4,6 +4,7 @@
     <system:String x:Key="menuTool">_Tool</system:String>
     <system:String x:Key="menuToolBox">Tool_Box</system:String>
     <system:String x:Key="menuAscii">Ascii_Code</system:String>
+    <system:String x:Key="menuColors">ColorsList</system:String>
     <system:String x:Key="menuOptions">_Options</system:String>
     <system:String x:Key="menuHelp">_Help</system:String>
     <system:String x:Key="menuDoc">_Document</system:String>
