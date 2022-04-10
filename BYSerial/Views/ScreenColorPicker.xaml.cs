@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BYSerial.Models;
+using System.Windows.Forms;
 
 namespace BYSerial.Views
 {
@@ -22,136 +23,7 @@ namespace BYSerial.Views
     /// </summary>
     public partial class ScreenColorPicker : Window
     {
-        public enum WindowsMessages
-        {
-            WM_LBUTTONDOWN=0x0201,
-            WM_LBUTTONUP=0x0202,
-            WM_MOUSEMOVE=0x0200,
-            WM_MOUSEWHEEL=0x020A,
-            WM_RBUTTONDOWN=0x0204,
-            WM_RBUTTONUP=0x0205
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct POINT { public int x, y; };
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct LowLevelMouseHookStruct
-        {
-            public POINT pt;
-            public int mouseData;
-            public int flags;
-            public int time;
-            public IntPtr dwExtraInfo;
-        }
-       
-        public struct MSLLHOOKSTRUCT
-        {
-            public POINT pt;
-            public uint mouseData;
-            public uint flags;            
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-        public enum HookType : int
-        {
-            /// <summary>
-            /// Installs a hook procedure that records input messages posted to the system message queue.
-            /// This hook is useful for recording macros.
-            /// For more information, see the JournalRecordProc hook procedure.
-            /// </summary>
-            WH_JOURNALRECORD = 0,
-            /// <summary>
-            /// Installs a hook procedure that posts messages previously recorded by a WH_JOURNALRECORD hook procedure.
-            /// For more information, see the JournalPlaybackProc hook procedure.
-            /// </summary>
-            WH_JOURNALPLAYBACK = 1,
-            /// <summary>
-            /// Installs a hook procedure that monitors keystroke messages.
-            /// For more information, see the KeyboardProc hook procedure.
-            /// </summary>
-            WH_KEYBOARD = 2,
-            /// <summary>
-            /// Installs a hook procedure that monitors messages posted to a message queue.
-            /// For more information, see the GetMsgProc hook procedure.
-            /// </summary>
-            WH_GETMESSAGE = 3,
-            /// <summary>
-            /// Installs a hook procedure that monitors messages
-            /// before the system sends them to the destination window procedure.
-            /// For more information, see the CallWndProc hook procedure.
-            /// </summary>
-            WH_CALLWNDPROC = 4,
-            /// <summary>
-            /// Installs a hook procedure that receives notifications useful to a computer-based training (CBT) application.
-            /// For more information, see the CBTProc hook procedure.
-            /// </summary>
-            WH_CBT = 5,
-            /// <summary>Installs a hook procedure that monitors messages generated
-            /// as a result of an input event in a dialog box, message box, menu, or scroll bar.
-            /// The hook procedure monitors these messages for all applications in the same desktop as the calling thread.
-            /// For more information, see the SysMsgProc hook procedure.
-            /// </summary>
-            WH_SYSMSGFILTER = 6,
-            /// <summary>
-            /// Installs a hook procedure that monitors mouse messages.
-            /// For more information, see the MouseProc hook procedure.
-            /// </summary>
-            WH_MOUSE = 7,
-            /// <summary>
-            ///
-            /// </summary>
-            WH_HARDWARE = 8,
-            /// <summary>
-            /// Installs a hook procedure useful for debugging other hook procedures.
-            /// For more information, see the DebugProc hook procedure.
-            /// </summary>
-            WH_DEBUG = 9,
-            /// <summary>
-            /// Installs a hook procedure that receives notifications useful to shell applications.
-            /// For more information, see the ShellProc hook procedure.
-            /// </summary>
-            WH_SHELL = 10,
-            /// <summary>
-            /// Installs a hook procedure that will be called when the application's foreground thread is about to become idle.
-            /// This hook is useful for performing low priority tasks during idle time.
-            /// For more information, see the ForegroundIdleProc hook
-            /// </summary>
-            WH_FOREGROUNDIDLE = 11,
-            /// <summary>
-            /// Installs a hook procedure that monitors messages
-            /// after they have been processed by the destination window procedure.
-            /// For more information, see the CallWndRetProc hook procedure.
-            /// </summary>
-            WH_CALLWNDPROCRET = 12,
-            /// <summary>
-            /// Windows NT/2000/XP:
-            /// Installs a hook procedure that monitors low-level keyboard input events.
-            /// For more information, see the LowLevelKeyboardProc hook
-            /// </summary>
-            WH_KEYBOARD_LL = 13,
-            /// <summary>
-            /// Windows NT/2000/XP:
-            /// Installs a hook procedure that monitors low-level mouse input events.
-            /// For more information, see the LowLevelMouseProc hook procedure.
-            /// </summary>
-            WH_MOUSE_LL = 14
-        }
-       
-        [DllImport("user32.dll")]
-        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-        // overload for use with LowLevelMouseProc
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(HookType code, LowLevelMouseProc func, IntPtr hInstance, int threadID);
-        
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [DllImport("user32.dll")]
-        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
-        public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
-        
-        public delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
+        private MouseHook _mouseHook;      
 
         #region 光标设置
         /// <summary>
@@ -177,11 +49,7 @@ namespace BYSerial.Views
         public const uint SPI_SETCURSORS = 87;
         public const uint SPIF_SENDWININICHANGE = 2;
         #endregion
-
-        private LowLevelMouseProc _proc;
-        private IntPtr _hookID=IntPtr.Zero;
-        private MSLLHOOKSTRUCT _hookStruct;
-        
+               
         public ScreenColorPicker()
         {
             InitializeComponent();
@@ -191,38 +59,27 @@ namespace BYSerial.Views
         {
             try
             {
-                _hookID= SetHook(_proc);
+                _mouseHook=new MouseHook();
+                _mouseHook.OnMouseActivity += _mouseHook_OnMouseActivity;
+                _mouseHook.Start();
                 SetCursor();
-                //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+
         
-        private IntPtr SetHook(LowLevelMouseProc proc)
-        {
-            using(Process curProcess=Process.GetCurrentProcess())
-            {
-                using (ProcessModule curModel =curProcess.MainModule)
-                {
-                    _proc = HookCallback;
-                    return SetWindowsHookEx(HookType.WH_MOUSE_LL, _proc, GetModuleHandle(curModel.ModuleName), 0);
-                }
-            }
-            
-        }
-        private IntPtr HookCallback(int nCode,IntPtr wParam,IntPtr lParam)
+
+        private void _mouseHook_OnMouseActivity(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try
             {
-                if (nCode >= 0 && WindowsMessages.WM_MOUSEMOVE == (WindowsMessages)wParam)
+                if(e.Button == MouseButtons.None)
                 {
-                    _hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-                    //释放
-                    //Marshal.FreeCoTaskMem(lParam);
-                    SolidColorBrush brush = PickScreenColor.GetPixelColor(_hookStruct.pt.x, _hookStruct.pt.y);
+                    SolidColorBrush brush = PickScreenColor.GetPixelColor(e.X, e.Y);
                     borderColor.Background = brush;
                     sbR.Value = brush.Color.R;
                     sbG.Value = brush.Color.G;
@@ -230,20 +87,20 @@ namespace BYSerial.Views
                     sbA.Value = brush.Color.A;
                     txtRGB.Text = $"{sbA.Value},{sbR.Value},{sbG.Value},{sbB.Value}";
                     txtHEX.Text = brush.ToString();
+                    
                 }
-                if (nCode >= 0 && WindowsMessages.WM_RBUTTONDOWN == (WindowsMessages)wParam)
+                else if(e.Button == MouseButtons.Right)
                 {
-                    UnhookWindowsHookEx(_hookID);
+                    _mouseHook.Stop();
                     ResetMyCursor();
-                    //System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                    
                 }
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
-            return CallNextHookEx(_hookID,nCode,wParam,lParam);
         }
 
         /// <summary>
@@ -305,7 +162,7 @@ namespace BYSerial.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UnhookWindowsHookEx(_hookID);
+            if(_mouseHook!=null) _mouseHook.Stop();
         }
     }
 }
