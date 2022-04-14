@@ -1,9 +1,7 @@
-
 *.cache
-
 *.pdb
+BYSerial/bin
+BYSerial/obj
+.vs
 
-obj/
 
-debug/
-*.pdb
