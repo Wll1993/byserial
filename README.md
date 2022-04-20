@@ -36,6 +36,10 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 2.添加ColorPicker    
 ![](Img/brush.png)  
 ![](Img/colorpicker.png)  
+2022-04-020  
+1.优化截图体验  
+  拾取颜色前先对屏幕截图  
+  左键单击停止hook  
 
 界面
 ----
