@@ -33,7 +33,7 @@
             <Button Name="btnPick" 
                 Width="64" Height="64"
                 Style="{StaticResource ButtonPrimary}"
-                ToolTip="拾取颜色,右键结束拾取"
+                ToolTip="拾取颜色,左键单击结束拾取"
                 Click="btnPick_Click"
                 Padding="0"
                 >

@@ -203,7 +203,8 @@ namespace BYSerial.Models
                 {
                     //return 1;
                 }
-                OnMouseActivity(this, e);               
+                OnMouseActivity(this, e);
+                if (wParam == WM_RBUTTONUP) return 1;
             }
 
             // 启动下一次钩子

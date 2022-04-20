@@ -54,7 +54,7 @@ namespace BYSerial.Views
         {
             InitializeComponent();
         }
-
+        ScreenShot _shot;
         private void btnPick_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -63,16 +63,112 @@ namespace BYSerial.Views
                 _mouseHook.OnMouseActivity += _mouseHook_OnMouseActivity;
                 _mouseHook.Start();
                 SetCursor();
-                
+
+                PrintScreen();
+                System.Drawing.Bitmap bitmap=GetScreenImage();
+                _shot = new ScreenShot();
+                Screen[] screen=Screen.AllScreens;
+                int width = 0;int height = 0;
+                for(int i = 0; i < screen.Length; i++)
+                {
+                    width+=screen[i].WorkingArea.Width;
+                    height+=screen[i].WorkingArea.Height;
+                }
+                _shot.Width = width;
+                _shot.Height = height;
+                _shot.Image.Source = BitmapToBitmapSource(bitmap);
+                _shot.Show();
+                this.Topmost = true;
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+        #region 截图
+        [DllImport("user32.dll")]
 
-        
+        static extern void keybd_event
 
+      (
+
+          byte bVk,// 虚拟键值  
+
+          byte bScan,// 硬件扫描码  
+
+          uint dwFlags,// 动作标识  
+
+          IntPtr dwExtraInfo// 与键盘动作关联的辅加信息  
+
+      );
+
+
+
+        /// <summary>
+        /// 模拟Print Screen键盘消息，截取全屏图片。
+        /// </summary>
+
+        public void PrintScreen()
+
+        {
+
+            keybd_event((byte)0x2c, 0, 0x0, IntPtr.Zero);//down
+
+            System.Windows.Forms.Application.DoEvents();
+
+            keybd_event((byte)0x2c, 0, 0x2, IntPtr.Zero);//up
+
+            System.Windows.Forms.Application.DoEvents();
+
+        }
+        private BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
+        {
+            BitmapSource bitmapSource;
+            try
+            {
+                if(bitmap == null) return null;
+                IntPtr ip = bitmap.GetHbitmap();//从GDI+ Bitmap创建GDI位图对象                
+                bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, System.Windows.Int32Rect.Empty,
+                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                return bitmapSource;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
+        }
+
+        /// <summary>
+        /// 从剪贴板获取图片
+        /// </summary>
+        /// <returns></returns>
+
+        private System.Drawing.Bitmap GetScreenImage()
+
+        {
+
+            //IDataObject newobject = null;
+
+            System.Drawing.Bitmap NewBitmap = null;
+            try
+
+            {
+                if (System.Windows.Forms.Clipboard.ContainsImage())
+                {
+                    NewBitmap = (System.Drawing.Bitmap)(System.Windows.Forms.Clipboard.GetImage().Clone());
+                }
+                return NewBitmap;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
+        }
+        #endregion
         private void _mouseHook_OnMouseActivity(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try
@@ -89,11 +185,16 @@ namespace BYSerial.Views
                     txtHEX.Text = brush.ToString();
                     
                 }
-                else if(e.Button == MouseButtons.Right)
+                else if(e.Button == MouseButtons.Left && e.Clicks==1)
                 {
                     _mouseHook.Stop();
                     ResetMyCursor();
-                    
+                    if(_shot!=null)
+                    {
+                        _shot.Close();
+                        _shot = null;
+                        GC.Collect();
+                    }
                 }
                 
             }

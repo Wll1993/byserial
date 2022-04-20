@@ -101,6 +101,9 @@
     <Compile Include="Views\ScreenColorPicker.xaml.cs">
       <DependentUpon>ScreenColorPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScreenShot.xaml.cs">
+      <DependentUpon>ScreenShot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ToolBoxWindow.xaml.cs">
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScreenColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScreenShot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
