@@ -32,6 +32,7 @@ namespace BYSerial.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            viewModel.SendPara.IsLoop=false;
             GlobalPara.SaveCurCfg();
         }
 
@@ -81,6 +82,12 @@ namespace BYSerial.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _IsLoaded=true;
+        }
+
+        private void CbbHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_IsLoaded) return;
+            viewModel. AddHisToSendText();
         }
     }
 }

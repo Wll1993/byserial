@@ -57,7 +57,7 @@ namespace BYSerial.ViewModels
 
             #region 命令绑定
             OnSendCommand = new DelegateCommand();
-            OnSendCommand.ExecuteAction = new Action<object>(SendCommand);
+            OnSendCommand.ExecuteAction = new Action<object>(OnSend);
             OnLogCommand = new DelegateCommand();
             OnLogCommand.ExecuteAction = new Action<object>(OnLogClick);
             OnStartCommand = new DelegateCommand();
@@ -199,23 +199,44 @@ namespace BYSerial.ViewModels
 
         public async Task SendCmdLoop()
         {
-            while (SendPara.IsLoop)
-            {
-                SendCommand(null);
-                Thread.Sleep(SendPara.LoopInterval);
-            }
+            await Task.Run(() => {
+                while (SendPara.IsLoop)
+                {
+                    Thread.Sleep(SendPara.LoopInterval);
+                    if (!SendCommand(null))
+                    {
+                        SendPara.IsLoop = false;                        
+                    }
+                }
+                SendCmdIsEnable = true;
+            });
         }
 
         private FlowDocument _ReciveFlowDoc=null;
 
         public DelegateCommand OnSendCommand { get; private set; }
-
-        private void SendCommand(object para)
+        private void OnSend(object para)
+        {
+            if(SendPara.IsLoop)
+            {
+                SendCmdIsEnable = false;
+                SendCmdLoop();               
+            }
+            else
+            {
+                SendCommand(para);
+            }
+        }
+        private bool SendCommand(object para)
         {
             try
             {
                 // string cmd = SendTxt.Replace("", " ");
-                if (SendTxt.Trim() == "") return;
+                if (SendTxt.Trim() == "")
+                {
+                    MessageBox.Show("发送区不可为空字符", "提示");
+                    return false;
+                }
                 string txtsend = SendTxt.Trim().Replace(" ", "").ToUpper();
                 if (SendPara.FormatSend)
                 {
@@ -243,7 +264,7 @@ namespace BYSerial.ViewModels
                     if(txtsend.Length%2!=0)
                     {
                         MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零","错误提示");
-                        return;
+                        return false;
                     }
                     byte[] btSend = new byte[1];
                     if (SendPara.AutoCRC)
@@ -329,14 +350,15 @@ namespace BYSerial.ViewModels
                     }
                 }
                 _SendedBytesNum += byteNum;
-                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
+                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";                
                 AddSendHistory(SendTxt);
+                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
+            return false;
         }
 
 
@@ -547,6 +569,7 @@ namespace BYSerial.ViewModels
 
         private void OnStopClick(object parameter)
         {
+            SendPara.IsLoop = false;
             IsStopCan = false;
             IsStartCan = true;
             IsPauseCan = false;
@@ -937,7 +960,9 @@ namespace BYSerial.ViewModels
                 SendTxtHistory.RemoveAt(0);
             }
             if (SendTxtHistory.Contains(str)) return;
-            SendTxtHistory.Add(str);
+            App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                SendTxtHistory.Add(str);
+            }));            
             GlobalPara.HisCfg.his.Add(str);
         }
 
@@ -950,6 +975,11 @@ namespace BYSerial.ViewModels
                 _SendTxtHisSelIndex = value;
                 this.RaisePropertyChanged("SendTxtHisSelIndex");
             }
+        }
+
+        public void AddHisToSendText()
+        {
+            SendTxt = SendTxtHistory[SendTxtHisSelIndex];
         }
 
         private bool _SendCmdIsEnable = false;

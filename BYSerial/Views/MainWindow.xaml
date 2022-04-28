@@ -356,6 +356,8 @@
                     <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
 									Content="{DynamicResource mwLoop}" Margin="10,0,0,10"
 									VerticalAlignment="Stretch" 
+                              ToolTip="勾选后，单击【发送】开始发送，&#13;取消勾选后，停止发送"
+                              IsChecked="{Binding SendPara.IsLoop}"
 								Name="chbLoop"  >
 
                     </CheckBox>
@@ -396,9 +398,10 @@
 						 Text="{Binding SendTxt}"
 						 />
                 <ComboBox Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,5,5"
-						  SelectedIndex="{Binding SendTxtHisSelIndex}" ItemsSource="{Binding SendTxtHistory}"						 
-						  Name="CbbHistory"
-						  />
+						  SelectedIndex="{Binding SendTxtHisSelIndex}" ItemsSource="{Binding SendTxtHistory}"
+                          Name="CbbHistory" SelectionChanged="CbbHistory_SelectionChanged">
+                    
+                </ComboBox>
                 <Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch"
 						HorizontalAlignment="Stretch" Margin="0,0,5,5"
 						Content="{DynamicResource mwSend}" FontSize="15" Padding="0" 

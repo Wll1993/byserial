@@ -77,7 +77,8 @@
     <system:String x:Key="tbwDecimal">小数</system:String>
     <system:String x:Key="tbwSingleHex">单精度Hex</system:String>
     <system:String x:Key="tbwDoubleHex">双精度Hex</system:String>
-    <system:String x:Key="tbwInteger">整数</system:String>
+    <system:String x:Key="tbwInteger">有符号整数</system:String>
+    <system:String x:Key="tbwUInteger">无符号整数</system:String>
     <system:String x:Key="tbw16Hex">16位Hex</system:String>
     <system:String x:Key="tbw32Hex">32位Hex</system:String>
     <system:String x:Key="tbwToHex">转换成Hex</system:String>

@@ -39,6 +39,14 @@ namespace BYSerial.ViewModels
             On16BitHexToIntegerCommand.ExecuteAction = new Action<object>(On16BitHexToInteger);
             On32BitHexToIntegerCommand = new DelegateCommand();
             On32BitHexToIntegerCommand.ExecuteAction = new Action<object>(On32BitHexToInteger);
+
+            OnUIntegerTo16HexCommand = new DelegateCommand();
+            OnUIntegerTo16HexCommand.ExecuteAction = new Action<object>(OnUIntegerTo16Hex);
+            OnU16BitHexToIntegerCommand = new DelegateCommand();
+            OnU16BitHexToIntegerCommand.ExecuteAction = new Action<object>(OnU16BitHexToInteger);
+            OnU32BitHexToIntegerCommand = new DelegateCommand();
+            OnU32BitHexToIntegerCommand.ExecuteAction = new Action<object>(OnU32BitHexToInteger);
+
             OnCopyCommand = new DelegateCommand();
             OnCopyCommand.ExecuteAction= new Action<object>(OnCopy);
             OnSelImgCommand= new DelegateCommand();
@@ -104,13 +112,41 @@ namespace BYSerial.ViewModels
             byte[] data = DataConvertUtility.HexStringToByte(StrDoubleHex).Reverse().ToArray();
             StrDecimal = BitConverter.ToDouble(data, 0).ToString();
         }
+        #region 有符号整数转换
         public DelegateCommand OnIntegerTo16HexCommand { get; }
         private void OnIntegerTo16Hex(object para)
         {
-            Int16 datashor = Convert.ToInt16(StrInteger);
-            Str16BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(datashor).Reverse().ToArray());
-            Int32 dataint = Convert.ToInt32(StrInteger);
-            Str32BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(dataint).Reverse().ToArray());
+            try
+            {
+                
+                Int16 datashor = 0;
+                bool bret= Int16.TryParse(StrInteger, out datashor);
+                if(bret)
+                {
+                    Str16BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(datashor).Reverse().ToArray());
+                }
+                else
+                {
+                    Str16BitHex = "非16位整数";
+                }
+                
+                Int32 dataint =0;
+                bret= Int32.TryParse(StrInteger, out dataint);
+                if (bret)
+                {
+                    Str32BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(dataint).Reverse().ToArray());
+                }
+                else
+                {
+                    Str32BitHex = "非32位整数";
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
         public DelegateCommand On16BitHexToIntegerCommand { get; }
         private void On16BitHexToInteger(object para)
@@ -124,6 +160,58 @@ namespace BYSerial.ViewModels
             byte[] bt = DataConvertUtility.HexStringToByte(Str32BitHex).Reverse().ToArray();
             StrInteger = BitConverter.ToInt32(bt,0).ToString();
         }
+        #endregion 
+
+        #region 无符号整数转换
+        public DelegateCommand OnUIntegerTo16HexCommand { get; }
+        private void OnUIntegerTo16Hex(object para)
+        {
+            try
+            {
+
+                UInt16 datashor = 0;
+                bool bret = UInt16.TryParse(StrUInteger, out datashor);
+                if (bret)
+                {
+                    StrU16BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(datashor).Reverse().ToArray());
+                }
+                else
+                {
+                    StrU16BitHex = "非16位整数";
+                }
+
+                UInt32 dataint = 0;
+                bret = UInt32.TryParse(StrUInteger, out dataint);
+                if (bret)
+                {
+                    StrU32BitHex = DataConvertUtility.ByteArrayToHexString(BitConverter.GetBytes(dataint).Reverse().ToArray());
+                }
+                else
+                {
+                    StrU32BitHex = "非32位整数";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+        public DelegateCommand OnU16BitHexToIntegerCommand { get; }
+        private void OnU16BitHexToInteger(object para)
+        {
+            byte[] bt = DataConvertUtility.HexStringToByte(StrU16BitHex).Reverse().ToArray();
+            StrUInteger = BitConverter.ToUInt16(bt, 0).ToString();
+        }
+        public DelegateCommand OnU32BitHexToIntegerCommand { get; }
+        private void OnU32BitHexToInteger(object para)
+        {
+            byte[] bt = DataConvertUtility.HexStringToByte(StrU32BitHex).Reverse().ToArray();
+            StrUInteger = BitConverter.ToUInt32(bt, 0).ToString();
+        }
+
+        #endregion
 
         public DelegateCommand OnCopyCommand { get; }
         private void OnCopy(object para)
@@ -323,6 +411,41 @@ namespace BYSerial.ViewModels
             {
                 _Str32BitHex = value;
                 this.RaisePropertyChanged("Str32BitHex");
+            }
+        }
+
+        private string _StrUInteger = "";
+
+        public string StrUInteger
+        {
+            get => _StrUInteger;
+            set
+            {
+                _StrUInteger = value;
+                this.RaisePropertyChanged("StrUInteger");
+            }
+        }
+
+        private string _StrU16BitHex = "";
+
+        public string StrU16BitHex
+        {
+            get => _StrU16BitHex;
+            set
+            {
+                _StrU16BitHex = value;
+                this.RaisePropertyChanged("StrU16BitHex");
+            }
+        }
+        private string _StrU32BitHex = "";
+
+        public string StrU32BitHex
+        {
+            get => _StrU32BitHex;
+            set
+            {
+                _StrU32BitHex = value;
+                this.RaisePropertyChanged("StrU32BitHex");
             }
         }
         #endregion

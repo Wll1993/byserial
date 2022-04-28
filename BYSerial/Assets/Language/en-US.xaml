@@ -77,6 +77,7 @@
     <system:String x:Key="tbwSingleHex">SingleHex</system:String>
     <system:String x:Key="tbwDoubleHex">DoubleHex</system:String>
     <system:String x:Key="tbwInteger">Integer</system:String>
+    <system:String x:Key="tbwUInteger">UInt</system:String>
     <system:String x:Key="tbw16Hex">16BitHex</system:String>
     <system:String x:Key="tbw32Hex">32BitHex</system:String>
     <system:String x:Key="tbwToHex">ToHex</system:String>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BYSerial.Views"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
-        Width="600" Height="400"
+        Width="600" Height="500"
         WindowStartupLocation="CenterScreen"
 		Icon="/Assets/yinyang_64.png"
         Title="{StaticResource tbTitle}"
@@ -107,6 +107,9 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -164,6 +167,32 @@
                              Style="{StaticResource ButtonPrimary}"
                             HorizontalAlignment="Stretch" Margin="2"
 							Command="{Binding On32BitHexToIntegerCommand}"
+							/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="{StaticResource tbwUInteger}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" VerticalAlignment="Stretch"
+							 Text="{Binding StrUInteger}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <Button Grid.Row="7" Grid.Column="2" VerticalAlignment="Stretch"
+							Content="{StaticResource tbwToHex}" 
+                             Style="{StaticResource ButtonPrimary}"
+                            HorizontalAlignment="Stretch" Margin="2"
+							Command="{Binding OnUIntegerTo16HexCommand}"/>
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="{StaticResource tbw16Hex}"/>
+                    <TextBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Stretch"
+							 Text="{Binding StrU16BitHex}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <Button Grid.Row="8" Grid.Column="2" VerticalAlignment="Stretch"
+							Content="{StaticResource tbwToInteger}" 
+                             Style="{StaticResource ButtonPrimary}"
+                            HorizontalAlignment="Stretch" Margin="2"
+							Command="{Binding OnU16BitHexToIntegerCommand}"/>
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="{StaticResource tbw32Hex}"/>
+                    <TextBox Grid.Row="9" Grid.Column="1" VerticalAlignment="Stretch"
+							 Text="{Binding StrU32BitHex}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <Button Grid.Row="9" Grid.Column="2" VerticalAlignment="Stretch"
+							Content="{StaticResource tbwToInteger}"
+                             Style="{StaticResource ButtonPrimary}"
+                            HorizontalAlignment="Stretch" Margin="2"
+							Command="{Binding OnU32BitHexToIntegerCommand}"
 							/>
 
                 </Grid>
