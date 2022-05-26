@@ -1,6 +1,7 @@
 微软Windows下的GUI串口调试工具
 ====
-欢迎使用BYSerial，这是一个用于Microsoft Windows的GUI串口调试工具。  BYSerial有通用串口调试工具的一般功能。考虑支持TCP调试，还会增加一些工控调试常用小功能。  如果您有任何问题，请在Issues发布，我将在方便的时候处理。谢谢你的使用。
+欢迎使用BYSerial，这是一个用于Microsoft Windows的GUI串口调试工具。  BYSerial有通用串口调试工具的一般功能。考虑支持TCP调试，还会增加一些工控调试常用小功能。  如果您有任何问题，请在Issues发布，我将在方便的时候处理。谢谢你的使用。  
+如果感兴趣，欢迎Watch和Star。
   
 系统环境
 ----
