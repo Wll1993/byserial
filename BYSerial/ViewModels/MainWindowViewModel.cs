@@ -18,6 +18,7 @@ using System.Windows.Documents;
 using BYSerial.TCPHelper;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Controls;
 
 namespace BYSerial.ViewModels
 {
@@ -69,7 +70,7 @@ namespace BYSerial.ViewModels
             OnClearCommand = new DelegateCommand();
             OnClearCommand.ExecuteAction = new Action<object>(OnClearClick);
             OnHideLeftCommand = new DelegateCommand();
-            OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft);
+            OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft);            
             #endregion
 
             #region 菜单命令
@@ -472,7 +473,7 @@ namespace BYSerial.ViewModels
                 {
                     _serialPort = new SerialPort();
                     _serialPort.PortName = SerialPortList[PortNameIndex];
-                    _serialPort.BaudRate = BaudRateList[BaudRateIndex];
+                    _serialPort.BaudRate = int.Parse( BaudRateValue); // [BaudRateIndex];
                     _serialPort.Parity = (Parity)this.Parity;
                     _serialPort.DataBits = DataBitsList[DataBitsIndex];
                     _serialPort.StopBits = (StopBits)this.StopBits;
@@ -702,11 +703,23 @@ namespace BYSerial.ViewModels
             }
         }
 
+        private string _BaudRateValue;
+        /// <summary>
+        /// 串口通讯速率
+        /// </summary>
+        public string BaudRateValue
+        {
+            get { return _BaudRateValue; }
+            set {
+                _BaudRateValue = value;
+                RaisePropertyChanged("BaudRateValue");
+            }
+        }
 
 
-        private ObservableCollection<int> _BaudRateList = new ObservableCollection<int>() { 9600, 19200, 38400, 57600, 115200, 1200, 2400, 4800 };
+        private ObservableCollection<string> _BaudRateList = new ObservableCollection<string>() { "9600", "19200", "38400", "57600", "115200", "1200", "2400", "4800" };
 
-        public ObservableCollection<int> BaudRateList
+        public ObservableCollection<string> BaudRateList
         {
             get => _BaudRateList;
             set

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BYSerial"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Icon="/Assets/yinyang_32.png"
         Title="BYSerial" MinHeight="750" MinWidth="800"
@@ -188,9 +189,15 @@
                                 <TextBlock Grid.Row="0" Text="{DynamicResource mwBaudRate}" 
                                    TextAlignment="Right"
 								    VerticalAlignment="Center" Margin="5,0,0,0"/>
-                                <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                                <ComboBox Grid.Row="0" Grid.Column="1" 
+                                          Name="cmbBaud" IsEditable="True"
+                                          HorizontalAlignment="Stretch"
 								    VerticalAlignment="Center" Margin="2"
-								    ItemsSource="{Binding BaudRateList}" SelectedIndex="{Binding BaudRateIndex}"/>
+                                          Text="{Binding BaudRateValue}"
+								    ItemsSource="{Binding BaudRateList}" 
+                                          SelectedIndex="{Binding BaudRateIndex}"                                          
+                                          >
+                                </ComboBox>
                                 <TextBlock Grid.Row="1" Text="{DynamicResource mwDataBits}" TextAlignment="Right"
 								    VerticalAlignment="Center" Margin="5,0,0,0"/>
                                 <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"

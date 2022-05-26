@@ -46,6 +46,8 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 2022-04-28  
 1.修复数据转换时整数范围过大时程序闪退问题。  
 2.数据转换时的整数区分位有符号和无符号方式。  
+2022-05-26  
+1.串口通讯速率改为可编辑
   
 界面
 ----
