@@ -238,7 +238,7 @@ namespace BYSerial.ViewModels
                     MessageBox.Show("发送区不可为空字符", "提示");
                     return false;
                 }
-                string txtsend = SendTxt.Trim().Replace(" ", "").ToUpper();
+                string txtsend = SendTxt.Trim().Replace(" ", "");
                 if (SendPara.FormatSend)
                 {
                     if (SendPara.FormatCRNL)
@@ -262,7 +262,8 @@ namespace BYSerial.ViewModels
 
                 if (SendPara.IsHex)
                 {
-                    if(txtsend.Length%2!=0)
+                    txtsend = txtsend.ToUpper();
+                    if (txtsend.Length%2!=0)
                     {
                         MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零","错误提示");
                         return false;
