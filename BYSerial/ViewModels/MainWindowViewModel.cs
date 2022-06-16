@@ -262,7 +262,7 @@ namespace BYSerial.ViewModels
 
                 if (SendPara.IsHex)
                 {
-                    txtsend = txtsend.ToUpper();
+                    txtsend = txtsend.Replace(" ", "").ToUpper(); //20220616格式化字符串
                     if (txtsend.Length%2!=0)
                     {
                         MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零","错误提示");
@@ -271,8 +271,9 @@ namespace BYSerial.ViewModels
                     byte[] btSend = new byte[1];
                     if (SendPara.AutoCRC)
                     {
-                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
-                        btSend = Util.DataConvertUtility.HexStringToByte(strcrc);
+                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);  
+                        txtsend += strcrc; //20220616增加修复 自动计算CRC错误，并且不显示完整的命令字符串
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
                     }
                     else
                     {
@@ -322,6 +323,7 @@ namespace BYSerial.ViewModels
                     {
                         if (SendPara.IsHex)
                         {
+                            txtsend = txtsend.Replace(" ", "");
                             txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
                         }
                         else
