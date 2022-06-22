@@ -92,6 +92,8 @@ namespace BYSerial.ViewModels
             ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
             ShowDonateCmd = new DelegateCommand();
             ShowDonateCmd.ExecuteAction = new Action<object>(ShowDonate);
+            CheckUpdateCmd = new DelegateCommand();
+            CheckUpdateCmd.ExecuteAction = new Action<object>(CheckUpdate);
             #endregion
             try
             {

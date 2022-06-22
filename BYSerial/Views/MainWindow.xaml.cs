@@ -82,6 +82,7 @@ namespace BYSerial.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _IsLoaded=true;
+            BYSerial.Util.Update.CheckUpdate();
         }
 
         private void CbbHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)

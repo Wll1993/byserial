@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,13 +53,17 @@ namespace BYSerial.Views
                     string filePath = System.IO.Path.Combine(folder,fileName);//完整路径 
                     downTip.Text = "下载中...";
                     //以字符流的形式下载文件
-                    FileStream fs = new FileStream(filePath, FileMode.Open);
-                    byte[] bytes = new byte[(int)fs.Length];
-                    fs.Read(bytes, 0, bytes.Length);
+                    WebClient wc = new WebClient();
+                    byte[] data = wc.DownloadData(url);
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    // byte[] bytes = new byte[(int)fs.Length];
+                    fs.Write(data, 0, data.Length);
+                    fs.Flush();
                     fs.Close();
                     downTip.Text = "下载完成";
                     e.Handled = true;
                 });
+                linklbl.Content = link;
             }
             catch (Exception ex)
             {

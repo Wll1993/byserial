@@ -16,8 +16,7 @@ namespace BYSerial
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-            BYSerial.Util.Update.CheckUpdate();
+            base.OnStartup(e);            
         }
     }
 }
