@@ -146,6 +146,24 @@ namespace BYSerial.ViewModels
             window.Show();
         }
 
+        public DelegateCommand CheckUpdateCmd { get; private set; }
+        public void CheckUpdate(object para)
+        {
+            try
+            {
+                bool check = BYSerial.Util.Update.CheckUpdate(); 
+                if(!check)
+                {
+                    MessageBox.Show("已经是最新版本，无需更新", "更新提示");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+
         public DelegateCommand ChangeToChCmd { get; private set; }
         private void ChangeToCh(object para)
         {

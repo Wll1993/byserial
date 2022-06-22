@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net;
+using System.Reflection;
+using BYSerial.Views;
+using System.Windows;
+
+namespace BYSerial.Util
+{
+    public class Update
+    {
+        public static bool CheckUpdate()
+        {
+            try
+            {
+                string version = Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","");               
+                int Ver=Convert.ToInt32(version);
+                WebClient wc = new WebClient();
+                string remoteVer = wc.DownloadString("https://gitee.com/LvYiWuHen/byserial/raw/master/Version.txt");
+                string[] vers = remoteVer.Split(',');
+                int reVer=Convert.ToInt32(vers[0]);
+                if(reVer > Ver)
+                {
+                    string tip = Encoding.UTF8.GetString(wc.DownloadData("https://gitee.com/LvYiWuHen/byserial/raw/master/UpdateTip.txt"));
+                    UpdateWindow uw=new UpdateWindow();
+                    uw.SetUpdateMsg(tip, vers[1]);
+                    uw.ShowDialog();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("检查更新出错","更新提示");
+            }
+            return false;
+        }
+    }
+}

@@ -87,6 +87,7 @@
     <Compile Include="Util\Localizer.cs" />
     <Compile Include="Util\StringCheck.cs" />
     <Compile Include="Util\Tool.cs" />
+    <Compile Include="Util\Update.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\ToolBoxViewModel.cs" />
     <Compile Include="Views\ColorPickerWin.xaml.cs">
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Views\ToolBoxWindow.xaml.cs">
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpdateWindow.xaml.cs">
+      <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ColorPickerWin.xaml">
       <SubType>Designer</SubType>
@@ -128,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToolBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

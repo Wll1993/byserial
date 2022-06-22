@@ -73,6 +73,11 @@
                       Command="{Binding ShowDonateCmd}"
                       >
             </MenuItem>
+            <MenuItem Header="{DynamicResource menuUpdate}" 
+                      Name="UpdateMenu"
+                      Command="{Binding CheckUpdateCmd}"
+                      >
+            </MenuItem>
 
         </Menu>
         <Grid Grid.Row="1">
