@@ -154,7 +154,7 @@ namespace BYSerial.ViewModels
             try
             {
                 int i = 0;
-                if (Util.Update.InternetGetConnectedState(out i, 0))
+                if (!Util.Update.InternetGetConnectedState(out i, 0))
                 {
                     MessageBox.Show("无网络，检查取消", "更新提示");
                     return;
