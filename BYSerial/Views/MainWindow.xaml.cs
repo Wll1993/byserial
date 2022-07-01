@@ -82,7 +82,21 @@ namespace BYSerial.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _IsLoaded=true;
-            BYSerial.Util.Update.CheckUpdate();
+            try
+            {
+                if(GlobalPara.IsCheckUpdate)
+                {
+                    int i = 0;
+                    if (Util.Update.InternetGetConnectedState(out i, 0))
+                    {
+                        BYSerial.Util.Update.CheckUpdate();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }            
         }
 
         private void CbbHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)

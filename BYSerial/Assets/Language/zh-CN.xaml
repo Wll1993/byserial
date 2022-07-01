@@ -70,6 +70,8 @@
     <system:String x:Key="optRecTextColor">接收文本颜色</system:String>
     <system:String x:Key="optSendTextColor">发送文本颜色</system:String>
     <system:String x:Key="optTip1">功能待实现</system:String>
+    <system:String x:Key="optUpdateCheck">更新检测</system:String>
+    <system:String x:Key="optAutoCheckUpdate">自动检测更新</system:String>    
     <system:String x:Key="tbwCCMethod">通用校验方法</system:String>
     <system:String x:Key="tbwString">字符串</system:String>
     <system:String x:Key="tbwCheckVal">校验值</system:String>

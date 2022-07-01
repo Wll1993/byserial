@@ -39,31 +39,35 @@ namespace BYSerial.Views
             try
             {
                 txtUpdate.Text = tip;
-                Run linkText = new Run(url);
-                Hyperlink link = new Hyperlink(linkText);
-                link.NavigateUri = new Uri(url);
-                link.RequestNavigate += new RequestNavigateEventHandler(delegate (object sender, RequestNavigateEventArgs e) {
-                    //Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-                    //https://gitee.com/LvYiWuHen/byserial/attach_files/1097700/download/BYSerial_V1.4.4.zip
-                    //https://gitee.com/LvYiWuHen/byserial/attach_files/1081068/download/BYSerial_V1.4.3.zip
-                    string folder = System.IO.Path.Combine(Environment.CurrentDirectory, "update");
-                    if(!Directory.Exists(folder)) Directory.CreateDirectory(folder);  
-                    string[] tmp=url.Split('/');
-                    string fileName = tmp[tmp.Length-1];//客户端保存的文件名
-                    string filePath = System.IO.Path.Combine(folder,fileName);//完整路径 
-                    downTip.Text = "下载中...";
-                    //以字符流的形式下载文件
-                    WebClient wc = new WebClient();
-                    byte[] data = wc.DownloadData(url);
-                    FileStream fs = new FileStream(filePath, FileMode.Create);
-                    // byte[] bytes = new byte[(int)fs.Length];
-                    fs.Write(data, 0, data.Length);
-                    fs.Flush();
-                    fs.Close();
-                    downTip.Text = "下载完成";
-                    e.Handled = true;
+                Run linkText = new Run(url);               
+                hlink0.Inlines.Clear();
+                hlink0.Inlines.Add(linkText);
+                hlink0.NavigateUri = new Uri(url);
+                hlink0.RequestNavigate += new RequestNavigateEventHandler(delegate (object sender, RequestNavigateEventArgs e) {
+                    
+                    {
+                        ////https://gitee.com/LvYiWuHen/byserial/attach_files/1097700/download/BYSerial_V1.4.4.zip
+                        ////https://gitee.com/LvYiWuHen/byserial/attach_files/1081068/download/BYSerial_V1.4.3.zip
+                        //string folder = System.IO.Path.Combine(Environment.CurrentDirectory, "update");
+                        //if(!Directory.Exists(folder)) Directory.CreateDirectory(folder);  
+                        //string[] tmp=url.Split('/');
+                        //string fileName = tmp[tmp.Length-1];//客户端保存的文件名
+                        //string filePath = System.IO.Path.Combine(folder,fileName);//完整路径 
+                        //downTip.Text = "下载中...";
+                        ////以字符流的形式下载文件
+                        //WebClient wc = new WebClient();
+                        //byte[] data = wc.DownloadData(url);
+                        //FileStream fs = new FileStream(filePath, FileMode.Create);
+                        //// byte[] bytes = new byte[(int)fs.Length];
+                        //fs.Write(data, 0, data.Length);
+                        //fs.Flush();
+                        //fs.Close();
+                        //downTip.Text = "下载完成";
+                        //e.Handled = true;
+                    }
+
+                    System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
                 });
-                linklbl.Content = link;
             }
             catch (Exception ex)
             {

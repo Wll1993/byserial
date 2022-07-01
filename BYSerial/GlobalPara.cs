@@ -18,6 +18,7 @@ namespace BYSerial
         public static SendPara SendPara = new SendPara();
         public static LogPara LogPara = new LogPara();
         public static DisplayPara DisplayPara = new DisplayPara();
+        public static bool IsCheckUpdate = true;
        
         public static readonly SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
         public static readonly SolidColorBrush GreenBrush = new SolidColorBrush(Colors.Green);
@@ -45,7 +46,8 @@ namespace BYSerial
                         DisplayPara.FormatDisColor=MyCfg.FormatDisColor;
                         DisplayPara.SendColor = (SolidColorBrush)converter.ConvertFromString(MyCfg.SendColor);
                         DisplayPara.ReceiveColor= (SolidColorBrush)converter.ConvertFromString(MyCfg.RecColor);
-                        Console.WriteLine(Brushes.Black.ToString());
+                        //Console.WriteLine(Brushes.Black.ToString());
+                        IsCheckUpdate = MyCfg.CheckUpdate;
                     }
                     
                 }
@@ -69,6 +71,7 @@ namespace BYSerial
                 MyCfg.FormatDisColor=DisplayPara.FormatDisColor;
                 MyCfg.SendColor=DisplayPara.SendColor.ToString();
                 MyCfg.RecColor=DisplayPara.ReceiveColor.ToString();
+                MyCfg.CheckUpdate = IsCheckUpdate;
                 string txt=JSONHelper.SerializeObject(MyCfg);
                 File.WriteAllText(_cfgfile, txt);
                 txt=JSONHelper.SerializeObject(HisCfg);

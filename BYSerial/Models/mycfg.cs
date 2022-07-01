@@ -14,6 +14,7 @@ namespace BYSerial.Models
         public string SendColor { get; set; }
         public string RecColor { get; set; }
         public string LogPath { get; set; }
+        public bool CheckUpdate { get; set; }
     }
     public class hiscfg
     {

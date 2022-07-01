@@ -20,7 +20,7 @@ namespace BYSerial.ViewModels
             _ReceivePara =GlobalPara.ReceivePara;
             _LogPara = GlobalPara.LogPara;
             _SendPara = GlobalPara.SendPara;
-
+            _IsCheckUpdate = GlobalPara.IsCheckUpdate;
 
             OnCancelCommand = new DelegateCommand();
             OnCancelCommand.ExecuteAction = new Action<object>(OnCancel);                
@@ -100,6 +100,17 @@ namespace BYSerial.ViewModels
             }
         }
 
+        private bool _IsCheckUpdate;
+
+        public bool IsCheckUpdate
+        {
+            get { return _IsCheckUpdate; }
+            set { _IsCheckUpdate = value;
+                this.RaisePropertyChanged("IsCheckUpdate");
+            }
+        }
+
+
         public DelegateCommand OnCancelCommand { get; }
         public DelegateCommand OnOKCommand { get; }
 
@@ -159,6 +170,8 @@ namespace BYSerial.ViewModels
             GlobalPara.DisplayPara.ReceiveColor = DisplayPara.ReceiveColor;
             GlobalPara.DisplayPara.SendColor = DisplayPara.SendColor;
 
+            GlobalPara.IsCheckUpdate=IsCheckUpdate;
+
             if (window != null)
             {
                 window.Close();
@@ -191,6 +204,9 @@ namespace BYSerial.ViewModels
                     GlobalPara.DisplayPara.FormatDisColor = DisplayPara.FormatDisColor;
                     GlobalPara.DisplayPara.ReceiveTxtColor = DisplayPara.ReceiveTxtColor;
                     GlobalPara.DisplayPara.SendTxtColor = DisplayPara.SendTxtColor;
+                    break;
+                case 4:
+                    GlobalPara.IsCheckUpdate = IsCheckUpdate;
                     break;
             }
         }

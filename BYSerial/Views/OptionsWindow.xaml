@@ -195,6 +195,17 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="{StaticResource optUpdateCheck}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Content="{StaticResource optAutoCheckUpdate}"
+                              IsChecked="{Binding IsCheckUpdate}"
+                              />
+                </Grid>
+            </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" 
 					Margin="0,5,5,0">

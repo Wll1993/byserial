@@ -8,10 +8,20 @@ using System.Reflection;
 using BYSerial.Views;
 using System.Windows;
 
+using System.Runtime.InteropServices;
+
 namespace BYSerial.Util
 {
     public class Update
     {
+        /// <summary>
+        /// 判断网络状况的方法，返回true为连接，false为未连接
+        /// </summary>
+        /// <param name="conState"></param>
+        /// <param name="reder"></param>
+        /// <returns></returns>
+        [DllImport("wininet.dll")]
+        public extern static bool InternetGetConnectedState(out int conState, int reder);
         public static bool CheckUpdate()
         {
             try

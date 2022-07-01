@@ -69,6 +69,8 @@
     <system:String x:Key="optRecTextColor">ReceiveTextColor</system:String>
     <system:String x:Key="optSendTextColor">SendTextColor</system:String>
     <system:String x:Key="optTip1">Toberealized</system:String>
+    <system:String x:Key="optUpdateCheck">Update Check</system:String>
+    <system:String x:Key="optAutoCheckUpdate">Auto Check Update</system:String>
     <system:String x:Key="tbwCCMethod">CommonCheckMethod</system:String>
     <system:String x:Key="tbwString">Strings</system:String>
     <system:String x:Key="tbwCheckVal">CheckValue</system:String>
