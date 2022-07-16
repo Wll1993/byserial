@@ -224,9 +224,9 @@ namespace BYSerial.ViewModels
             }));
         }
 
-        public async Task SendCmdLoop()
+        private void SendCmdLoop()
         {
-            await Task.Run(() => {
+           Task t= new Task(() => {
                 while (SendPara.IsLoop)
                 {
                     Thread.Sleep(SendPara.LoopInterval);
@@ -237,6 +237,11 @@ namespace BYSerial.ViewModels
                 }
                 SendCmdIsEnable = true;
             });
+            t.ContinueWith(t => 
+            { 
+                GC.Collect(); 
+            });  //解决线程占用
+            t.Start();
         }
 
         private FlowDocument _ReciveFlowDoc=null;
@@ -1184,7 +1189,8 @@ namespace BYSerial.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
+                Util.FileTool.SaveFailLog(ex.ToString());
             }
         }
         private void _TcpClient_Received(TcpClient client, byte[] msg)
@@ -1240,10 +1246,11 @@ namespace BYSerial.ViewModels
                     SaveLogAsync(receivestr);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 ComPortState = client.Client.RemoteEndPoint.ToString() + " Recive Process Error!";
                 ComPortStateColor = GlobalPara.RedBrush;
+                Util.FileTool.SaveFailLog(ex.ToString());
             }
         }
         #endregion
@@ -1325,7 +1332,8 @@ namespace BYSerial.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                // Console.WriteLine(ex.Message);
+                Util.FileTool.SaveFailLog(ex.ToString());
             }
         }
 
