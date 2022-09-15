@@ -14,6 +14,10 @@ Using
 HandyControl  https://gitee.com/handyorg/HandyControl  
 Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json  
 
+## 赞助者
+
+<a href="https://gitee.com/zhang-hai-long325520" target="_blank"><img style="border-radius:50%!important" width="64px" alt="bigorange1900" src="https://profile-avatar.csdnimg.cn/e63dc6b9c1c441fd99a8e3ffc2f27869_weixin_48645594.jpg"></a>  
+
 更新
 ----
 2022-03-22 V1.0  
@@ -61,3 +65,5 @@ Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json
 ![](Img/opt2.png)    
 ![](Img/opt3.png)    
 ![](Img/opt4.png)    
+
+
