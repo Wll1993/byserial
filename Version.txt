@@ -1,1 +1,1 @@
-1510,https://gitee.com/LvYiWuHen/byserial/attach_files/1114358/download/BYSerial_V1.5.1.zip
+1520,https://gitee.com/LvYiWuHen/byserial/releases/download/V1.5.2/BYSerial_V1.5.2.zip
