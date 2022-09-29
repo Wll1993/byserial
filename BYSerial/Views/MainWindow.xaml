@@ -49,7 +49,9 @@
                     />
             </MenuItem>
             <MenuItem Header="{DynamicResource menuHelp}">
-                <MenuItem Header="{DynamicResource menuDoc}" />
+                <MenuItem Header="{DynamicResource menuDoc}" 
+                          Command="{Binding ShowHelpCmd}"
+                          />
                 <Separator/>
                 <MenuItem 
                     Name="AboutMenu" 
@@ -385,7 +387,7 @@
             <Grid DockPanel.Dock="Right" Margin="5,2,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>                    
-                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="100"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -406,9 +408,10 @@
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
 						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"
 						 ScrollViewer.VerticalScrollBarVisibility="Auto"
-						 TextWrapping="Wrap" 
-						 Text="{Binding SendTxt}"
-						 />
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Text="{Binding SendTxt}"
+						>                  
+                </TextBox>
                 <ComboBox Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,5,5"
 						  SelectedIndex="{Binding SendTxtHisSelIndex}" ItemsSource="{Binding SendTxtHistory}"
                           Name="CbbHistory" SelectionChanged="CbbHistory_SelectionChanged">

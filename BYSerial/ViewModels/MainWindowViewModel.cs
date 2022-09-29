@@ -88,6 +88,8 @@ namespace BYSerial.ViewModels
             ShowScreenColorCmd.ExecuteAction=new Action<object>(ShowScreenColor);
             ShowOptionsCmd = new DelegateCommand();
             ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
+            ShowHelpCmd=new DelegateCommand();
+            ShowHelpCmd.ExecuteAction =new Action<object>(ShowHelp);
             ShowAboutCmd = new DelegateCommand();
             ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
             ShowDonateCmd = new DelegateCommand();
@@ -135,6 +137,21 @@ namespace BYSerial.ViewModels
             OptionsWindow window = new OptionsWindow();
             window.Show();
         }
+
+        public DelegateCommand ShowHelpCmd { get; private set; }
+        private void ShowHelp(object para)
+        {
+            try
+            {
+                string html = "https://blog.csdn.net/lvyiwuhen/article/details/124414792";
+                Util.FileTool.OpenWebWithUrl(html);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         public DelegateCommand ShowAboutCmd { get; private set; }
         private void ShowAbout(object para)
         {
@@ -269,7 +286,14 @@ namespace BYSerial.ViewModels
                     MessageBox.Show("发送区不可为空字符", "提示");
                     return false;
                 }
-                string txtsend = SendTxt.Trim().Replace(" ", "");
+                string[] txts = SendTxt.Split(' ');
+                string txtssend="";
+                for(int i = 0; i < txts.Length; i++)
+                {
+                    txtssend += txts[i];
+                }
+                string txtsend = txtssend; // SendTxt.Trim().Replace(" ", "");
+                
                 if (SendPara.FormatSend)
                 {
                     if (SendPara.FormatCRNL)
