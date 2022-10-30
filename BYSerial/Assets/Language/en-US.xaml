@@ -7,6 +7,9 @@
     <system:String x:Key="menuColors">ColorsList</system:String>
     <system:String x:Key="menuScreenColor">PickerScrenColor</system:String>
     <system:String x:Key="menuOptions">_Options</system:String>
+    <system:String x:Key="menuChart">Chart</system:String>
+    <system:String x:Key="menuChartShow">ChartShow</system:String>
+    <system:String x:Key="menuChartParaSet">ChartParasSet</system:String>
     <system:String x:Key="menuHelp">_Help</system:String>
     <system:String x:Key="menuDoc">_Document</system:String>
     <system:String x:Key="menuAbout">_About</system:String>

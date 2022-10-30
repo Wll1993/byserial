@@ -48,16 +48,22 @@
                     Command="{Binding ShowOptionsCmd}"
                     />
             </MenuItem>
-            <MenuItem Header="{DynamicResource menuHelp}">
-                <MenuItem Header="{DynamicResource menuDoc}" 
-                          Command="{Binding ShowHelpCmd}"
-                          />
-                <Separator/>
+            <MenuItem Header="{DynamicResource menuChart}">
+                <MenuItem Header="{DynamicResource menuChartParaSet}"
+                          Command="{Binding ShowChartParasCmd}"/>
+                <MenuItem Header="{DynamicResource menuChartShow}"
+                          Command="{Binding ShowChartShowCmd}"/>                
+            </MenuItem>
+            <MenuItem Header="{DynamicResource menuHelp}">                
                 <MenuItem 
                     Name="AboutMenu" 
                     Header="{DynamicResource menuAbout}" 
                     Command="{Binding ShowAboutCmd}"
                     />
+                <MenuItem Header="{DynamicResource menuDoc}" 
+                          Command="{Binding ShowHelpCmd}"
+                          />
+                <Separator/>
             </MenuItem>
             <MenuItem Header="{DynamicResource menuLanguage}" Name="LanguageMenu">
                 <MenuItem Name="ChineseMenu" 

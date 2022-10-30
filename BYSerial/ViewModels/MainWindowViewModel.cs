@@ -19,6 +19,7 @@ using BYSerial.TCPHelper;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Controls;
+using Newtonsoft.Json.Linq;
 
 namespace BYSerial.ViewModels
 {
@@ -32,7 +33,11 @@ namespace BYSerial.ViewModels
             GlobalPara.GetLocSet();
             if(GlobalPara.HisCfg.his!=null)
             {
-                SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
+                for(int i=0;i<GlobalPara.HisCfg.his.Count;i++)
+                {
+                    SendTxtHistory.Add(GlobalPara.HisCfg.his[i]);
+                }
+                //SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
             }
             else
             {
@@ -70,7 +75,8 @@ namespace BYSerial.ViewModels
             OnClearCommand = new DelegateCommand();
             OnClearCommand.ExecuteAction = new Action<object>(OnClearClick);
             OnHideLeftCommand = new DelegateCommand();
-            OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft);            
+            OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft); 
+            
             #endregion
 
             #region 菜单命令
@@ -88,7 +94,11 @@ namespace BYSerial.ViewModels
             ShowScreenColorCmd.ExecuteAction=new Action<object>(ShowScreenColor);
             ShowOptionsCmd = new DelegateCommand();
             ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
-            ShowHelpCmd=new DelegateCommand();
+            ShowChartShowCmd = new DelegateCommand();
+            ShowChartShowCmd.ExecuteAction = new Action<object>(ShowChartShow);
+            ShowChartParasCmd=new DelegateCommand();
+            ShowChartParasCmd.ExecuteAction = new Action<object>(ShowChartParas);
+            ShowHelpCmd =new DelegateCommand();
             ShowHelpCmd.ExecuteAction =new Action<object>(ShowHelp);
             ShowAboutCmd = new DelegateCommand();
             ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
@@ -687,7 +697,7 @@ namespace BYSerial.ViewModels
                 {
                     receivestr = Encoding.UTF8.GetString(bytes);
                 }
-
+                AddDataToChart(receivestr);
                 if (ReceivePara.AutoFeed)
                 {
                     receivestr += "\r\n";
@@ -695,7 +705,7 @@ namespace BYSerial.ViewModels
                 if (ReceivePara.DisplayTime)
                 {
                     receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
-                }
+                }                
                 receivestr = "[REC]" + receivestr;
                 ////20220324切换为RichTextBox,此处暂丢弃
                 // ReceiveTxt +=receivestr;                
@@ -721,6 +731,7 @@ namespace BYSerial.ViewModels
                 }));
                 _ReceivedBytesNum += bytes.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
+
                 if (LogPara.SaveLogMsg)
                 {
                     SaveLogAsync(receivestr);
@@ -1026,15 +1037,25 @@ namespace BYSerial.ViewModels
 
         private void AddSendHistory(string str)
         {
-            if (SendTxtHistory.Count > 20)
+            try
             {
-                SendTxtHistory.RemoveAt(0);
+                if (SendTxtHistory.Count > 20)
+                {                    
+                    App.Current.Dispatcher.Invoke(new Action(() => {
+                        SendTxtHistory.RemoveAt(0);
+                        SendTxtHistory.Add(str);
+                    }));
+                }
+                if (SendTxtHistory.Contains(str)) return;
+                App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                    SendTxtHistory.Add(str);
+                }));
+                GlobalPara.HisCfg.his.Add(str);
             }
-            if (SendTxtHistory.Contains(str)) return;
-            App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                SendTxtHistory.Add(str);
-            }));            
-            GlobalPara.HisCfg.his.Add(str);
+            catch(Exception ex)
+            {
+                //Util.FileTool.SaveFailLog(ex.Message);
+            }            
         }
 
         private int _SendTxtHisSelIndex = 0;
@@ -1194,8 +1215,7 @@ namespace BYSerial.ViewModels
                         PauseBtnBackColor = GlobalPara.TransparentBrush;
                         break;
                     case EnSocketAction.SendMsg:
-                        Console.WriteLine("{0}：向{1}发送了一条消息", DateTime.Now, key);
-                    
+                        Console.WriteLine("{0}：向{1}发送了一条消息", DateTime.Now, key);                    
                         break;
                     case EnSocketAction.Close:
                         Console.WriteLine("服务端连接关闭");
@@ -1232,7 +1252,7 @@ namespace BYSerial.ViewModels
                 {
                     receivestr = Encoding.UTF8.GetString(msg);
                 }
-
+                AddDataToChart(receivestr);
                 if (ReceivePara.AutoFeed)
                 {
                     receivestr += "\r\n";
@@ -1241,6 +1261,7 @@ namespace BYSerial.ViewModels
                 {
                     receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
                 }
+                
                 receivestr = "[REC]" + receivestr;                         
                 App.Current.Dispatcher.BeginInvoke(new Action(() => {
                     try
@@ -1265,6 +1286,7 @@ namespace BYSerial.ViewModels
                 }));
                 _ReceivedBytesNum += msg.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
+                
                 if (LogPara.SaveLogMsg)
                 {
                     SaveLogAsync(receivestr);
@@ -1365,5 +1387,186 @@ namespace BYSerial.ViewModels
 
         #endregion
 
+        #region 曲线显示
+        /// <summary>
+        /// 是否正在显示表格
+        /// </summary>
+        private bool IsShowChart { get; set; } = false;
+
+        ChartWindow _chartWindow = null;
+
+        public DelegateCommand ShowChartParasCmd { get; }
+        private void ShowChartParas(object para)
+        {
+            //if(!GlobalPara.IsShowChart)
+            //{
+                ChartSet cs = new ChartSet();
+                cs.ShowDialog();              
+            //}
+        }
+        public DelegateCommand ShowChartShowCmd { get; }
+        private void ShowChartShow(object para)
+        {
+            if (!GlobalPara.IsShowChart)
+            {
+                _chartWindow = new ChartWindow(GlobalPara.ChartParas);               
+                _chartWindow.Show();
+            }
+        }
+        /// <summary>
+        /// 添加数据到表格
+        /// </summary>
+        /// <param name="value"></param>
+        private void AddDataToChart(string retstr)
+        {
+            if(GlobalPara.IsShowChart)
+            {
+                double value = 0;
+                try
+                {
+                    if(ReceivePara.IsText)
+                    {
+                        string str = retstr.Substring(GlobalPara.ChartParas.AsciiStartIndex, GlobalPara.ChartParas.AsciiLen);
+                        value = double.Parse(str);
+                    }
+                    else if(ReceivePara.IsHex)
+                    {
+                        byte[] btret=DataConvertUtility.HexStringToByte(retstr);
+                        byte[] bval;
+                        switch(GlobalPara.ChartParas.HexDataType)
+                        {
+                            case ChartParas.DataType.UShort:
+                                bval = new byte[2];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B12:                                        
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex+1];                                        
+                                        break;
+                                    case ChartParas.ByteOrder.B21:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex+1];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value = BitConverter.ToUInt16(bval, 0);
+                                break;
+                            case ChartParas.DataType.UInt:
+                                bval = new byte[4];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B1234:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex+2];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        break;
+                                    case ChartParas.ByteOrder.B3412:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex+3];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        break;
+                                    case ChartParas.ByteOrder.B4321:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex+1];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value=BitConverter.ToUInt32(bval,0);
+                                break;
+                            case ChartParas.DataType.Short:
+                                bval = new byte[2];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B12:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        break;
+                                    case ChartParas.ByteOrder.B21:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value = BitConverter.ToInt16(bval, 0);
+                                break;
+                            case ChartParas.DataType.Int:
+                                bval = new byte[4];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B1234:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        break;
+                                    case ChartParas.ByteOrder.B3412:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        break;
+                                    case ChartParas.ByteOrder.B4321:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value = BitConverter.ToInt32(bval, 0);
+                                break;
+                            case ChartParas.DataType.Float:
+                                bval = new byte[4];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B1234:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        break;
+                                    case ChartParas.ByteOrder.B3412:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        break;
+                                    case ChartParas.ByteOrder.B4321:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 3];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 2];
+                                        bval[2] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[3] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value = BitConverter.ToSingle(bval, 0);
+                                break;
+                            default:
+                                bval = new byte[2];
+                                switch (GlobalPara.ChartParas.HexByteOrder)
+                                {
+                                    case ChartParas.ByteOrder.B12:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        break;
+                                    case ChartParas.ByteOrder.B21:
+                                        bval[0] = btret[GlobalPara.ChartParas.HexStartIndex + 1];
+                                        bval[1] = btret[GlobalPara.ChartParas.HexStartIndex];
+                                        break;
+                                }
+                                value = BitConverter.ToUInt16(bval, 0);
+                                break;
+                        }
+                    }
+                    _chartWindow.viewModel.AddData(value);
+                }
+                catch
+                {
+                    ComPortState = "添加数据到表格失败";
+                }
+            }
+        }
+
+
+        #endregion
     }
 }

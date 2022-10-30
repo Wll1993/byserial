@@ -29,8 +29,14 @@ namespace BYSerial
 
         private static string _cfgfile = "my.cfg";
         private static string _hisfile = "his.cfg";
-        
-
+        /// <summary>
+        /// 曲线显示参数
+        /// </summary>
+        public static ChartParas ChartParas = new ChartParas();
+        /// <summary>
+        /// 是否正在显示图表
+        /// </summary>
+        public static bool IsShowChart { get; set; } = false;
         public static void GetLocSet()
         {            
             try

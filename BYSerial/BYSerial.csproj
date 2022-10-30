@@ -43,6 +43,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dll\HandyControl.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
@@ -74,6 +80,8 @@
     <Compile Include="GlobalPara.cs" />
     <Compile Include="Models\AnalogReal.cs" />
     <Compile Include="Models\AsyncClient.cs" />
+    <Compile Include="Models\ChartParas.cs" />
+    <Compile Include="Models\MeasureData.cs" />
     <Compile Include="Models\MouseHook.cs" />
     <Compile Include="Models\mycfg.cs" />
     <Compile Include="Models\PickScreenColor.cs" />
@@ -88,8 +96,16 @@
     <Compile Include="Util\StringCheck.cs" />
     <Compile Include="Util\Tool.cs" />
     <Compile Include="Util\Update.cs" />
+    <Compile Include="ViewModels\ChartSetViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\ToolBoxViewModel.cs" />
+    <Compile Include="Views\ChartSet.xaml.cs">
+      <DependentUpon>ChartSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartWindow.xaml.cs">
+      <DependentUpon>ChartWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ColorPickerWin.xaml.cs">
       <DependentUpon>ColorPickerWin.xaml</DependentUpon>
     </Compile>
@@ -111,6 +127,14 @@
     <Compile Include="Views\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ChartSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ColorPickerWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -210,6 +234,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Assets\ascii.json" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

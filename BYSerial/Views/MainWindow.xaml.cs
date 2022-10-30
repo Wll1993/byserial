@@ -34,6 +34,7 @@ namespace BYSerial.Views
         {
             viewModel.SendPara.IsLoop=false;
             GlobalPara.SaveCurCfg();
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
 
         private void txtRich_TextChanged(object sender, TextChangedEventArgs e)
