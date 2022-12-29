@@ -372,14 +372,15 @@ namespace BYSerial.ViewModels
                     {
                         if (TcpPara.bIsTcpClient)
                         {
-                            _TcpClient.SendAsync(txtsend);
+                            byte[] bts=Encoding.UTF8.GetBytes(txtsend);
+                            _TcpClient.SendAsync(bts);
                         }
                         else if(TcpPara.bIsTcpServer)
                         {
                             _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend);
                         }
                     }
-                    byteNum = Encoding.ASCII.GetBytes(txtsend).Length;
+                    byteNum = Encoding.UTF8.GetBytes(txtsend).Length;
                 }
 
                 if (ReceivePara.DisplaySend)

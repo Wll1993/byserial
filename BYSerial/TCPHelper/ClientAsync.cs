@@ -91,7 +91,7 @@ namespace BYSerial.TCPHelper
         public void SendAsync(string msg)
         {
             if (msg == null) return;
-            byte[] listData = Encoding.ASCII.GetBytes(msg);
+            byte[] listData = Encoding.UTF8.GetBytes(msg);
             client.Client.BeginSend(listData, 0, listData.Length, SocketFlags.None, SendCallBack, client);
         }
         public void SendAsync(byte[] msg)
