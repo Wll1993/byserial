@@ -42,18 +42,18 @@ namespace BYSerial.Views
             txtRich.ScrollToEnd();
         }
 
-        private void devPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!_IsLoaded) return;
-            if(devPort.SelectedIndex==(devPort.Items.Count-1))
-            {
-                viewModel.IsSerialTest = Visibility.Collapsed;                
-            }
-            else
-            {
-                viewModel.IsSerialTest = Visibility.Visible;
-            }
-        }
+        //private void devPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (!_IsLoaded) return;
+        //    if(devPort.SelectedIndex==(devPort.Items.Count-1))
+        //    {
+        //        viewModel.IsSerialTest = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        viewModel.IsSerialTest = Visibility.Visible;
+        //    }
+        //}
 
         private void tcpMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

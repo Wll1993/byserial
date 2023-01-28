@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BYSerial.ViewModels
 {
@@ -175,10 +176,10 @@ namespace BYSerial.ViewModels
                 CurValue=value;
                 MeasureData data = new MeasureData() { DateTime = DateTime.Now, Value = value };
                 //AddNewData(data);
-                App.Current.Dispatcher.BeginInvoke(() =>
+                App.Current.Dispatcher.BeginInvoke(new MethodInvoker(() =>
                 {
                     AddNewData(data);
-                });
+                }));
             }
             catch
             {

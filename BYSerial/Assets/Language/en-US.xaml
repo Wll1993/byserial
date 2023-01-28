@@ -33,6 +33,7 @@
     <system:String x:Key="mwSendSet">SendSettings</system:String>
     <system:String x:Key="mwLoop">LoopSend</system:String>
     <system:String x:Key="mwSend">Send</system:String>
+    <system:String x:Key="mwStrEncode">Char Encoding Format</system:String>
     <system:String x:Key="mvTipSaveLog">SaveLog</system:String>
     <system:String x:Key="mvTipStart">Start</system:String>
     <system:String x:Key="mvTipPause">Pause</system:String>
@@ -40,6 +41,7 @@
     <system:String x:Key="mvTipClear">Clear</system:String>
     <system:String x:Key="mvTipHideLeft">HideLeft</system:String>
     <system:String x:Key="mvTipOption">Options</system:String>
+    <system:String x:Key="mvTipRefresh">Refresh COMS List</system:String>
     <system:String x:Key="aboutProvide">Provide fully customized software solutions.</system:String>
     <system:String x:Key="aboutAbout">About</system:String>
     <system:String x:Key="btnOK">OK</system:String>

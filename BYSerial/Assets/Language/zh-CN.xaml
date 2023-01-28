@@ -34,6 +34,7 @@
     <system:String x:Key="mwSendSet">发送设置</system:String>
     <system:String x:Key="mwLoop">循环发送</system:String>
     <system:String x:Key="mwSend">发送</system:String>
+    <system:String x:Key="mwStrEncode">字符串编码格式</system:String>
     <system:String x:Key="mvTipSaveLog">保存记录</system:String>
     <system:String x:Key="mvTipStart">开始</system:String>
     <system:String x:Key="mvTipPause">暂停</system:String>
@@ -41,6 +42,7 @@
     <system:String x:Key="mvTipClear">清空</system:String>
     <system:String x:Key="mvTipHideLeft">隐藏左侧栏</system:String>
     <system:String x:Key="mvTipOption">选项</system:String>
+    <system:String x:Key="mvTipRefresh">更新串口列表</system:String>
     <system:String x:Key="aboutProvide">提供完全定制的软件解决方案</system:String>
     <system:String x:Key="aboutAbout">关于</system:String>
     <system:String x:Key="btnOK">确定</system:String>

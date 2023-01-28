@@ -119,6 +119,11 @@ namespace BYSerial.Models
                 // Release the socket.  
                 Client.Shutdown(SocketShutdown.Both);
                 Client.Close();
+                if (Closed != null)
+                {
+                    Closed(Client, new EventArgs());
+                    IsConnected = false;
+                }
                 return true;
             }
             catch (Exception ex)

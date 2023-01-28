@@ -53,9 +53,21 @@ namespace BYSerial.TCPHelper
         /// 接收到数据事件
         /// </summary>
         public event Action<TcpClient,byte[]> Received;
+
+        /// <summary>
+        /// 字符串数据传输编码方式
+        /// </summary>
+        private Encoding Encoding { get; set; } = Encoding.ASCII;
+        /// <summary>
+        /// 使用默认ASCII传输字符串
+        /// </summary>
         public ServerAsync()
         {
 
+        }
+        public ServerAsync(Encoding encoding)
+        {
+            Encoding = encoding;
         }
         /// <summary>
         /// 开始异步监听ip地址的端口
@@ -105,12 +117,30 @@ namespace BYSerial.TCPHelper
                 throw new Exception("所用的socket不在字典中,请先连接！");
             }
             TcpClient client = DicListClient[key];
-            byte[] arrayData = Encoding.ASCII.GetBytes(msg);
+            byte[] arrayData = Encoding.GetBytes(msg); // Encoding.UTF8.GetBytes(msg);
             try
             {               
                 client.Client.BeginSend(arrayData, 0, arrayData.Length, SocketFlags.None, SendCallBack, client);
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public void SendAsync(string key, string msg,Encoding encoding)
+        {
+            if (!DicListClient.ContainsKey(key))
+            {
+                throw new Exception("所用的socket不在字典中,请先连接！");
+            }
+            TcpClient client = DicListClient[key];
+            Encoding = encoding;
+            byte[] arrayData = encoding.GetBytes(msg); // Encoding.UTF8.GetBytes(msg);
+            try
+            {
+                client.Client.BeginSend(arrayData, 0, arrayData.Length, SocketFlags.None, SendCallBack, client);
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -244,7 +274,7 @@ namespace BYSerial.TCPHelper
                 doReceive.Set();
                 if (count > 0)
                 {
-                    string msg = Encoding.UTF8.GetString(obj.btArrayData, 0, count);
+                    string msg = Encoding.GetString(obj.btArrayData, 0, count); 
                     if (!string.IsNullOrEmpty(msg))
                     {
                         if (Received != null)

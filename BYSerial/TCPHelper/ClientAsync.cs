@@ -42,8 +42,20 @@ namespace BYSerial.TCPHelper
         //标识客户端是否关闭
         private bool isClose = false;
         public bool IsConnected { get; private set; } = false;
+        /// <summary>
+        /// 字符串数据传输编码方式
+        /// </summary>
+        private Encoding Encoding { get; set; } = Encoding.ASCII;
+        /// <summary>
+        /// 使用默认ASCII传输字符串
+        /// </summary>
         public ClientAsync()
         {
+            client = new TcpClient();
+        }
+        public ClientAsync(Encoding encoding)
+        {
+            Encoding = encoding;
             client = new TcpClient();
         }
         /// <summary>
@@ -56,13 +68,20 @@ namespace BYSerial.TCPHelper
             IPAddress ipAddress = null;
             try
             {
-                ipAddress = IPAddress.Parse(ip);
+                ipAddress = IPAddress.Parse(ip);                
             }
-            catch (Exception)
+            catch 
             {
                 throw new Exception("ip地址格式不正确，请使用正确的ip地址！");
             }
-            client.BeginConnect(ipAddress, port, ConnectCallBack, client);
+            try
+            {
+                client.BeginConnect(ipAddress, port, ConnectCallBack, client);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         /// <summary>
         /// 异步连接，连接ip地址为127.0.0.1
@@ -91,7 +110,14 @@ namespace BYSerial.TCPHelper
         public void SendAsync(string msg)
         {
             if (msg == null) return;
-            byte[] listData = Encoding.UTF8.GetBytes(msg);
+            byte[] listData = Encoding.GetBytes(msg); // Encoding.UTF8.GetBytes(msg);
+            client.Client.BeginSend(listData, 0, listData.Length, SocketFlags.None, SendCallBack, client);
+        }
+        public void SendAsync(string msg,Encoding encoding)
+        {
+            if (msg == null) return;
+            Encoding = encoding;
+            byte[] listData = encoding.GetBytes(msg); // Encoding.UTF8.GetBytes(msg);
             client.Client.BeginSend(listData, 0, listData.Length, SocketFlags.None, SendCallBack, client);
         }
         public void SendAsync(byte[] msg)

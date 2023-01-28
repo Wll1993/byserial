@@ -30,90 +30,104 @@ namespace BYSerial.ViewModels
 
         public MainWindowViewModel()
         {
-            GlobalPara.GetLocSet();
-            if(GlobalPara.HisCfg.his!=null)
-            {
-                for(int i=0;i<GlobalPara.HisCfg.his.Count;i++)
-                {
-                    SendTxtHistory.Add(GlobalPara.HisCfg.his[i]);
-                }
-                //SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
-            }
-            else
-            {
-                GlobalPara.HisCfg.his = new List<string>();
-            }
-             SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
-            if (SerialPortList.Count > 0)
-            {
-                _ComPortState = SerialPortList[PortNameIndex] + " ClOSED";
-            }
-            else
-            {
-                ComPortState = "Not Detected SerialPort";
-                ComPortStateColor = GlobalPara.RedBrush;
-            }
-           
-            DataBitsIndex = 3;
-            ReceivePara = GlobalPara.ReceivePara;
-            SendPara = GlobalPara.SendPara;
-            LogPara = GlobalPara.LogPara;
-            DisplayPara = GlobalPara.DisplayPara;
-            ChangeLang(GlobalPara.MyCfg.Language);
-
-            #region 命令绑定
-            OnSendCommand = new DelegateCommand();
-            OnSendCommand.ExecuteAction = new Action<object>(OnSend);
-            OnLogCommand = new DelegateCommand();
-            OnLogCommand.ExecuteAction = new Action<object>(OnLogClick);
-            OnStartCommand = new DelegateCommand();
-            OnStartCommand.ExecuteAction = new Action<object>(OnStartClick);
-            OnPauseCommand = new DelegateCommand();
-            OnPauseCommand.ExecuteAction = new Action<object>(OnPauseClick);
-            OnStopCommand = new DelegateCommand();
-            OnStopCommand.ExecuteAction = new Action<object>(OnStopClick);
-            OnClearCommand = new DelegateCommand();
-            OnClearCommand.ExecuteAction = new Action<object>(OnClearClick);
-            OnHideLeftCommand = new DelegateCommand();
-            OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft); 
-            
-            #endregion
-
-            #region 菜单命令
-            ChangeToChCmd = new DelegateCommand();
-            ChangeToChCmd.ExecuteAction = new Action<object>(ChangeToCh);
-            ChangeToEnCmd = new DelegateCommand();
-            ChangeToEnCmd.ExecuteAction = new Action<object>(ChangeToEn);
-            ShowToolBoxCmd = new DelegateCommand();
-            ShowToolBoxCmd.ExecuteAction = new Action<object>(ShowToolBox);
-            ShowAsciiCmd = new DelegateCommand();
-            ShowAsciiCmd.ExecuteAction = new Action<object>(ShowAscii);
-            ShowColorsCmd=new DelegateCommand();
-            ShowColorsCmd.ExecuteAction= new Action<object>(ShowColors);
-            ShowScreenColorCmd=new DelegateCommand();
-            ShowScreenColorCmd.ExecuteAction=new Action<object>(ShowScreenColor);
-            ShowOptionsCmd = new DelegateCommand();
-            ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
-            ShowChartShowCmd = new DelegateCommand();
-            ShowChartShowCmd.ExecuteAction = new Action<object>(ShowChartShow);
-            ShowChartParasCmd=new DelegateCommand();
-            ShowChartParasCmd.ExecuteAction = new Action<object>(ShowChartParas);
-            ShowHelpCmd =new DelegateCommand();
-            ShowHelpCmd.ExecuteAction =new Action<object>(ShowHelp);
-            ShowAboutCmd = new DelegateCommand();
-            ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
-            ShowDonateCmd = new DelegateCommand();
-            ShowDonateCmd.ExecuteAction = new Action<object>(ShowDonate);
-            CheckUpdateCmd = new DelegateCommand();
-            CheckUpdateCmd.ExecuteAction = new Action<object>(CheckUpdate);
-            #endregion
+            Init();
+        }
+        private void Init()
+        {
             try
             {
-                BackDetectSerialPortChange();
-            }
-            catch { }
+                GlobalPara.GetLocSet();
+                if (GlobalPara.HisCfg.his != null)
+                {
+                    for (int i = 0; i < GlobalPara.HisCfg.his.Count; i++)
+                    {
+                        SendTxtHistory.Add(GlobalPara.HisCfg.his[i]);
+                    }
+                    //SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
+                }
+                else
+                {
+                    GlobalPara.HisCfg.his = new List<string>();
+                }
+                #region
+                // SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
+                //if (SerialPortList.Count > 0)
+                //{
+                //    _ComPortState = SerialPortList[PortNameIndex] + " ClOSED";
+                //}
+                //else
+                //{
+                //    ComPortState = "Not Detected SerialPort";
+                //    ComPortStateColor = GlobalPara.RedBrush;
+                //}
+                #endregion
 
+                DataBitsIndex = 3;
+                ReceivePara = GlobalPara.ReceivePara;
+                SendPara = GlobalPara.SendPara;
+                LogPara = GlobalPara.LogPara;
+                DisplayPara = GlobalPara.DisplayPara;
+                ChangeLang(GlobalPara.MyCfg.Language);
+                UpdateSerialPortList();
+
+                #region 命令绑定
+                OnSendCommand = new DelegateCommand();
+                OnSendCommand.ExecuteAction = new Action<object>(OnSend);
+                OnLogCommand = new DelegateCommand();
+                OnLogCommand.ExecuteAction = new Action<object>(OnLogClick);
+                OnStartCommand = new DelegateCommand();
+                OnStartCommand.ExecuteAction = new Action<object>(OnStartClick);
+                OnPauseCommand = new DelegateCommand();
+                OnPauseCommand.ExecuteAction = new Action<object>(OnPauseClick);
+                OnStopCommand = new DelegateCommand();
+                OnStopCommand.ExecuteAction = new Action<object>(OnStopClick);
+                OnClearCommand = new DelegateCommand();
+                OnClearCommand.ExecuteAction = new Action<object>(OnClearClick);
+                OnHideLeftCommand = new DelegateCommand();
+                OnHideLeftCommand.ExecuteAction = new Action<object>(OnHideLeft);
+
+                #endregion
+
+                #region 菜单命令
+                ChangeToChCmd = new DelegateCommand();
+                ChangeToChCmd.ExecuteAction = new Action<object>(ChangeToCh);
+                ChangeToEnCmd = new DelegateCommand();
+                ChangeToEnCmd.ExecuteAction = new Action<object>(ChangeToEn);
+                ShowToolBoxCmd = new DelegateCommand();
+                ShowToolBoxCmd.ExecuteAction = new Action<object>(ShowToolBox);
+                ShowAsciiCmd = new DelegateCommand();
+                ShowAsciiCmd.ExecuteAction = new Action<object>(ShowAscii);
+                ShowColorsCmd = new DelegateCommand();
+                ShowColorsCmd.ExecuteAction = new Action<object>(ShowColors);
+                ShowScreenColorCmd = new DelegateCommand();
+                ShowScreenColorCmd.ExecuteAction = new Action<object>(ShowScreenColor);
+                ShowOptionsCmd = new DelegateCommand();
+                ShowOptionsCmd.ExecuteAction = new Action<object>(ShowOptions);
+                RefeshComsCmd = new DelegateCommand();
+                RefeshComsCmd.ExecuteAction = new Action<object>(RefeshComs);
+                ShowChartShowCmd = new DelegateCommand();
+                ShowChartShowCmd.ExecuteAction = new Action<object>(ShowChartShow);
+                ShowChartParasCmd = new DelegateCommand();
+                ShowChartParasCmd.ExecuteAction = new Action<object>(ShowChartParas);
+                ShowHelpCmd = new DelegateCommand();
+                ShowHelpCmd.ExecuteAction = new Action<object>(ShowHelp);
+                ShowAboutCmd = new DelegateCommand();
+                ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
+                ShowDonateCmd = new DelegateCommand();
+                ShowDonateCmd.ExecuteAction = new Action<object>(ShowDonate);
+                CheckUpdateCmd = new DelegateCommand();
+                CheckUpdateCmd.ExecuteAction = new Action<object>(CheckUpdate);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Init Error,Please Check ErrLog");
+                SaveLogAsync("Init Err:"+ex.ToString());
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+           
         }
+
         #region 菜单命令
         public DelegateCommand ShowToolBoxCmd { get; private set; }
         private void ShowToolBox(object para)
@@ -146,6 +160,11 @@ namespace BYSerial.ViewModels
         {
             OptionsWindow window = new OptionsWindow();
             window.Show();
+        }
+        public DelegateCommand RefeshComsCmd { get; private set; }
+        private void RefeshComs(object para)
+        {
+            UpdateSerialPortList();
         }
 
         public DelegateCommand ShowHelpCmd { get; private set; }
@@ -236,17 +255,38 @@ namespace BYSerial.ViewModels
 
         #endregion
 
+        private delegate void UpdateSerialPortListDelagte();
+        /// <summary>
+        /// 更新串口列表
+        /// </summary>
+        private void UpdateSerialPortList()
+        { 
+            SerialPortList= new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
+            //添加TCP项
+            SerialPortList.Add("TCP");
+            PortNameIndex = 0;
+            if ((PortNameIndex == SerialPortList.Count - 1) && SendPara.IsText)
+            {
+                SendPara.EncodingVisual = Visibility.Visible;
+            }
+            else
+            {
+                SendPara.EncodingVisual = Visibility.Hidden;
+            }
+        }
         private void BackDetectSerialPortChange()
         {
             Task task = Task.Factory.StartNew(new Action(() =>
             {
                 while (true)
                 {
-                    if (!IsStartCan) continue;
-                    Thread.Sleep(500);
-                    SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
-                    //添加TCP项
-                    SerialPortList.Add("TCP");
+                    if (!IsStartCan)
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }                        
+                    Thread.Sleep(500);                    
+                    Application.Current.Dispatcher.BeginInvoke(new UpdateSerialPortListDelagte(UpdateSerialPortList));  
                 }
             }));
         }
@@ -362,7 +402,7 @@ namespace BYSerial.ViewModels
                     byteNum = btSend.Length;
 
                 }
-                else if (SendPara.IsText)
+                else if (SendPara.IsText || SendPara.IsUTF8)
                 {
                     if (IsSerialTest == Visibility.Visible)
                     {
@@ -371,16 +411,15 @@ namespace BYSerial.ViewModels
                     else
                     {
                         if (TcpPara.bIsTcpClient)
-                        {
-                            byte[] bts=Encoding.UTF8.GetBytes(txtsend);
-                            _TcpClient.SendAsync(bts);
+                        {                   
+                            _TcpClient.SendAsync(txtsend, SendPara.TcpTextEncoding);
                         }
                         else if(TcpPara.bIsTcpServer)
-                        {
-                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend);
+                        {                            
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend, SendPara.TcpTextEncoding);
                         }
                     }
-                    byteNum = Encoding.UTF8.GetBytes(txtsend).Length;
+                    byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
                 }
 
                 if (ReceivePara.DisplaySend)
@@ -434,7 +473,7 @@ namespace BYSerial.ViewModels
 
         #region Toolbar command
 
-        public DelegateCommand OnLogCommand { get; }
+        public DelegateCommand OnLogCommand { get; private set; }
 
         private void OnLogClick(object parameter)
         {
@@ -484,7 +523,7 @@ namespace BYSerial.ViewModels
             }
         }
 
-        public DelegateCommand OnStartCommand { get; }
+        public DelegateCommand OnStartCommand { get; private set; }
 
         private void OnStartClick(object parameter)
         {
@@ -518,7 +557,7 @@ namespace BYSerial.ViewModels
                             MessageBox.Show("请填写正确的IP或Port", "错误提示");
                             return;
                         }
-                        _TcpClient = new ClientAsync();
+                        _TcpClient = new ClientAsync(SendPara.TcpTextEncoding);
                         _TcpClient.Completed += _TcpClient_Completed;
                         _TcpClient.Received += _TcpClient_Received;
                         _TcpClient.ConnectAsync(TcpPara.IP, TcpPara.Port);
@@ -531,11 +570,12 @@ namespace BYSerial.ViewModels
                             MessageBox.Show("请填写正确的IP或Port", "错误提示");
                             return;
                         }
-                        _TcpServer = new ServerAsync();
+                        _TcpServer = new ServerAsync(SendPara.TcpTextEncoding);
                         _TcpServer.Completed += _TcpServer_Completed;
                         _TcpServer.Received += _TcpServer_Received;
                         _TcpServer.StartAsync(TcpPara.IP,TcpPara.Port);
                         IsStartCan = false;
+                        IsStopCan = true;
                     }
                 }
                 else
@@ -607,7 +647,7 @@ namespace BYSerial.ViewModels
         }
 
 
-        public DelegateCommand OnPauseCommand { get; }
+        public DelegateCommand OnPauseCommand { get; private set; }
 
         private bool _IsPauseCan = false;
 
@@ -635,7 +675,7 @@ namespace BYSerial.ViewModels
         }
 
 
-        public DelegateCommand OnStopCommand { get; }
+        public DelegateCommand OnStopCommand { get; private set; }
 
         private void OnStopClick(object parameter)
         {
@@ -664,7 +704,7 @@ namespace BYSerial.ViewModels
                 _TcpPara.TcpClients.Clear();
             }
         }
-        public DelegateCommand OnClearCommand { get; }
+        public DelegateCommand OnClearCommand { get; private set; }
 
         private void OnClearClick(object parameter)
         {
@@ -696,7 +736,7 @@ namespace BYSerial.ViewModels
                 }
                 else
                 {
-                    receivestr = Encoding.UTF8.GetString(bytes);
+                    receivestr = Encoding.ASCII.GetString(bytes); 
                 }
                 AddDataToChart(receivestr);
                 if (ReceivePara.AutoFeed)
@@ -770,6 +810,26 @@ namespace BYSerial.ViewModels
             {
                 _PortNameIndex = value;
                 this.RaisePropertyChanged("PortNameIndex");
+                if (value == (SerialPortList.Count - 1))
+                {
+                    IsSerialTest = Visibility.Collapsed;
+                    if ((PortNameIndex == SerialPortList.Count - 1))
+                    {
+                        SendPara.EncodingVisual = Visibility.Visible;
+                        ReceivePara.EncodingVisual = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SendPara.EncodingVisual = Visibility.Hidden;
+                        ReceivePara.EncodingVisual = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    IsSerialTest = Visibility.Visible;
+                    SendPara.EncodingVisual = Visibility.Hidden;
+                    ReceivePara.EncodingVisual = Visibility.Hidden;
+                }
             }
         }
 
@@ -807,7 +867,7 @@ namespace BYSerial.ViewModels
             set
             {
                 _BaudRateIndex = value;
-                this.RaisePropertyChanged("BaudRateIndex");
+                this.RaisePropertyChanged("BaudRateIndex");                
             }
         }
 
@@ -943,6 +1003,7 @@ namespace BYSerial.ViewModels
         #endregion
 
         #region 绑定属性
+
         private Visibility _IsSerialTest = Visibility.Visible;
         /// <summary>
         /// 是否是串口测试
@@ -964,7 +1025,7 @@ namespace BYSerial.ViewModels
                 RaisePropertyChanged("IsSerialTest");
             }
         }
-       
+      
         private DisplayPara _DisplayPara;
         public DisplayPara DisplayPara
         {
@@ -1096,6 +1157,8 @@ namespace BYSerial.ViewModels
                 this.RaisePropertyChanged("SerialPortSettings");
             }
         }
+
+        
 
         #endregion
 
@@ -1251,7 +1314,7 @@ namespace BYSerial.ViewModels
                 }
                 else
                 {
-                    receivestr = Encoding.UTF8.GetString(msg);
+                    receivestr = ReceivePara.TcpTextEncoding.GetString(msg);// Encoding.UTF8.GetString(msg);
                 }
                 AddDataToChart(receivestr);
                 if (ReceivePara.AutoFeed)
@@ -1396,7 +1459,7 @@ namespace BYSerial.ViewModels
 
         ChartWindow _chartWindow = null;
 
-        public DelegateCommand ShowChartParasCmd { get; }
+        public DelegateCommand ShowChartParasCmd { get; private set; }
         private void ShowChartParas(object para)
         {
             //if(!GlobalPara.IsShowChart)
@@ -1405,7 +1468,7 @@ namespace BYSerial.ViewModels
                 cs.ShowDialog();              
             //}
         }
-        public DelegateCommand ShowChartShowCmd { get; }
+        public DelegateCommand ShowChartShowCmd { get; private set; }
         private void ShowChartShow(object para)
         {
             if (!GlobalPara.IsShowChart)
