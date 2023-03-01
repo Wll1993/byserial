@@ -41,6 +41,7 @@
     <system:String x:Key="mvTipStop">停止</system:String>
     <system:String x:Key="mvTipClear">清空</system:String>
     <system:String x:Key="mvTipHideLeft">隐藏左侧栏</system:String>
+    <system:String x:Key="mvTipHideRight">隐藏右侧栏</system:String>
     <system:String x:Key="mvTipOption">选项</system:String>
     <system:String x:Key="mvTipRefresh">更新串口列表</system:String>
     <system:String x:Key="aboutProvide">提供完全定制的软件解决方案</system:String>
@@ -102,5 +103,8 @@
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
-    
+    <system:String x:Key="quickCmdList">快捷命令列表</system:String>
+    <system:String x:Key="qcCmdTip">右键设置命令</system:String>
+    <system:String x:Key="qcButtonContent">按钮标题</system:String>
+    <system:String x:Key="qcButtonCmd">按钮命令</system:String>
 </ResourceDictionary>

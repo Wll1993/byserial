@@ -81,6 +81,7 @@
     <Compile Include="Models\AnalogReal.cs" />
     <Compile Include="Models\AsyncClient.cs" />
     <Compile Include="Models\ChartParas.cs" />
+    <Compile Include="Models\CmdButtonPara.cs" />
     <Compile Include="Models\MeasureData.cs" />
     <Compile Include="Models\MouseHook.cs" />
     <Compile Include="Models\mycfg.cs" />
@@ -112,6 +113,9 @@
     <Compile Include="Views\ColorsWindow.xaml.cs">
       <DependentUpon>ColorsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FastCmdSet.xaml.cs">
+      <DependentUpon>FastCmdSet.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -140,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ColorsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FastCmdSet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -265,6 +273,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\hide-right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

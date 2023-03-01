@@ -330,20 +330,28 @@ namespace BYSerial.ViewModels
         {
             try
             {
-                // string cmd = SendTxt.Replace("", " ");
                 if (SendTxt.Trim() == "")
                 {
                     MessageBox.Show("发送区不可为空字符", "提示");
                     return false;
                 }
-                string[] txts = SendTxt.Split(' ');
-                string txtssend="";
-                for(int i = 0; i < txts.Length; i++)
+                string txtsend = "";
+                if (SendPara.IsHex)
                 {
-                    txtssend += txts[i];
+                    //如果是HEX,清空命令中的空格
+                    string[] txts = SendTxt.Split(' ');
+                    string txtssend = "";
+                    for (int i = 0; i < txts.Length; i++)
+                    {
+                        txtssend += txts[i];
+                    }
+                    txtsend = txtssend;
                 }
-                string txtsend = txtssend; // SendTxt.Trim().Replace(" ", "");
-                
+                else
+                {
+                    //如果是ASCII,对空格不做处理
+                    txtsend = SendTxt;
+                } 
                 if (SendPara.FormatSend)
                 {
                     if (SendPara.FormatCRNL)
@@ -469,7 +477,158 @@ namespace BYSerial.ViewModels
             }
             return false;
         }
+        /// <summary>
+        /// 快捷命令发送
+        /// </summary>
+        /// <param name="cmdstring"></param>
+        /// <returns></returns>
+        public bool SendCommandByFast(string cmdstring)
+        {
+            try
+            {
+                string txtsend="";
+                if (SendPara.IsHex)
+                {
+                    //如果是HEX,清空命令中的空格
+                    string[] txts = cmdstring.Split(' ');
+                    string txtssend = "";
+                    for (int i = 0; i < txts.Length; i++)
+                    {
+                        txtssend += txts[i];
+                    }
+                    txtsend = txtssend;
+                }
+                else
+                {
+                    //如果是ASCII,对空格不做处理
+                    txtsend = cmdstring;
+                }
 
+                if (SendPara.FormatSend)
+                {
+                    if (SendPara.FormatCRNL)
+                    {
+                        txtsend += "\r\n";
+                    }
+                    else if (SendPara.FormatNLCR)
+                    {
+                        txtsend += "\n\r";
+                    }
+                    else if (SendPara.FormatNewLine)
+                    {
+                        txtsend += "\r";
+                    }
+                    else if (SendPara.FormatCarReturn)
+                    {
+                        txtsend += "\n";
+                    }
+                }
+                int byteNum = 0;
+
+                if (SendPara.IsHex)
+                {
+                    txtsend = txtsend.Replace(" ", "").ToUpper(); //20220616格式化字符串
+                    if (txtsend.Length % 2 != 0)
+                    {
+                        MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零", "错误提示");
+                        return false;
+                    }
+                    byte[] btSend = new byte[1];
+                    if (SendPara.AutoCRC)
+                    {
+                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
+                        txtsend += strcrc; //20220616增加修复 自动计算CRC错误，并且不显示完整的命令字符串
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+                    }
+                    else
+                    {
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+                    }
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(btSend, 0, btSend.Length);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(btSend);
+                        }
+                        else if (TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], btSend);
+                        }
+                    }
+                    byteNum = btSend.Length;
+
+                }
+                else if (SendPara.IsText || SendPara.IsUTF8)
+                {
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(txtsend);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(txtsend, SendPara.TcpTextEncoding);
+                        }
+                        else if (TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend, SendPara.TcpTextEncoding);
+                        }
+                    }
+                    byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
+                }
+
+                if (ReceivePara.DisplaySend)
+                {
+                    if (ReceivePara.AutoFeed)
+                    {
+                        if (SendPara.IsHex)
+                        {
+                            txtsend = txtsend.Replace(" ", "");
+                            txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
+                        }
+                        else
+                        {
+                            txtsend += "\r\n";
+                        }
+                    }
+                    if (ReceivePara.DisplayTime)
+                    {
+                        txtsend = DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
+                    }
+                    txtsend = "[SEND]" + txtsend;
+                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                        Paragraph pg = new Paragraph();
+                        pg.Margin = new Thickness(1);
+                        pg.Padding = new Thickness(0);
+                        pg.Inlines.Add(new Run(txtsend));
+                        if (DisplayPara.FormatDisColor)
+                        {
+                            pg.Foreground = DisplayPara.SendColor;
+                        }
+                        _ReciveFlowDoc.Blocks.Add(pg);
+                    }));
+
+                    if (LogPara.SaveLogMsg)
+                    {
+                        SaveLogAsync(txtsend);
+                    }
+                }
+                _SendedBytesNum += byteNum;
+                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
+                AddSendHistory(SendTxt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return false;
+        }
 
         #region Toolbar command
 
@@ -623,6 +782,7 @@ namespace BYSerial.ViewModels
             }
         }
 
+
         private Visibility _LeftSetingVisual = Visibility.Visible;
         public Visibility LeftSetingVisual
         {
@@ -633,7 +793,6 @@ namespace BYSerial.ViewModels
                 RaisePropertyChanged("LeftSetingVisual");
             }
         }
-
 
         private SolidColorBrush _PauseBtnBackColor = new SolidColorBrush(Colors.Transparent);
         public SolidColorBrush PauseBtnBackColor
@@ -696,11 +855,14 @@ namespace BYSerial.ViewModels
             }
             else if(TcpPara.bIsTcpClient)
             {
-                _TcpClient.Close();
+                if(_TcpClient != null)
+                {
+                    _TcpClient.Close();
+                }
             }
             else if(TcpPara.bIsTcpServer)
             {
-                _TcpServer.Close();
+               if(_TcpServer!=null)  _TcpServer.Close();
                 _TcpPara.TcpClients.Clear();
             }
         }
@@ -847,7 +1009,7 @@ namespace BYSerial.ViewModels
         }
 
 
-        private ObservableCollection<string> _BaudRateList = new ObservableCollection<string>() { "9600", "19200", "38400", "57600", "115200", "1200", "2400", "4800" };
+        private ObservableCollection<string> _BaudRateList = new ObservableCollection<string>() { "9600", "19200", "38400", "57600", "115200", "230400", "460800", "921600", "1200", "2400", "4800" };
 
         public ObservableCollection<string> BaudRateList
         {
@@ -1630,6 +1792,11 @@ namespace BYSerial.ViewModels
             }
         }
 
+
+        #endregion
+
+        #region 快捷命令列表
+      
 
         #endregion
     }

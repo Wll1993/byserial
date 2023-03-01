@@ -1,0 +1,47 @@
+﻿<Window x:Class="BYSerial.Views.FastCmdSet"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BYSerial.Views"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterScreen"       
+        Title="命令设置" Height="175" Width="365">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Text="{DynamicResource qcButtonContent}"
+                   VerticalAlignment="Center"
+                   Grid.Row="0" Grid.Column="0"/>
+        <TextBox Name="txtCaption" Margin="5,5,0,5"
+                 Grid.Row="0" Grid.Column="1"/>
+      
+        <TextBlock Text="{DynamicResource qcButtonCmd}" 
+                   VerticalAlignment="Center"
+                   Grid.Row="1" Grid.Column="0"/>
+        <TextBox Name="txtCmd"  Margin="5,5,0,5"
+                 Grid.Row="1" Grid.Column="1"/>
+       
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,0,5,0"
+                    Grid.Row="2" Grid.Column="1">
+            <Button Content="{DynamicResource btnOK}" Name="btnOK"
+                    Width="100" Style="{DynamicResource ButtonPrimary}"
+                    Click="btnOK_Click"/>
+            <Button Content="{DynamicResource btnCancel}" Name="btnCancel"
+                    Margin="10,0" Width="100" Style="{DynamicResource ButtonPrimary}"
+                    IsDefault="True"
+                    Click="btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

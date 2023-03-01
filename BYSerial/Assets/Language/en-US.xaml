@@ -40,6 +40,7 @@
     <system:String x:Key="mvTipStop">Stop</system:String>
     <system:String x:Key="mvTipClear">Clear</system:String>
     <system:String x:Key="mvTipHideLeft">HideLeft</system:String>
+    <system:String x:Key="mvTipHideRight">HideRight</system:String>
     <system:String x:Key="mvTipOption">Options</system:String>
     <system:String x:Key="mvTipRefresh">Refresh COMS List</system:String>
     <system:String x:Key="aboutProvide">Provide fully customized software solutions.</system:String>
@@ -101,5 +102,8 @@
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
-    
+    <system:String x:Key="quickCmdList">Quick Commands</system:String>
+    <system:String x:Key="qcCmdTip">Right-Click to set the command</system:String>
+    <system:String x:Key="qcButtonContent">Button Caption</system:String>
+    <system:String x:Key="qcButtonCmd">Button Command</system:String>
 </ResourceDictionary>
