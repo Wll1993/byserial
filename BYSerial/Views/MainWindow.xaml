@@ -53,6 +53,9 @@
                 <MenuItem Header="{DynamicResource menuChartShow}"
                           Command="{Binding ShowChartShowCmd}"/>
             </MenuItem>
+            <MenuItem Header="{DynamicResource menuModbus}"
+                      Command="{Binding ShowModbusCmd}">                
+            </MenuItem>
             <MenuItem Header="{DynamicResource menuHelp}">
                 <MenuItem 
                     Name="AboutMenu" 

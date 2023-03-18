@@ -20,6 +20,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Controls;
 using Newtonsoft.Json.Linq;
+using BYSerial.Properties;
+using System.Diagnostics;
 
 namespace BYSerial.ViewModels
 {
@@ -109,6 +111,8 @@ namespace BYSerial.ViewModels
                 ShowChartShowCmd.ExecuteAction = new Action<object>(ShowChartShow);
                 ShowChartParasCmd = new DelegateCommand();
                 ShowChartParasCmd.ExecuteAction = new Action<object>(ShowChartParas);
+                ShowModbusCmd=new DelegateCommand();
+                ShowModbusCmd.ExecuteAction= new Action<object>(ShowModbus);
                 ShowHelpCmd = new DelegateCommand();
                 ShowHelpCmd.ExecuteAction = new Action<object>(ShowHelp);
                 ShowAboutCmd = new DelegateCommand();
@@ -1795,8 +1799,69 @@ namespace BYSerial.ViewModels
 
         #endregion
 
+        #region modbus
+
+        public DelegateCommand ShowModbusCmd { get; private set; }
+        private void ShowModbus(object para)
+        {
+            try
+            {
+                string temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BYSerial\\";
+                if (!Directory.Exists(temp))
+                    Directory.CreateDirectory(temp);
+
+                string f = temp + "Modbusl.dll";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.Modbusl_dll);
+                f = temp + "modsim32.cfg";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.modsim32_cfg);
+                f = temp + "ModSim32.cnt";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ModSim32_cnt);
+                f = temp + "ModSim32.exe";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ModSim32_exe);
+                f = temp + "MODSIM32.GID";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.MODSIM32_GID);
+                f = temp + "MODSIM32.HLP";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.MODSIM32_HLP);
+                f = temp + "ModSim32.ini";
+                if (!File.Exists(f))
+                    File.WriteAllText(f, Resources.ModSim32_ini);
+                f = temp + "ModSim32.tlb";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ModSim32_tlb);
+                f = temp + "ModSimEx.frm";
+                if (!File.Exists(f))
+                    File.WriteAllText(f, Resources.ModSimEx_frm);
+                f = temp + "ModSimEx.vbp";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ModSimEx_vbp);
+                f = temp + "ModSimEx.vbw";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ModSimEx_vbw);
+                f = temp + "Modsim.lpu";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.Modsim_lpu);
+                f = temp + "ms32comm.cfg";
+                if (!File.Exists(f))
+                    File.WriteAllBytes(f, Resources.ms32comm_cfg);
+
+                f = temp + "ModSim32.exe";
+                Process.Start(f);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("启动modbus失败");
+            }
+        }
+        #endregion
+
         #region 快捷命令列表
-      
+
 
         #endregion
     }

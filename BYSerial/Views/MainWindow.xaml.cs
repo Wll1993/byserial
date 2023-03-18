@@ -86,14 +86,16 @@ namespace BYSerial.Views
         {
             _IsLoaded=true;
             try
-            {
+            {                
                 if(GlobalPara.IsCheckUpdate)
                 {
-                    int i = 0;
-                    if (Util.Update.InternetGetConnectedState(out i, 0))
-                    {
-                        BYSerial.Util.Update.CheckUpdate();
-                    }
+                    Task.Run(() => {
+                        int i = 0;
+                        if (Util.Update.InternetGetConnectedState(out i, 0))
+                        {
+                            BYSerial.Util.Update.CheckUpdate();
+                        }
+                    });
                 }
                 for(int i=0;i<15;i++)
                 {

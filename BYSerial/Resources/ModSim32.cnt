@@ -1,0 +1,25 @@
+:Base ModSim32.hlp
+1 Modbus Reference
+2 Protocol=modbus_protocol
+2 Messages=modbus_cmds
+2 Error Detection=modbus_err
+2 Exception Responses=modbus_exceptions
+1 ModSim32 Overview
+2 Basic Operation=mdi_operation
+2 Document/View Architecture=HIDR_DOC1TYPE
+2 Data Definition=HID_SPLITTER1
+2 Display Formats=HID_SPLITTER2
+2 Connections=modbus_connection
+1 Menu Commands
+2 File=menu_file
+2 Connection=menu_connection
+2 Display=menu_setup
+2 Window=menu_window
+2 Help=menu_help
+1 OLE Automation
+2 Automation Routines=ole_automation
+1 Registration Information
+2 Pricing Details=HID_PRICING_INFO
+2 Licensing Info=HID_LICENSING_INFO
+2 Contact Information=HID_CONTACT_INFO
+2 Other Products=HID_PRODUCT_INFO

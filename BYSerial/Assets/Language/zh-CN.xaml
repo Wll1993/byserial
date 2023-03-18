@@ -9,7 +9,8 @@
     <system:String x:Key="menuOptions">选项</system:String>
     <system:String x:Key="menuChart">曲线图表</system:String>
     <system:String x:Key="menuChartShow">显示曲线</system:String>
-    <system:String x:Key="menuChartParaSet">曲线参数设置</system:String>    
+    <system:String x:Key="menuChartParaSet">曲线参数设置</system:String>
+    <system:String x:Key="menuModbus">Modbus</system:String>
     <system:String x:Key="menuHelp">帮助</system:String>
     <system:String x:Key="menuDoc">帮助文档</system:String>
     <system:String x:Key="menuAbout">关于</system:String>

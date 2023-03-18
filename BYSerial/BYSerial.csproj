@@ -241,6 +241,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Resources\Modsim.lpu" />
+    <None Include="Resources\modsim32.cfg" />
+    <None Include="Resources\ModSim32.cnt" />
+    <None Include="Resources\MODSIM32.GID" />
+    <None Include="Resources\MODSIM32.HLP" />
+    <None Include="Resources\ModSim32.ini" />
+    <None Include="Resources\ModSim32.tlb" />
+    <None Include="Resources\ModSimEx.frm" />
+    <None Include="Resources\ModSimEx.vbp" />
+    <None Include="Resources\ModSimEx.vbw" />
+    <None Include="Resources\ms32comm.cfg" />
     <Resource Include="Assets\ascii.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -276,6 +287,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\hide-right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Modbusl.dll" />
+    <None Include="Resources\ModSim32.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
