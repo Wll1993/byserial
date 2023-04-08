@@ -5,24 +5,22 @@
 如果感兴趣，欢迎Watch和Star。  
 欢迎提出想要的常用功能，方便的话，将添加上去
   
-##系统环境  
+## 系统环境  
 
 已测试环境：  
 Microsoft Window: WIN10 家庭中文版  版本2004 (内部版本19041)  
 Microsoft Window: WIN10 专业版  版本20H2 (内部版本19042)
 
-Using
-----
+## 引用的第三方库  
+
 HandyControl  https://gitee.com/handyorg/HandyControl  
 Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json  
 LiveCharts https://v0.lvcharts.com/  
 
 ## 赞助者
-
-<a href="https://gitee.com/zhang-hai-long325520" target="_blank"><img style="border-radius:50%!important" width="64px" alt="bigorange1900" src=![](Img/张海long.png)></a>  
+[![](Img/张海long.png)\](https://gitee.com/zhang-hai-long325520)
+[![](Img/myyangang.png)\](https://gitee.com/myyangang)
   
-<a href="https://gitee.com/myyangang" target="_blank"><img style="border-radius:50%!important" width="64px" alt="bigorange1900" src=![](Img/myyangang.png)></a>
- 
 界面
 ----
 ![](Img/main_ch2.png)    
