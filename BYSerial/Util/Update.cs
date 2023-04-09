@@ -26,8 +26,8 @@ namespace BYSerial.Util
         {
             try
             {
-                string version = Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","");               
-                int Ver=Convert.ToInt32(version);
+                string version = Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","");
+                int Ver = Convert.ToInt32(version);
                 WebClient wc = new WebClient();
                 string remoteVer = wc.DownloadString("https://gitee.com/LvYiWuHen/byserial/raw/master/Version.txt");
                 string[] vers = remoteVer.Split(',');
@@ -35,13 +35,14 @@ namespace BYSerial.Util
                 if(reVer > Ver)
                 {
                     string tip = Encoding.UTF8.GetString(wc.DownloadData("https://gitee.com/LvYiWuHen/byserial/raw/master/UpdateTip.txt"));
+                    
                     UpdateWindow uw=new UpdateWindow();
                     uw.SetUpdateMsg(tip, vers[1]);
                     uw.ShowDialog();
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show("检查更新出错","更新提示");
             }

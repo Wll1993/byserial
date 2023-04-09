@@ -5,20 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BYSerial.Views"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
-        Title="更新窗口" Height="300" Width="300">
-    <StackPanel Orientation="Vertical">        
-        <TextBlock Text="更新提示：" Margin="10,0,0,0" FontSize="15" FontWeight="Bold"/>
-        <TextBox Name="txtUpdate" Margin="5" Height="150"
+        Title="{DynamicResource updateTip}" Height="300" Width="300"
+        MinHeight="300" MinWidth="300"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <TextBox Name="txtUpdate" Margin="5"
                  VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
                  HorizontalContentAlignment="Left"
-                 VerticalContentAlignment="Top"
+                 VerticalContentAlignment="Top"  
+                    IsReadOnly="True"
                  />        
-        <TextBlock Text="下载地址：(单击使用浏览器下载)"/>
-        <TextBlock Name="navTxt" Margin="2,0" TextWrapping="Wrap">            
+        <TextBlock Text="下载地址：(单击使用浏览器下载)" Grid.Row="1"/>
+        <TextBlock Name="navTxt" Margin="2,0" TextWrapping="Wrap" Grid.Row="2">            
             <Hyperlink Name="hlink0" NavigateUri="https://gitee.com/LvYiWuHen/byserial">项目地址</Hyperlink>            
         </TextBlock>
-        <TextBlock Name="downTip"/>
-    </StackPanel>
+        <TextBlock Name="downTip" Grid.Row="3">
+            <Hyperlink Name="hlink1" NavigateUri="https://gitee.com/LvYiWuHen/byserial"
+                       RequestNavigate="hlink1_RequestNavigate">项目地址</Hyperlink>
+        </TextBlock>
+    </Grid>
 </Window>

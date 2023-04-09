@@ -121,4 +121,6 @@ and you can use the up and down keys to select rows</system:String>
     <system:String x:Key="qcButtonContent">Button Caption</system:String>
     <system:String x:Key="qcButtonCmd">Button Command</system:String>
     <system:String x:Key="qcButtonDelay">Delay Time</system:String>
+
+    <system:String x:Key="updateTip">Update Tip</system:String>
 </ResourceDictionary>

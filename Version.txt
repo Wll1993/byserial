@@ -1,1 +1,1 @@
-1800,https://gitee.com/LvYiWuHen/byserial/releases/download/V1.8.0/BYSerial_V1.8.0.zip
+1810,https://gitee.com/LvYiWuHen/byserial/releases/download/V1.8.1/BYSerial_V1.8.1.zip

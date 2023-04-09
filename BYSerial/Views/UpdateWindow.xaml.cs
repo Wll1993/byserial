@@ -76,6 +76,9 @@ namespace BYSerial.Views
             
         }
 
-       
+        private void hlink1_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
+        }
     }
 }

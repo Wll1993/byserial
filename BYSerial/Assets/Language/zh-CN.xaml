@@ -121,4 +121,5 @@
     <system:String x:Key="qcButtonContent">按钮标题</system:String>
     <system:String x:Key="qcButtonCmd">按钮命令</system:String>
     <system:String x:Key="qcButtonDelay">延时时间</system:String>
+    <system:String x:Key="updateTip">更新提示</system:String>
 </ResourceDictionary>
