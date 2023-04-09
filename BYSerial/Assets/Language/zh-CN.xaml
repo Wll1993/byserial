@@ -104,8 +104,21 @@
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
+    <system:String x:Key="quickCmdSetTitle">命令设置</system:String>
     <system:String x:Key="quickCmdList">快捷命令列表</system:String>
+    <system:String x:Key="quickTip" xml:space="preserve">提示：先选行，再勾选编号和修改命令，
+否则参数会设置到错误的绑定,可用上下键选行</system:String>
+    <system:String x:Key="qcSelTip">单击此处选中行</system:String>
+    <system:String x:Key="qcCycleTip">从上到下循环发送选中编号的命令</system:String>
     <system:String x:Key="qcCmdTip">右键设置命令</system:String>
+    <system:String x:Key="qcCycleMode">循环模式</system:String>
+    <system:String x:Key="qcStartSend">开始发送</system:String>
+    <system:String x:Key="qcAddCmd">添加命令</system:String>
+    <system:String x:Key="qcDelCmd">删除命令</system:String>
+    <system:String x:Key="qcItemNo">编号</system:String>
+    <system:String x:Key="qcItemDelay">延时</system:String>
+    <system:String x:Key="qcItemCmd">命令</system:String>
     <system:String x:Key="qcButtonContent">按钮标题</system:String>
     <system:String x:Key="qcButtonCmd">按钮命令</system:String>
+    <system:String x:Key="qcButtonDelay">延时时间</system:String>
 </ResourceDictionary>

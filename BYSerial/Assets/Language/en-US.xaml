@@ -103,8 +103,22 @@
     <system:String x:Key="ProTitle">BYSerial</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
+    <system:String x:Key="quickCmdSetTitle">Command Settings</system:String>
     <system:String x:Key="quickCmdList">Quick Commands</system:String>
+    <system:String x:Key="quickTip" xml:space="preserve">Tip: First select the row,then check the number and modify command,
+Otherwise, the parameters will be set to the wrong binding,
+and you can use the up and down keys to select rows</system:String>
     <system:String x:Key="qcCmdTip">Right-Click to set the command</system:String>
+    <system:String x:Key="qcSelTip">Click here to select the row</system:String>    
+    <system:String x:Key="qcCycleTip">Cycle commands for sending selected numbers from top to bottom</system:String>
+    <system:String x:Key="qcCycleMode">CycleMode</system:String>
+    <system:String x:Key="qcStartSend">Start Send</system:String>
+    <system:String x:Key="qcAddCmd">Add Command</system:String>
+    <system:String x:Key="qcDelCmd">Delete Command</system:String>
+    <system:String x:Key="qcItemNo">No.</system:String>
+    <system:String x:Key="qcItemDelay">Delay</system:String>
+    <system:String x:Key="qcItemCmd">Command</system:String>
     <system:String x:Key="qcButtonContent">Button Caption</system:String>
     <system:String x:Key="qcButtonCmd">Button Command</system:String>
+    <system:String x:Key="qcButtonDelay">Delay Time</system:String>
 </ResourceDictionary>

@@ -45,11 +45,18 @@ namespace BYSerial.ViewModels
                     {
                         SendTxtHistory.Add(GlobalPara.HisCfg.his[i]);
                     }
-                    //SendTxtHistory = new ObservableCollection<string>(GlobalPara.HisCfg.his);
                 }
                 else
                 {
                     GlobalPara.HisCfg.his = new List<string>();
+                }
+                FastCmdList = GlobalPara.FastCfg.FastCmds;
+                foreach(FastCmdModel fcm in  FastCmdList)
+                {
+                    if(fcm.SendCmd==null)
+                    {
+                        fcm.SendCmd = SendCommandByFast;
+                    }
                 }
                 #region
                 // SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
@@ -121,6 +128,11 @@ namespace BYSerial.ViewModels
                 ShowDonateCmd.ExecuteAction = new Action<object>(ShowDonate);
                 CheckUpdateCmd = new DelegateCommand();
                 CheckUpdateCmd.ExecuteAction = new Action<object>(CheckUpdate);
+
+                FastCmdDelCmd = new DelegateCommand();
+                FastCmdDelCmd.ExecuteAction = new Action<object>(FastCmdDel);
+                FastCmdAddCmd = new DelegateCommand();
+                FastCmdAddCmd.ExecuteAction = new Action<object>(FastCmdAdd);
                 #endregion
             }
             catch (Exception ex)
@@ -307,6 +319,8 @@ namespace BYSerial.ViewModels
                     }
                 }
                 SendCmdIsEnable = true;
+               _IsLooping = false;
+               FastSendCmdIsEnable = true;
             });
             t.ContinueWith(t => 
             { 
@@ -323,6 +337,8 @@ namespace BYSerial.ViewModels
             if(SendPara.IsLoop)
             {
                 SendCmdIsEnable = false;
+                _IsLooping = true;
+                FastSendCmdIsEnable=false;
                 SendCmdLoop();               
             }
             else
@@ -481,158 +497,158 @@ namespace BYSerial.ViewModels
             }
             return false;
         }
-        /// <summary>
-        /// 快捷命令发送
-        /// </summary>
-        /// <param name="cmdstring"></param>
-        /// <returns></returns>
-        public bool SendCommandByFast(string cmdstring)
-        {
-            try
-            {
-                string txtsend="";
-                if (SendPara.IsHex)
-                {
-                    //如果是HEX,清空命令中的空格
-                    string[] txts = cmdstring.Split(' ');
-                    string txtssend = "";
-                    for (int i = 0; i < txts.Length; i++)
-                    {
-                        txtssend += txts[i];
-                    }
-                    txtsend = txtssend;
-                }
-                else
-                {
-                    //如果是ASCII,对空格不做处理
-                    txtsend = cmdstring;
-                }
+        ///// <summary>
+        ///// 快捷命令发送
+        ///// </summary>
+        ///// <param name="cmdstring"></param>
+        ///// <returns></returns>
+        //public bool SendCommandByFast(string cmdstring)
+        //{
+        //    try
+        //    {
+        //        string txtsend="";
+        //        if (SendPara.IsHex)
+        //        {
+        //            //如果是HEX,清空命令中的空格
+        //            string[] txts = cmdstring.Split(' ');
+        //            string txtssend = "";
+        //            for (int i = 0; i < txts.Length; i++)
+        //            {
+        //                txtssend += txts[i];
+        //            }
+        //            txtsend = txtssend;
+        //        }
+        //        else
+        //        {
+        //            //如果是ASCII,对空格不做处理
+        //            txtsend = cmdstring;
+        //        }
 
-                if (SendPara.FormatSend)
-                {
-                    if (SendPara.FormatCRNL)
-                    {
-                        txtsend += "\r\n";
-                    }
-                    else if (SendPara.FormatNLCR)
-                    {
-                        txtsend += "\n\r";
-                    }
-                    else if (SendPara.FormatNewLine)
-                    {
-                        txtsend += "\r";
-                    }
-                    else if (SendPara.FormatCarReturn)
-                    {
-                        txtsend += "\n";
-                    }
-                }
-                int byteNum = 0;
+        //        if (SendPara.FormatSend)
+        //        {
+        //            if (SendPara.FormatCRNL)
+        //            {
+        //                txtsend += "\r\n";
+        //            }
+        //            else if (SendPara.FormatNLCR)
+        //            {
+        //                txtsend += "\n\r";
+        //            }
+        //            else if (SendPara.FormatNewLine)
+        //            {
+        //                txtsend += "\r";
+        //            }
+        //            else if (SendPara.FormatCarReturn)
+        //            {
+        //                txtsend += "\n";
+        //            }
+        //        }
+        //        int byteNum = 0;
 
-                if (SendPara.IsHex)
-                {
-                    txtsend = txtsend.Replace(" ", "").ToUpper(); //20220616格式化字符串
-                    if (txtsend.Length % 2 != 0)
-                    {
-                        MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零", "错误提示");
-                        return false;
-                    }
-                    byte[] btSend = new byte[1];
-                    if (SendPara.AutoCRC)
-                    {
-                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
-                        txtsend += strcrc; //20220616增加修复 自动计算CRC错误，并且不显示完整的命令字符串
-                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
-                    }
-                    else
-                    {
-                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
-                    }
-                    if (IsSerialTest == Visibility.Visible)
-                    {
-                        _serialPort.Write(btSend, 0, btSend.Length);
-                    }
-                    else
-                    {
-                        if (TcpPara.bIsTcpClient)
-                        {
-                            _TcpClient.SendAsync(btSend);
-                        }
-                        else if (TcpPara.bIsTcpServer)
-                        {
-                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], btSend);
-                        }
-                    }
-                    byteNum = btSend.Length;
+        //        if (SendPara.IsHex)
+        //        {
+        //            txtsend = txtsend.Replace(" ", "").ToUpper(); //20220616格式化字符串
+        //            if (txtsend.Length % 2 != 0)
+        //            {
+        //                MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零", "错误提示");
+        //                return false;
+        //            }
+        //            byte[] btSend = new byte[1];
+        //            if (SendPara.AutoCRC)
+        //            {
+        //                string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
+        //                txtsend += strcrc; //20220616增加修复 自动计算CRC错误，并且不显示完整的命令字符串
+        //                btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+        //            }
+        //            else
+        //            {
+        //                btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+        //            }
+        //            if (IsSerialTest == Visibility.Visible)
+        //            {
+        //                _serialPort.Write(btSend, 0, btSend.Length);
+        //            }
+        //            else
+        //            {
+        //                if (TcpPara.bIsTcpClient)
+        //                {
+        //                    _TcpClient.SendAsync(btSend);
+        //                }
+        //                else if (TcpPara.bIsTcpServer)
+        //                {
+        //                    _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], btSend);
+        //                }
+        //            }
+        //            byteNum = btSend.Length;
 
-                }
-                else if (SendPara.IsText || SendPara.IsUTF8)
-                {
-                    if (IsSerialTest == Visibility.Visible)
-                    {
-                        _serialPort.Write(txtsend);
-                    }
-                    else
-                    {
-                        if (TcpPara.bIsTcpClient)
-                        {
-                            _TcpClient.SendAsync(txtsend, SendPara.TcpTextEncoding);
-                        }
-                        else if (TcpPara.bIsTcpServer)
-                        {
-                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend, SendPara.TcpTextEncoding);
-                        }
-                    }
-                    byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
-                }
+        //        }
+        //        else if (SendPara.IsText || SendPara.IsUTF8)
+        //        {
+        //            if (IsSerialTest == Visibility.Visible)
+        //            {
+        //                _serialPort.Write(txtsend);
+        //            }
+        //            else
+        //            {
+        //                if (TcpPara.bIsTcpClient)
+        //                {
+        //                    _TcpClient.SendAsync(txtsend, SendPara.TcpTextEncoding);
+        //                }
+        //                else if (TcpPara.bIsTcpServer)
+        //                {
+        //                    _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend, SendPara.TcpTextEncoding);
+        //                }
+        //            }
+        //            byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
+        //        }
 
-                if (ReceivePara.DisplaySend)
-                {
-                    if (ReceivePara.AutoFeed)
-                    {
-                        if (SendPara.IsHex)
-                        {
-                            txtsend = txtsend.Replace(" ", "");
-                            txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
-                        }
-                        else
-                        {
-                            txtsend += "\r\n";
-                        }
-                    }
-                    if (ReceivePara.DisplayTime)
-                    {
-                        txtsend = DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
-                    }
-                    txtsend = "[SEND]" + txtsend;
-                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                        Paragraph pg = new Paragraph();
-                        pg.Margin = new Thickness(1);
-                        pg.Padding = new Thickness(0);
-                        pg.Inlines.Add(new Run(txtsend));
-                        if (DisplayPara.FormatDisColor)
-                        {
-                            pg.Foreground = DisplayPara.SendColor;
-                        }
-                        _ReciveFlowDoc.Blocks.Add(pg);
-                    }));
+        //        if (ReceivePara.DisplaySend)
+        //        {
+        //            if (ReceivePara.AutoFeed)
+        //            {
+        //                if (SendPara.IsHex)
+        //                {
+        //                    txtsend = txtsend.Replace(" ", "");
+        //                    txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
+        //                }
+        //                else
+        //                {
+        //                    txtsend += "\r\n";
+        //                }
+        //            }
+        //            if (ReceivePara.DisplayTime)
+        //            {
+        //                txtsend = DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
+        //            }
+        //            txtsend = "[SEND]" + txtsend;
+        //            App.Current.Dispatcher.BeginInvoke(new Action(() => {
+        //                Paragraph pg = new Paragraph();
+        //                pg.Margin = new Thickness(1);
+        //                pg.Padding = new Thickness(0);
+        //                pg.Inlines.Add(new Run(txtsend));
+        //                if (DisplayPara.FormatDisColor)
+        //                {
+        //                    pg.Foreground = DisplayPara.SendColor;
+        //                }
+        //                _ReciveFlowDoc.Blocks.Add(pg);
+        //            }));
 
-                    if (LogPara.SaveLogMsg)
-                    {
-                        SaveLogAsync(txtsend);
-                    }
-                }
-                _SendedBytesNum += byteNum;
-                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
-                AddSendHistory(SendTxt);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return false;
-        }
+        //            if (LogPara.SaveLogMsg)
+        //            {
+        //                SaveLogAsync(txtsend);
+        //            }
+        //        }
+        //        _SendedBytesNum += byteNum;
+        //        SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";
+        //        AddSendHistory(SendTxt);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //    return false;
+        //}
 
         #region Toolbar command
 
@@ -740,6 +756,7 @@ namespace BYSerial.ViewModels
                         IsStartCan = false;
                         IsStopCan = true;
                     }
+                    
                 }
                 else
                 {
@@ -759,9 +776,10 @@ namespace BYSerial.ViewModels
                     IsStartCan = false;
                     IsStopCan = true;
                     IsPauseCan = true;
-                    SendCmdIsEnable = true;
+                    SendCmdIsEnable = true;                    
                     PauseBtnBackColor = GlobalPara.TransparentBrush;
                 }
+                FastSendCmdIsEnable = true;
             }
             catch (Exception ex)
             {
@@ -847,6 +865,7 @@ namespace BYSerial.ViewModels
             IsStartCan = true;
             IsPauseCan = false;
             SendCmdIsEnable = false;
+            FastSendCmdIsEnable = false;
             PauseBtnBackColor = GlobalPara.TransparentBrush;
             if(IsSerialTest==Visibility.Visible)
             {
@@ -1861,6 +1880,358 @@ namespace BYSerial.ViewModels
         #endregion
 
         #region 快捷命令列表
+        private bool _IsLooping = false;
+        /// <summary>
+        /// 发送快捷指令
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        public delegate bool SendFastCmd(string cmd);
+        private bool _FastCmdIsEnable = true;
+        public bool FastCmdIsEnable
+        {
+            get { return _FastCmdIsEnable; }
+            set
+            {
+                _FastCmdIsEnable = value;
+                RaisePropertyChanged("FastCmdIsEnable");
+            }
+        }
+
+        private bool _FastSendCmdIsEnable = false;
+        public bool FastSendCmdIsEnable
+        {
+            get { return _FastSendCmdIsEnable; }
+            set
+            {
+                _FastSendCmdIsEnable = value;
+                RaisePropertyChanged("FastSendCmdIsEnable");
+            }
+        }        
+        /// <summary>
+        /// 快捷命令发送
+        /// </summary>
+        /// <param name="cmdstring"></param>
+        /// <returns></returns>
+        public bool SendCommandByFast(string cmdstring)
+        {
+            try
+            {
+                if(!FastSendCmdIsEnable)
+                {
+                    MessageBox.Show("请先打开串口","提示",MessageBoxButton.OK,MessageBoxImage.Warning);
+                    return false;
+                }
+                string txtsend = "";
+                if (SendPara.IsHex)
+                {
+                    //如果是HEX,清空命令中的空格
+                    string[] txts = cmdstring.Split(' ');
+                    string txtssend = "";
+                    for (int i = 0; i < txts.Length; i++)
+                    {
+                        txtssend += txts[i];
+                    }
+                    txtsend = txtssend;
+                }
+                else
+                {
+                    //如果是ASCII,对空格不做处理
+                    txtsend = cmdstring;
+                }
+                if (SendPara.FormatSend)
+                {
+                    if (SendPara.FormatCRNL)
+                    {
+                        txtsend += "\r\n";
+                    }
+                    else if (SendPara.FormatNLCR)
+                    {
+                        txtsend += "\n\r";
+                    }
+                    else if (SendPara.FormatNewLine)
+                    {
+                        txtsend += "\r";
+                    }
+                    else if (SendPara.FormatCarReturn)
+                    {
+                        txtsend += "\n";
+                    }
+                }
+                int byteNum = 0;
+
+                if (SendPara.IsHex)
+                {
+                    txtsend = txtsend.Replace(" ", "").ToUpper(); //20220616格式化字符串
+                    if (txtsend.Length % 2 != 0)
+                    {
+                        MessageBox.Show("输入字符长度为奇数，命令不可发送；请检查命令是否有错！\r\n一个字节至少2个字符，不足请补零", "错误提示");
+                        return false;
+                    }
+                    byte[] btSend = new byte[1];
+                    if (SendPara.AutoCRC)
+                    {
+                        string strcrc = CommonCheck.CheckCRC16Modbus(txtsend);
+                        txtsend += strcrc; //20220616增加修复 自动计算CRC错误，并且不显示完整的命令字符串
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+                    }
+                    else
+                    {
+                        btSend = Util.DataConvertUtility.HexStringToByte(txtsend);
+                    }
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(btSend, 0, btSend.Length);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(btSend);
+                        }
+                        else if (TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], btSend);
+                        }
+                    }
+                    byteNum = btSend.Length;
+
+                }
+                else if (SendPara.IsText || SendPara.IsUTF8)
+                {
+                    if (IsSerialTest == Visibility.Visible)
+                    {
+                        _serialPort.Write(txtsend);
+                    }
+                    else
+                    {
+                        if (TcpPara.bIsTcpClient)
+                        {
+                            _TcpClient.SendAsync(txtsend, SendPara.TcpTextEncoding);
+                        }
+                        else if (TcpPara.bIsTcpServer)
+                        {
+                            _TcpServer.SendAsync(TcpPara.TcpClients[TcpPara.SvrClientsIndex], txtsend, SendPara.TcpTextEncoding);
+                        }
+                    }
+                    byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
+                }
+
+                if (ReceivePara.DisplaySend)
+                {
+                    if (ReceivePara.AutoFeed)
+                    {
+                        if (SendPara.IsHex)
+                        {
+                            txtsend = txtsend.Replace(" ", "");
+                            txtsend = Util.DataConvertUtility.InsertFormat(txtsend, 2, " ") + "\r\n";
+                        }
+                        else
+                        {
+                            txtsend += "\r\n";
+                        }
+                    }
+                    if (ReceivePara.DisplayTime)
+                    {
+                        txtsend = DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
+                    }
+                    txtsend = "[SEND]" + txtsend;
+                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                        Paragraph pg = new Paragraph();
+                        pg.Margin = new Thickness(1);
+                        pg.Padding = new Thickness(0);
+                        pg.Inlines.Add(new Run(txtsend));
+                        if (DisplayPara.FormatDisColor)
+                        {
+                            pg.Foreground = DisplayPara.SendColor;
+                        }
+                        _ReciveFlowDoc.Blocks.Add(pg);
+                    }));
+
+                    if (LogPara.SaveLogMsg)
+                    {
+                        SaveLogAsync(txtsend);
+                    }
+                }
+                _SendedBytesNum += byteNum;
+                SendBytesStr = "Tx: " + _SendedBytesNum + " Bytes";                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return false;
+        }
+        private ObservableCollection<FastCmdModel> _FastCmdList = new ObservableCollection<FastCmdModel>();
+        public ObservableCollection<FastCmdModel> FastCmdList
+        {
+            get => _FastCmdList;
+            set
+            {
+                _FastCmdList = value;
+                RaisePropertyChanged("FastCmdList");
+            }
+        }
+        private int _FastCmdSelIndex = 0;
+        public int FastCmdSelIndex
+        {
+            get => _FastCmdSelIndex;
+            set
+            {
+                _FastCmdSelIndex = value;
+                RaisePropertyChanged("FastCmdSelIndex");
+                _FastCmdList[value].RowID = value;
+            }
+        }
+        private bool _FastCmdLstEnable = true;
+        public bool FastCmdLstEnable
+        {
+            get => _FastCmdLstEnable;
+            set
+            {
+                _FastCmdLstEnable = value;
+                RaisePropertyChanged("FastCmdLstEnable");
+            }
+        }
+
+        private FastCmdModel _CurSelectedFastCmdModel;
+        public FastCmdModel CurSelectedFastCmdModel
+        {
+            get => _CurSelectedFastCmdModel;
+            set
+            {
+                _CurSelectedFastCmdModel = value;
+                RaisePropertyChanged("CurSelectedFastCmdModel");
+            }
+        }
+
+        private bool _FastCmdIsCycle;
+        /// <summary>
+        /// 快捷命令循环发送
+        /// </summary>
+        public bool FastCmdIsCycle
+        {
+            get { return _FastCmdIsCycle; }
+            set
+            {
+                _FastCmdIsCycle = value;
+                RaisePropertyChanged("FastCmdIsCycle");
+            }
+        }
+
+        private bool _FastCmdIsStartSend;
+        /// <summary>
+        /// 快捷发送复选框是否选中
+        /// </summary>
+        public bool FastCmdIsStartSend
+        {
+            get { return _FastCmdIsStartSend; }
+            set
+            {
+                _FastCmdIsStartSend = value;
+                RaisePropertyChanged("FastCmdIsStartSend");
+                if (value)
+                {
+                    //开始发送快捷命令
+                    if (FastCmdIsCycle)
+                    {
+                        SendCmdIsEnable = false;
+                        _IsLooping = true;
+                        SendFastCmdLoop();
+                    }
+                    else
+                    {
+                        SendFastCmdOnce();
+                    }
+                }
+            }
+        }
+        private void SendFastCmdOnce()
+        {
+            for (int i = 0; i < _FastCmdList.Count; i++)
+            {
+                if (!FastCmdIsStartSend) break;
+                Thread.Sleep(_FastCmdList[i].DelayTime);
+                if (_FastCmdList[i].IsSelected)
+                {
+                    _FastCmdList[i].SendFastCmd(null);
+                }
+            }
+        }
+
+        private void SendFastCmdLoop()
+        {
+            Task t = new Task(() => {
+
+                while (FastCmdIsCycle)
+                {
+                    if (!FastCmdIsStartSend || !_IsLooping)
+                    {
+                        break;
+                    }
+                    for (int i = 0; i < _FastCmdList.Count; i++)
+                    {
+                        if (!FastCmdIsStartSend || !_IsLooping)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(_FastCmdList[i].DelayTime);
+                        if (_FastCmdList[i].IsSelected)
+                        {
+                            _FastCmdList[i].SendFastCmd(null);
+                        }
+                    }
+                }
+                SendCmdIsEnable = true;
+
+            });
+            t.ContinueWith(t1 =>
+            {
+                GC.Collect();
+            });  //解决线程占用
+            t.Start();
+        }
+
+        public DelegateCommand FastCmdDelCmd { get; private set; }
+        private void FastCmdDel(object para)
+        {
+            try
+            {
+                _FastCmdList.RemoveAt(FastCmdSelIndex);
+                for (int i = 0; i < _FastCmdList.Count; i++)
+                {
+                    _FastCmdList[i].CmdNum = i + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public DelegateCommand FastCmdAddCmd { get; private set; }
+        private void FastCmdAdd(object para)
+        {
+            try
+            {
+                FastCmdModel model = new FastCmdModel();
+                model.SendCmd = SendCommandByFast;
+                model.CmdNum = _FastCmdList.Count + 1;
+                model.RowID = _FastCmdList.Count;
+                model.DelayTime = 50;
+                FastCmdSet fcs = new FastCmdSet(model);
+                bool ret = (bool)fcs.ShowDialog();
+                if (ret)
+                {
+                    FastCmdList.Add(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
 
 
         #endregion

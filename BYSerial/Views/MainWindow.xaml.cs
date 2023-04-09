@@ -96,11 +96,7 @@ namespace BYSerial.Views
                             BYSerial.Util.Update.CheckUpdate();
                         }
                     });
-                }
-                for(int i=0;i<15;i++)
-                {
-                    _CmdStringLst.Add("");
-                }
+                }               
                 this.Title+= "_Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
             catch (Exception ex)
@@ -114,51 +110,23 @@ namespace BYSerial.Views
             if (!_IsLoaded) return;
             viewModel. AddHisToSendText();
         }
-        /// <summary>
-        /// 命令字符串列表
-        /// </summary>
-        private List<string> _CmdStringLst = new List<string>();
-        private void btn1_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = sender as Button;
-                if (btn == null) return;
-                int id = Convert.ToInt32(btn.Tag);
-                string cmd = _CmdStringLst[id];
-                if(cmd=="")
-                {
-                    MessageBox.Show("命令字符串为空，请先设置命令字符串", "错误提示");
-                    return;
-                }
-                viewModel.SendCommandByFast(cmd);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误提示");
-            }
-        }
+        
+       
 
-        private void btn1_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void Button_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
                 Button btn = sender as Button;
                 if (btn == null) return;
-                int id =Convert.ToInt32( btn.Tag);
+                int id = viewModel.CurSelectedFastCmdModel.RowID;
                 string caption = "";
-                if(btn.Content!=null)
+                if (btn.Content != null)
                 {
-                    caption=btn.Content.ToString();
+                    caption = btn.Content.ToString();
                 }
-                CmdButtonPara cbp=new CmdButtonPara() { CmdString = _CmdStringLst[id], Content=caption};
-                FastCmdSet fcs = new FastCmdSet(cbp);
-                bool bret=(bool) fcs.ShowDialog();
-                if(bret)
-                {
-                    _CmdStringLst[id] = fcs.CmdPara.CmdString;
-                    btn.Content = fcs.CmdPara.Content;
-                }
+                FastCmdSet fcs = new FastCmdSet(viewModel.CurSelectedFastCmdModel);
+                bool bret = (bool)fcs.ShowDialog();
             }
             catch(Exception ex)
             {

@@ -82,6 +82,8 @@
     <Compile Include="Models\AsyncClient.cs" />
     <Compile Include="Models\ChartParas.cs" />
     <Compile Include="Models\CmdButtonPara.cs" />
+    <Compile Include="Models\FastCmdModel.cs" />
+    <Compile Include="Models\FastCmdsCfg.cs" />
     <Compile Include="Models\MeasureData.cs" />
     <Compile Include="Models\MouseHook.cs" />
     <Compile Include="Models\mycfg.cs" />
@@ -241,6 +243,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="fastcmds.cfg" />
     <None Include="Resources\Modsim.lpu" />
     <None Include="Resources\modsim32.cfg" />
     <None Include="Resources\ModSim32.cnt" />
@@ -291,6 +294,10 @@
   <ItemGroup>
     <None Include="Resources\Modbusl.dll" />
     <None Include="Resources\ModSim32.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\minus.png" />
+    <Resource Include="Assets\plus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

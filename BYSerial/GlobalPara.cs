@@ -26,9 +26,11 @@ namespace BYSerial
        
         public static mycfg MyCfg = new mycfg();
         public static hiscfg HisCfg = new hiscfg();
+        public static FastCmdsCfg FastCfg = new FastCmdsCfg();
 
         private static string _cfgfile = "my.cfg";
         private static string _hisfile = "his.cfg";
+        private static string _cmdfile = "fastcmds.cfg";
         /// <summary>
         /// 曲线显示参数
         /// </summary>
@@ -61,6 +63,10 @@ namespace BYSerial
                 {
                     HisCfg=JSONHelper.DeserializeJsonToObject<hiscfg>(File.ReadAllText(_hisfile));
                 }
+                if(File.Exists (_cmdfile))
+                {
+                    FastCfg=JSONHelper.DeserializeJsonToObject<FastCmdsCfg>(File.ReadAllText(_cmdfile));
+                }
                             
             }
             catch(Exception ex)
@@ -82,6 +88,8 @@ namespace BYSerial
                 File.WriteAllText(_cfgfile, txt);
                 txt=JSONHelper.SerializeObject(HisCfg);
                 File.WriteAllText(_hisfile, txt);
+                txt=JSONHelper.SerializeObject(FastCfg);
+                File.WriteAllText(_cmdfile, txt);
             }
             catch(Exception ex)
             {

@@ -20,25 +20,31 @@ namespace BYSerial.Views
     /// </summary>
     public partial class FastCmdSet : Window
     {
-        public CmdButtonPara CmdPara { get; set; }=new CmdButtonPara();
-        public FastCmdSet(CmdButtonPara para)
+        public FastCmdModel CmdPara { get; set; }=new FastCmdModel();
+        public FastCmdSet(FastCmdModel para)
         {
             InitializeComponent();
-            txtCaption.Text=para.Content;
+            txtCaption.Text=para.Remark;
             txtCmd.Text = para.CmdString;
+            txtDelay.Text = para.DelayTime.ToString();
+            CmdPara=para;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             string txt=txtCaption.Text.Trim();
             string cmd=txtCmd.Text.Trim();
-            if(txt=="" ||cmd=="")
+            string delay=txtDelay.Text.Trim();
+            if(txt=="" ||cmd=="" || delay=="")
             {
                 MessageBox.Show("两参数均不可为空", "提示");
                 return;
             }
-            CmdPara.Content=txt;
+            CmdPara.Remark =txt;
             CmdPara.CmdString = cmd;
+            int ide = 0;
+            int.TryParse(delay, out ide);
+            CmdPara.DelayTime=ide;
             this.DialogResult = true;
         }
 

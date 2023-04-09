@@ -13,7 +13,52 @@
         Closing="Window_Closing"
         Loaded="Window_Loaded"
         >
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="AddButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{StaticResource PrimaryBrush}" Name="back" CornerRadius="3" Padding="3">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          TextBlock.Foreground="White" Margin="5,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#cc3269de" TargetName="back"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="CmdListTemplate">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>                    
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text=" s" VerticalAlignment="Center" FontSize="10"
+                           ToolTip="{DynamicResource qcSelTip}"/>
+                <CheckBox Content="{Binding CmdNumStr}" Grid.Column="1"
+                        IsChecked="{Binding Path=IsSelected}" 
+                        FontSize="15" Margin="2"                                  
+                        />
+                <TextBlock Grid.Column="2" Text="{Binding DelayTime}" VerticalAlignment="Center" FontSize="15"/>
+                <Button Grid.Column="3"
+                    Content="{Binding Remark}"                                      
+                    Style="{StaticResource AddButtonStyle}"
+                    Command="{Binding SendFastCmdCmd}"
+                    ToolTip="{DynamicResource qcCmdTip}"
+                    HorizontalAlignment="Stretch"                        
+                    PreviewMouseRightButtonUp="Button_PreviewMouseRightButtonUp"
+                    />
 
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
     <Grid Margin="2">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -62,10 +107,10 @@
                     Header="{DynamicResource menuAbout}" 
                     Command="{Binding ShowAboutCmd}"
                     />
+                <Separator/>
                 <MenuItem Header="{DynamicResource menuDoc}" 
                           Command="{Binding ShowHelpCmd}"
-                          />
-                <Separator/>
+                          />                
             </MenuItem>
             <MenuItem Header="{DynamicResource menuLanguage}" Name="LanguageMenu">
                 <MenuItem Name="ChineseMenu" 
@@ -418,8 +463,8 @@
             </Grid>
             <Expander DockPanel.Dock="Right" Margin="2,2,0,0"
                       ExpandDirection="Right" Header="{DynamicResource quickCmdList}"
-                      IsExpanded="False">
-                <Grid IsEnabled="{Binding SendCmdIsEnable}">
+                      IsExpanded="False" IsEnabled="{Binding FastCmdIsEnable}">
+                <!--<Grid IsEnabled="{Binding SendCmdIsEnable}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="40"/>
@@ -626,6 +671,130 @@
                         Click="btn1_Click"
                         PreviewMouseRightButtonUp="btn1_PreviewMouseRightButtonUp"
                         />
+                </Grid>-->
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{DynamicResource quickCmdList}" Foreground="White" Background="{StaticResource PrimaryBrush}"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               FontSize="15" FontWeight="Bold"
+                               />
+                    <TextBlock Text="{DynamicResource quickTip}" Foreground="Red" 
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               FontSize="10" FontWeight="Bold"
+                               Grid.Row="1" TextWrapping="Wrap"
+                               />
+                    <Border Grid.Row="2" Margin="5" 
+                        BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1">
+                        <Grid TextElement.FontSize="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text=" "
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{DynamicResource qcItemNo}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{DynamicResource qcItemDelay}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="{DynamicResource qcItemCmd}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <ListBox Grid.Row="1" Grid.ColumnSpan="4"
+                                     ItemsSource="{Binding FastCmdList}"
+                                     ItemTemplate="{StaticResource CmdListTemplate }"
+                                     SelectedIndex="{Binding FastCmdSelIndex}"
+                                     SelectedItem="{Binding CurSelectedFastCmdModel}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="1"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>
+                        <!--<DataGrid  TextElement.FontSize="15"
+                            Style="{StaticResource DataGridStyle}" 
+                            ItemsSource="{Binding FastCmdList}"
+                            SelectedIndex="{Binding FastCmdSelIndex}"
+                            CanUserSortColumns="False"
+                            >
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="编号"  Width="80" MinWidth="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"
+                                                  Content="{Binding CmdNum}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="延迟" Width="auto" MinWidth="80"
+                                    Binding="{Binding DelayTime}" Visibility="Collapsed"/>
+                                <DataGridTextColumn Header="数据" Width="Auto" MinWidth="110"
+                                    Binding="{Binding CmdString}" Visibility="Collapsed"/>
+                                <DataGridTemplateColumn Header="备注"  Width="auto" MinWidth="110">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate >
+                                            <Button Content="{Binding Remark}"                                      
+                                                  Style="{StaticResource AddButtonStyle}"
+                                                  Command="{Binding SendFastCmdCmd}"
+                                                  HorizontalAlignment="Stretch"  />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>-->
+                    </Border>
+
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" ToolTip="{DynamicResource qcAddCmd}" Padding="0"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Command="{Binding FastCmdAddCmd}" Margin="4,0"
+                                Background="Transparent" 
+                                >
+                            <Image Source="/Assets/plus.png"/>
+                        </Button>
+                        <Button Grid.Column="1" ToolTip="{DynamicResource qcDelCmd}" Padding="2"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Command="{Binding FastCmdDelCmd}" Margin="4,0,4,0"
+                                Background="Transparent"
+                                >
+                            <Image Source="/Assets/minus.png"/>
+                        </Button>
+                        <CheckBox Grid.Column="3" Content="{DynamicResource qcCycleMode}"
+                                  IsChecked="{Binding FastCmdIsCycle}"
+                                  FontSize="15"
+                                  ToolTip="{DynamicResource qcCycleTip}"
+                                  />
+                        <CheckBox Grid.Column="4" Content="{DynamicResource qcStartSend}"
+                                  IsChecked="{Binding FastCmdIsStartSend}"  
+                                  IsEnabled="{Binding FastSendCmdIsEnable}"
+                                  FontSize="15"
+                                  />
+                    </Grid>
                 </Grid>
             </Expander>           
             <Grid  Margin="5,2,0,0">
