@@ -865,7 +865,8 @@ namespace BYSerial.ViewModels
             IsStartCan = true;
             IsPauseCan = false;
             SendCmdIsEnable = false;
-            FastSendCmdIsEnable = false;
+            FastCmdIsStartSend = false;
+            FastSendCmdIsEnable = false;            
             PauseBtnBackColor = GlobalPara.TransparentBrush;
             if(IsSerialTest==Visibility.Visible)
             {
@@ -1919,7 +1920,7 @@ namespace BYSerial.ViewModels
             {
                 if(!FastSendCmdIsEnable)
                 {
-                    MessageBox.Show("请先打开串口","提示",MessageBoxButton.OK,MessageBoxImage.Warning);
+                   // MessageBox.Show("请先打开串口","提示",MessageBoxButton.OK,MessageBoxImage.Warning);
                     return false;
                 }
                 string txtsend = "";
@@ -2166,13 +2167,13 @@ namespace BYSerial.ViewModels
 
                 while (FastCmdIsCycle)
                 {
-                    if (!FastCmdIsStartSend || !_IsLooping)
+                    if (!FastCmdIsStartSend || !_IsLooping ||!IsStopCan)
                     {
                         break;
                     }
                     for (int i = 0; i < _FastCmdList.Count; i++)
                     {
-                        if (!FastCmdIsStartSend || !_IsLooping)
+                        if (!FastCmdIsStartSend || !_IsLooping || !IsStopCan)
                         {
                             break;
                         }
