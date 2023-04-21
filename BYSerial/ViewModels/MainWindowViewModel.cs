@@ -281,14 +281,14 @@ namespace BYSerial.ViewModels
             //添加TCP项
             SerialPortList.Add("TCP");
             PortNameIndex = 0;
-            if ((PortNameIndex == SerialPortList.Count - 1) && SendPara.IsText)
-            {
-                SendPara.EncodingVisual = Visibility.Visible;
-            }
-            else
-            {
-                SendPara.EncodingVisual = Visibility.Hidden;
-            }
+            //if ((PortNameIndex == SerialPortList.Count - 1) && SendPara.IsText)
+            //{
+            //    SendPara.EncodingVisual = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    SendPara.EncodingVisual = Visibility.Hidden;
+            //}
         }
         private void BackDetectSerialPortChange()
         {
@@ -434,7 +434,9 @@ namespace BYSerial.ViewModels
                 {
                     if (IsSerialTest == Visibility.Visible)
                     {
-                        _serialPort.Write(txtsend);
+                        //使串口支持中文。
+                        byte[] bts=SendPara.TcpTextEncoding.GetBytes(txtsend);
+                        _serialPort.Write(bts,0,bts.Length);
                     }
                     else
                     {
@@ -922,7 +924,8 @@ namespace BYSerial.ViewModels
                 }
                 else
                 {
-                    receivestr = Encoding.ASCII.GetString(bytes); 
+                    //使串口通讯支持中文20230421
+                    receivestr = ReceivePara.TcpTextEncoding.GetString(bytes); // Encoding.ASCII.GetString(bytes); 
                 }
                 AddDataToChart(receivestr);
                 if (ReceivePara.AutoFeed)
@@ -999,22 +1002,22 @@ namespace BYSerial.ViewModels
                 if (value == (SerialPortList.Count - 1))
                 {
                     IsSerialTest = Visibility.Collapsed;
-                    if ((PortNameIndex == SerialPortList.Count - 1))
-                    {
-                        SendPara.EncodingVisual = Visibility.Visible;
-                        ReceivePara.EncodingVisual = Visibility.Visible;
-                    }
-                    else
-                    {
-                        SendPara.EncodingVisual = Visibility.Hidden;
-                        ReceivePara.EncodingVisual = Visibility.Hidden;
-                    }
+                    //if ((PortNameIndex == SerialPortList.Count - 1))
+                    //{
+                    //    SendPara.EncodingVisual = Visibility.Visible;
+                    //    ReceivePara.EncodingVisual = Visibility.Visible;
+                    //}
+                    //else
+                    //{
+                    //    SendPara.EncodingVisual = Visibility.Hidden;
+                    //    ReceivePara.EncodingVisual = Visibility.Hidden;
+                    //}
                 }
                 else
                 {
                     IsSerialTest = Visibility.Visible;
-                    SendPara.EncodingVisual = Visibility.Hidden;
-                    ReceivePara.EncodingVisual = Visibility.Hidden;
+                    //SendPara.EncodingVisual = Visibility.Hidden;
+                    //ReceivePara.EncodingVisual = Visibility.Hidden;
                 }
             }
         }
@@ -2002,7 +2005,10 @@ namespace BYSerial.ViewModels
                 {
                     if (IsSerialTest == Visibility.Visible)
                     {
-                        _serialPort.Write(txtsend);
+                        //使串口支持中文。
+                        byte[] bts = SendPara.TcpTextEncoding.GetBytes(txtsend);
+                        _serialPort.Write(bts, 0, bts.Length);
+                        //_serialPort.Write(txtsend);
                     }
                     else
                     {

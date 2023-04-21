@@ -809,14 +809,15 @@
                 </Grid.ColumnDefinitions>
 
                 <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
-						VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                         Padding="5,0" IsReadOnly="True"
-                         Name="txtRich"
-                         TextChanged="txtRich_TextChanged">
+						VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+						VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        Padding="5,0" IsReadOnly="True"
+                        Name="txtRich"
+                        TextChanged="txtRich_TextChanged">
                     <FlowDocument Name="fdReceive"                                  
-                                  />
+                                 />
                 </RichTextBox>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
 						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"

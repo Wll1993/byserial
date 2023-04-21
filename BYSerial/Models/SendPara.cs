@@ -41,7 +41,7 @@ namespace BYSerial.Models
                 }               
             }
         }
-        private Visibility _EncodingVisual = Visibility.Hidden;
+        private Visibility _EncodingVisual = Visibility.Visible;
         /// <summary>
         /// TCP 字符串传输时，是否显示编码选项
         /// </summary>
