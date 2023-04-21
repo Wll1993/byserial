@@ -29,7 +29,8 @@ LiveCharts https://v0.lvcharts.com/
 ![](Img/y.png)
 ![](Img/Lf.png)
 ![](Img/顧.png)
-<a href="https://github.com/KafuuHiro/" target="_blank"><img style="border-radius:50%!important" width="66px" alt="bigorange1900" src="https://avatars.githubusercontent.com/u/72692121?v=4)"></a> 
+[![](Img/KafuuHiro.png)](https://github.com/KafuuHiro/)
+
   
 界面
 ----
