@@ -77,7 +77,8 @@ namespace BYSerial.ViewModels
                 LogPara = GlobalPara.LogPara;
                 DisplayPara = GlobalPara.DisplayPara;
                 ChangeLang(GlobalPara.MyCfg.Language);
-                UpdateSerialPortList();
+                BackDetectSerialPortChange();
+                //UpdateSerialPortList();
 
                 #region 命令绑定
                 OnSendCommand = new DelegateCommand();
@@ -276,11 +277,25 @@ namespace BYSerial.ViewModels
         /// 更新串口列表
         /// </summary>
         private void UpdateSerialPortList()
-        { 
-            SerialPortList= new ObservableCollection<string>(SerialPort.GetPortNames().ToList());
-            //添加TCP项
-            SerialPortList.Add("TCP");
-            PortNameIndex = 0;
+        {
+
+
+            ObservableCollection<string> coms = new ObservableCollection<string>(SerialPort.GetPortNames());
+            coms.Add("TCP");
+            bool bIsEqual = coms.SequenceEqual(SerialPortList);
+            if(!bIsEqual)
+            {
+                SerialPortList = new ObservableCollection<string>(SerialPort.GetPortNames());
+                SerialPortList.Add("TCP");
+                if (SerialPortList.Count == 1)
+                {
+                    PortNameIndex = 0;
+                }
+                else if(SerialPortList.Count >= 2) 
+                {
+                    PortNameIndex = SerialPortList.Count-2;  //自动定位到新添加的串口号
+                }
+            }
             //if ((PortNameIndex == SerialPortList.Count - 1) && SendPara.IsText)
             //{
             //    SendPara.EncodingVisual = Visibility.Visible;
@@ -298,7 +313,7 @@ namespace BYSerial.ViewModels
                 {
                     if (!IsStartCan)
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(200);
                         continue;
                     }                        
                     Thread.Sleep(500);                    
@@ -989,7 +1004,7 @@ namespace BYSerial.ViewModels
                 this.RaisePropertyChanged("SerialPortList");
             }
         }
-
+       
         private int _PortNameIndex = 0;
 
         public int PortNameIndex
@@ -998,7 +1013,7 @@ namespace BYSerial.ViewModels
             set
             {
                 _PortNameIndex = value;
-                this.RaisePropertyChanged("PortNameIndex");
+                this.RaisePropertyChanged("PortNameIndex");                
                 if (value == (SerialPortList.Count - 1))
                 {
                     IsSerialTest = Visibility.Collapsed;
