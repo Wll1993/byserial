@@ -1,0 +1,85 @@
+﻿<Window x:Class="IoTClientDeskTop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IoTClientDeskTop"
+        xmlns:Controls="clr-namespace:IoTClientDeskTop.Controls"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Icon="/Assets/logo.png"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
+        Title="工控通讯调试工具"  MinHeight="750" MinWidth="950"
+        Height="750" Width="800">
+    <Grid Margin="2">
+        
+        <hc:TabControl 
+            Name="tabctrl"
+            TabStripPlacement="Left"
+            SelectionChanged="tabctrl_SelectionChanged"
+            Style="{StaticResource TabControlCapsuleSolid}">
+            <hc:TabItem Header="ModbusTcp" FontSize="15">
+                <Controls:ModbusTcpControl/>
+            </hc:TabItem>
+            <hc:TabItem Header="ModbusRtu" FontSize="15">
+                <Controls:ModbusRtuControl/>
+            </hc:TabItem>
+            <hc:TabItem Header="ModbusAscii" FontSize="15">
+                <Controls:ModbusAsciiControl/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-200" FontSize="15">
+                <ContentControl Name="cctrl_s7200"/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-200Smart" FontSize="15">
+                <ContentControl Name="cctrl_s7200smart"/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-300" FontSize="15">
+                <ContentControl Name="cctrl_s7300"/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-400" FontSize="15">
+                <ContentControl Name="cctrl_s7400"/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-1200" FontSize="15">
+                <ContentControl Name="cctrl_s71200"/>
+            </hc:TabItem>
+            <hc:TabItem Header="S7-1500" FontSize="15">
+                <ContentControl Name="cctrl_s71500"/>
+            </hc:TabItem>
+            <hc:TabItem Header="三菱MC Qna-3E" FontSize="15">
+                <ContentControl Name="cctrl_mcqna3e"/>
+            </hc:TabItem>
+            <hc:TabItem Header="三菱MC A-1E" FontSize="15">
+                <ContentControl Name="cctrl_mca1e"/>
+            </hc:TabItem>
+            <hc:TabItem Header="欧姆龙Fins" FontSize="15">
+                <Controls:OmronFinsTcpControl/>
+            </hc:TabItem>
+            <hc:TabItem Header="罗克韦尔CIP" FontSize="15">
+                <Controls:AllenBradleyControl/>
+            </hc:TabItem>
+            <hc:TabItem Header="BACnet" FontSize="15">
+                <Controls:BACnetControl Margin="5,0"/>
+            </hc:TabItem>
+            <hc:TabItem Header="MQTT" FontSize="15">
+                <Controls:MQTTControl/>
+            </hc:TabItem>
+        </hc:TabControl>
+        <!--<StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="5" >
+            <Button Name="btnAbout"
+                Style="{StaticResource ButtonPrimary}"                               
+                Content="关于"
+                Click="btnAbout_Click"
+                />
+            <Button Name="btnDonate" Margin="10,0,0,0"
+                Style="{StaticResource ButtonPrimary}"                               
+                Content="捐赠"
+                Click="btnDonate_Click"
+                />
+        </StackPanel>-->
+        
+    </Grid>
+</Window>

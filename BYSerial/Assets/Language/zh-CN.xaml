@@ -11,8 +11,10 @@
     <system:String x:Key="menuChartShow">显示曲线</system:String>
     <system:String x:Key="menuChartParaSet">曲线参数设置</system:String>
     <system:String x:Key="menuModbus">Modbus</system:String>
+    <system:String x:Key="menuIOTTool">工控工具</system:String>
     <system:String x:Key="menuHelp">帮助</system:String>
     <system:String x:Key="menuDoc">帮助文档</system:String>
+    <system:String x:Key="menuQuestion">提问</system:String>
     <system:String x:Key="menuAbout">关于</system:String>
     <system:String x:Key="menuLanguage">语言</system:String>
     <system:String x:Key="menuCh">简体中文</system:String>
@@ -52,7 +54,7 @@
     <system:String x:Key="btnApply">应用</system:String>
     <system:String x:Key="donTitle">捐助</system:String>
     <system:String x:Key="donSupport">支持BYSerial</system:String>
-    <system:String x:Key="donTip1">BYSerial是免费软件，可以免费下载。捐款完全是自愿的。如果你喜欢这个软件，请考虑捐赠。</system:String>
+    <system:String x:Key="donTip1">BYSerial是免费软件。捐款是完全自愿的。如果你喜欢这个软件，欢迎捐赠。</system:String>
     <system:String x:Key="donTip2">注：捐款时，请在备注中写下您的昵称，昵称将在本项目的Git仓库中公布。</system:String>
     <system:String x:Key="donChan">捐助通道</system:String>
     <system:String x:Key="donAlipay">支付宝</system:String>

@@ -7,7 +7,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-		Icon="/Assets/yinyang_64.png"
+		Icon="/Assets/logo.png"
 		Width="550" Height="350"
         Name="OptWindow"
         Title="{StaticResource optOption}"

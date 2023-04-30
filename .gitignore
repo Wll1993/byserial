@@ -3,5 +3,6 @@
 BYSerial/bin
 BYSerial/obj
 .vs
-
+IoTClient/bin
+IoTClient/obj
 

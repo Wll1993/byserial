@@ -43,9 +43,11 @@ namespace BYSerial
         {            
             try
             {
-                if(File.Exists(_cfgfile))
+                string path = Path.Combine(System.Windows.Forms.Application.StartupPath, _cfgfile);
+                
+                if (File.Exists(path))
                 {
-                    MyCfg=JSONHelper.DeserializeJsonToObject<mycfg>(File.ReadAllText(_cfgfile));                    
+                    MyCfg=JSONHelper.DeserializeJsonToObject<mycfg>(File.ReadAllText(path));                    
                     if(MyCfg!=null)
                     {
                         LogPara.FileName = MyCfg.LogPath;
@@ -59,13 +61,15 @@ namespace BYSerial
                     }
                     
                 }
-                if(File.Exists(_hisfile))
+                path = Path.Combine(System.Windows.Forms.Application.StartupPath, _hisfile);
+                if (File.Exists(path))
                 {
-                    HisCfg=JSONHelper.DeserializeJsonToObject<hiscfg>(File.ReadAllText(_hisfile));
+                    HisCfg=JSONHelper.DeserializeJsonToObject<hiscfg>(File.ReadAllText(path));
                 }
-                if(File.Exists (_cmdfile))
+                path = Path.Combine(System.Windows.Forms.Application.StartupPath, _cmdfile);
+                if (File.Exists (path))
                 {
-                    FastCfg=JSONHelper.DeserializeJsonToObject<FastCmdsCfg>(File.ReadAllText(_cmdfile));
+                    FastCfg=JSONHelper.DeserializeJsonToObject<FastCmdsCfg>(File.ReadAllText(path));
                 }
                             
             }
@@ -79,17 +83,23 @@ namespace BYSerial
         {
              try
             {
+                string path=Path.Combine(System.Windows.Forms.Application.StartupPath, "bycfg");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
                 MyCfg.LogPath = LogPara.FileName;
                 MyCfg.FormatDisColor=DisplayPara.FormatDisColor;
                 MyCfg.SendColor=DisplayPara.SendColor.ToString();
                 MyCfg.RecColor=DisplayPara.ReceiveColor.ToString();
                 MyCfg.CheckUpdate = IsCheckUpdate;
                 string txt=JSONHelper.SerializeObject(MyCfg);
-                File.WriteAllText(_cfgfile, txt);
+
+                File.WriteAllText(Path.Combine(path,_cfgfile), txt);
                 txt=JSONHelper.SerializeObject(HisCfg);
-                File.WriteAllText(_hisfile, txt);
+                File.WriteAllText(Path.Combine(path, _hisfile), txt);
                 txt=JSONHelper.SerializeObject(FastCfg);
-                File.WriteAllText(_cmdfile, txt);
+                File.WriteAllText(Path.Combine(path, _cmdfile), txt);
             }
             catch(Exception ex)
             {

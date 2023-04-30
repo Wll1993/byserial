@@ -121,8 +121,12 @@ namespace BYSerial.ViewModels
                 ShowChartParasCmd.ExecuteAction = new Action<object>(ShowChartParas);
                 ShowModbusCmd=new DelegateCommand();
                 ShowModbusCmd.ExecuteAction= new Action<object>(ShowModbus);
+                ShowIOTToolCmd = new DelegateCommand();
+                ShowIOTToolCmd.ExecuteAction = new Action<object>(ShowIOTTool);
                 ShowHelpCmd = new DelegateCommand();
                 ShowHelpCmd.ExecuteAction = new Action<object>(ShowHelp);
+                ShowQuestionCmd=new DelegateCommand();
+                ShowQuestionCmd.ExecuteAction = new Action<object>(ShowQuestion);
                 ShowAboutCmd = new DelegateCommand();
                 ShowAboutCmd.ExecuteAction = new Action<object>(ShowAbout);
                 ShowDonateCmd = new DelegateCommand();
@@ -162,8 +166,10 @@ namespace BYSerial.ViewModels
         public DelegateCommand ShowScreenColorCmd { get;private set; }
         private void ShowScreenColor(object para)
         {
-            ScreenColorPicker window=new ScreenColorPicker();
+            ScreenColorPicker window = new ScreenColorPicker();
             window.Show();
+            //ColorPickerWin window = new ColorPickerWin();
+            //window.Show();
         }
 
         public DelegateCommand ShowAsciiCmd { get; private set; }
@@ -189,13 +195,19 @@ namespace BYSerial.ViewModels
         {
             try
             {
-                string html = "https://blog.csdn.net/lvyiwuhen/article/details/124414792";
+                string html = "https://gitee.com/LvYiWuHen/byserial";
                 Util.FileTool.OpenWebWithUrl(html);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        public DelegateCommand ShowQuestionCmd{get;private set; }
+        private void ShowQuestion(object para)
+        {
+            string html = "https://gitee.com/LvYiWuHen/byserial/issues";
+            Util.FileTool.OpenWebWithUrl(html);
         }
 
         public DelegateCommand ShowAboutCmd { get; private set; }
@@ -267,6 +279,27 @@ namespace BYSerial.ViewModels
                 {
                     GlobalPara.MyCfg.Language = "zh-CN";
                 }
+            }
+        }
+
+        private bool _MenuModbusIsEnable = true;
+
+        public bool MenuModbusIsEnable
+        {
+            get { return _MenuModbusIsEnable; }
+            set { _MenuModbusIsEnable = value;
+                RaisePropertyChanged();
+            }
+        }
+        private bool _MenuIOTToolIsEnable = true;
+
+        public bool MenuIOTToolIsEnable
+        {
+            get { return _MenuIOTToolIsEnable; }
+            set
+            {
+                _MenuIOTToolIsEnable = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -797,6 +830,8 @@ namespace BYSerial.ViewModels
                     PauseBtnBackColor = GlobalPara.TransparentBrush;
                 }
                 FastSendCmdIsEnable = true;
+                MenuIOTToolIsEnable = false;
+                MenuModbusIsEnable = false;
             }
             catch (Exception ex)
             {
@@ -883,7 +918,9 @@ namespace BYSerial.ViewModels
             IsPauseCan = false;
             SendCmdIsEnable = false;
             FastCmdIsStartSend = false;
-            FastSendCmdIsEnable = false;            
+            FastSendCmdIsEnable = false;
+            MenuIOTToolIsEnable = true;
+            MenuModbusIsEnable = true;
             PauseBtnBackColor = GlobalPara.TransparentBrush;
             if(IsSerialTest==Visibility.Visible)
             {
@@ -1838,7 +1875,12 @@ namespace BYSerial.ViewModels
         #endregion
 
         #region modbus
-
+        public DelegateCommand ShowIOTToolCmd { get; private set; }
+        private void ShowIOTTool(object para)
+        {
+            IoTClientDeskTop.MainWindow window = new IoTClientDeskTop.MainWindow();
+            window.ShowDialog();
+        }
         public DelegateCommand ShowModbusCmd { get; private set; }
         private void ShowModbus(object para)
         {

@@ -43,7 +43,7 @@
             </Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <TextBlock Text="RGB:" FontSize="20" VerticalAlignment="Center"/>
+            <TextBlock Text="ARGB:" FontSize="20" VerticalAlignment="Center"/>
             <TextBox Name="txtRGB" Width="140" Margin="5"
                      IsReadOnly="True"
                      VerticalContentAlignment="Center"/>

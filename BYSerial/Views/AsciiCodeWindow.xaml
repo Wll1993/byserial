@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Width="500" Height="350"
         WindowStartupLocation="CenterScreen"
-		Icon="/Assets/yinyang_64.png"
+		Icon="/Assets/logo.png"
         Title="{StaticResource asciiTitle}"
         
         >

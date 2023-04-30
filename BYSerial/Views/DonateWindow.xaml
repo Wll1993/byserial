@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BYSerial.Views"
         mc:Ignorable="d"
-        Height="450" Width="500"
+        Height="500" Width="500"
         WindowStartupLocation="CenterScreen"
-		Icon="/Assets/yinyang_64.png"
+		Icon="/Assets/logo.png"
         Title="{DynamicResource donTitle}"
         ResizeMode="NoResize"
         >
@@ -25,7 +25,8 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Support BYSerial" FontWeight="Bold" Margin="10,0"/>
+        <TextBlock Text="Support BYSerial" 
+                   FontWeight="Bold" Margin="10,0"/>
 
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="10,0" TextWrapping="Wrap" Foreground="Chocolate"
 				   Text="{DynamicResource donTip1}" />

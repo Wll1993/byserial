@@ -9,7 +9,9 @@ BYSerial
 - 提供了编译好的版本，既可以参考源码编写自己的程序，又可以直接试用此工具。
 - 如果您有任何问题，请在Issues发布，我将在方便的时候处理。谢谢你的使用。
 - 欢迎提出想要的常用功能，方便的话，将添加上去。  
-- 如果感兴趣，欢迎Watch和Star。  
+- 如果感兴趣，欢迎Watch和Star。 
+- 开发工具：Visual Studio 2022  
+- QQ交流群 750923887
   
 ## 系统环境  
 
@@ -36,6 +38,8 @@ LiveCharts https://v0.lvcharts.com/
 ----
 ![](Img/main_ch2.png)    
 ![](Img/main_ch.png)    
+![](Img/工控工具.png)    
+![](Img/实时曲线.png)    
 ![](Img/toolbox.png)    
 ![](Img/toolbox2.png)    
 ![](Img/ascii.png)    
@@ -43,7 +47,7 @@ LiveCharts https://v0.lvcharts.com/
 ![](Img/opt2.png)    
 ![](Img/opt3.png)    
 ![](Img/opt4.png)    
-
+ 
 ## 功能介绍
 
 ### 已实现功能  
@@ -53,7 +57,10 @@ LiveCharts https://v0.lvcharts.com/
 4.支持中英文双语切换  
 5.自动检查版本更新  
 6.支持添加自定义快捷命令  
-7.支持ModbusRTU/ModbusAscii/ModbusTCP调试  
+7.支持ModbusRTU/ModbusAscii/ModbusTCP调试 
+8.支持西门子/三菱/欧姆龙/罗克韦尔PLC通讯调试
+9.支持MQTT客户端，BACNet调试。
+10.支持串口接收数据曲线显示。
   
 ### 串口通讯详细功能：  
 1.手动检测串口设备的增减  
@@ -94,7 +101,33 @@ LiveCharts https://v0.lvcharts.com/
 对于调试时，常用的命令可以在此处设置，方便快速调试  
 
 ## ModbusRTU/ModbusAscii/ModbusTCP调试  
-暂时嵌入第三方Modbus调试工具，后期再用C#重新实现一遍  
+PLC、MQTT、BACNet等在工控工具界面中。  
+
+## 关于Siemens的PLC地址
+```
+VB263、VW263、VD263中的B、W、D分别表示：byte型(8位)、word型(16位)、doubleword型(32位)。
+
+在本组件传入地址的时候不需要带数据类型，直接使用对应方法读取对应类型即可，如：
+VB263       - V263
+VD263       - V263
+VD263       - V263
+DB108.DBW4  - DB108.4
+DB1.DBX0.0  - DB1.0.0
+DB1.DBD0    - DB1.0
+```
+|C#数据类型 | smart200 | 1200/1500/300
+|---|---|---
+|bit | V1.0 | DB1.DBX1.0
+|byte | VB1 | DB1.DBB1
+|shor <br> ushort  | VW2 | DB1.DBW2
+|int <br> uint <br> float | VD4 | DB1.DBD4
+
+## 曲线图表功能使用
+先进行曲线设置，然后再打开曲线显示界面，只支持单数据采集。  
+![](Img/曲线设置.png)    
+HEX行 [起始序号] 为数据在返回的HEX字符串中的位置，序号从0开始，字节顺序为对应数据类型中字节解码顺序，注意字节顺序要和前面的数据类型相匹配，否则无法解析。  
+ASCII行 [起始序号]和[字符长度]截取需要的一个数值，序号从0开始。  
+
 
 ## 相关开源项目  
 跨平台（linux/windows)串口通讯源码开源连接  

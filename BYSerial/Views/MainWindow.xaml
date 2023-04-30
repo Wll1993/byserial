@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BYSerial"        
         xmlns:hc="https://handyorg.github.io/handycontrol"        
         mc:Ignorable="d"
-        Icon="/Assets/yinyang_32.png"
+        Icon="/Assets/logo.png"
         Title="BYSerial" MinHeight="750" MinWidth="800"
         Height="750" Width="800"
         WindowStartupLocation="CenterScreen"
@@ -66,71 +66,91 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>       
-        <Menu Background="LightGray">
-            <MenuItem Header="{DynamicResource menuTool}" >
+        <Menu Background="{DynamicResource PrimaryBrush}">
+            <MenuItem Header="{DynamicResource menuTool}" Foreground="White" >
+                
                 <MenuItem 
                     Header="{DynamicResource menuToolBox}" 
-                    Name="ToolBoxMenu" 
-                    Command="{Binding ShowToolBoxCmd}"
+                    Name="ToolBoxMenu"
+                    Command="{Binding ShowToolBoxCmd}"                    
                     />
                 <MenuItem 
                     Header="{DynamicResource menuAscii}" 
                     Name="AsciiCodeMenu" 
-                    Command="{Binding ShowAsciiCmd}"/>
+                    Command="{Binding ShowAsciiCmd}"
+                    />
                 <MenuItem 
                     Header="{DynamicResource menuColors}" 
                     Name="ColorsMenu" 
-                    Command="{Binding ShowColorsCmd}"/>
+                    Command="{Binding ShowColorsCmd}"
+                    />
                 <Separator/>
                 <MenuItem 
                     Header="{DynamicResource menuScreenColor}"                    
-                    Command="{Binding ShowScreenColorCmd}"/>
+                    Command="{Binding ShowScreenColorCmd}"
+                    />
                 <Separator/>
                 <MenuItem 
                     Name="OptionsMenu" 
                     Header="{DynamicResource menuOptions}" 
                     Command="{Binding ShowOptionsCmd}"
+                   
                     />
             </MenuItem>
-            <MenuItem Header="{DynamicResource menuChart}">
+            <MenuItem Header="{DynamicResource menuChart}"  Foreground="White">
                 <MenuItem Header="{DynamicResource menuChartParaSet}"
-                          Command="{Binding ShowChartParasCmd}"/>
+                          Command="{Binding ShowChartParasCmd}"
+                          />
                 <MenuItem Header="{DynamicResource menuChartShow}"
-                          Command="{Binding ShowChartShowCmd}"/>
+                          Command="{Binding ShowChartShowCmd}"
+                          />
+            </MenuItem>            
+            <MenuItem Header="{DynamicResource menuIOTTool}"
+                      Command="{Binding ShowIOTToolCmd}"
+                       Foreground="White"
+                      IsEnabled="{Binding MenuIOTToolIsEnable}"
+                      >
             </MenuItem>
-            <MenuItem Header="{DynamicResource menuModbus}"
-                      Command="{Binding ShowModbusCmd}">                
-            </MenuItem>
-            <MenuItem Header="{DynamicResource menuHelp}">
+            <MenuItem Header="{DynamicResource menuHelp}"
+                       Foreground="White">
                 <MenuItem 
                     Name="AboutMenu" 
                     Header="{DynamicResource menuAbout}" 
                     Command="{Binding ShowAboutCmd}"
+                    
                     />
                 <Separator/>
                 <MenuItem Header="{DynamicResource menuDoc}" 
-                          Command="{Binding ShowHelpCmd}"
-                          />                
+                          Command="{Binding ShowHelpCmd}"                          
+                          />
+                <MenuItem Header="{DynamicResource menuQuestion}" 
+                          Command="{Binding ShowQuestionCmd}"                        
+                          />
             </MenuItem>
-            <MenuItem Header="{DynamicResource menuLanguage}" Name="LanguageMenu">
+            <MenuItem Header="{DynamicResource menuLanguage}" Name="LanguageMenu"
+                       Foreground="White">
                 <MenuItem Name="ChineseMenu" 
                           Header="{DynamicResource menuCh}"
                           Command="{Binding ChangeToChCmd}"
+                          
                           />
                 <Separator/>
                 <MenuItem Name="EnglishMenu" 
                           Header="{DynamicResource menuEn}"
                           Command="{Binding ChangeToEnCmd}"
+                         
                           />
             </MenuItem>
             <MenuItem Header="{DynamicResource menuDonate}" 
                       Name="DonateMenu"
                       Command="{Binding ShowDonateCmd}"
+                       Foreground="White"
                       >
             </MenuItem>
             <MenuItem Header="{DynamicResource menuUpdate}" 
                       Name="UpdateMenu"
                       Command="{Binding CheckUpdateCmd}"
+                       Foreground="White"
                       >
             </MenuItem>
 

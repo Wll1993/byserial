@@ -11,8 +11,10 @@
     <system:String x:Key="menuChartShow">ChartShow</system:String>    
     <system:String x:Key="menuChartParaSet">ChartParasSet</system:String>
     <system:String x:Key="menuModbus">Modbus</system:String>
+    <system:String x:Key="menuIOTTool">IOTTool</system:String>
     <system:String x:Key="menuHelp">_Help</system:String>
     <system:String x:Key="menuDoc">_Document</system:String>
+    <system:String x:Key="menuQuestion">_Question</system:String>
     <system:String x:Key="menuAbout">_About</system:String>
     <system:String x:Key="menuLanguage">_Language</system:String>
     <system:String x:Key="menuCh">Ch_inese</system:String>

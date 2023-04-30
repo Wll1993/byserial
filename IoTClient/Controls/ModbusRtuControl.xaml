@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="IoTClientDeskTop.Controls.ModbusRtuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IoTClientDeskTop.Controls"
+             mc:Ignorable="d"
+             TextElement.FontSize="15"
+             Loaded="UserControl_Loaded"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="端口" VerticalAlignment="Center"/>
+            <ComboBox Name="cmbComs" Width="100" Margin="5"
+                      Padding="5,0,0,0" IsEditable="False" IsReadOnly="True"                     
+                      
+                      />
+            <TextBlock Text="波特率" VerticalAlignment="Center"/>
+            <ComboBox Name="cmbBaudRate" Width="100" Margin="5"
+                      Padding="5,0,0,0"                      
+                      
+                      />
+            <TextBlock Text="数据位" VerticalAlignment="Center"/>
+            <TextBox Name="txtDataBit" Width="50" Margin="5"
+                     Text="8"/>
+            <TextBlock Text="停止位" VerticalAlignment="Center"/>
+            <TextBox Name="txtStopBit" Width="50" Margin="5"
+                     Text="1"/>
+            <TextBlock Text="奇偶" VerticalAlignment="Center"/>
+            <ComboBox Name="cmbParity" Width="60" Margin="5"
+                      Padding="5,0,0,0"                      
+                      IsEditable="False" IsReadOnly="True"
+                      >
+                <TextBlock Text="无" VerticalAlignment="Center"/>
+                <TextBlock Text="奇" VerticalAlignment="Center"/>
+                <TextBlock Text="偶" VerticalAlignment="Center"/>
+            </ComboBox>
+            <TextBlock Text="站号" VerticalAlignment="Center"/>
+            <TextBox Name="txtStationNum" Width="50" Margin="5"
+                     Text="1"/>
+            <Button Name="btnOpen" Content="打开串口" 
+                    Click="btnOpen_Click"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock Text="端口" VerticalAlignment="Center"/>
+            <ComboBox Name="cmbPortNameSendServer" Width="100" Margin="5"
+                      Padding="5,0,0,0"                      
+                      IsEditable="False" IsReadOnly="True"
+                      />
+            <Button Name="btnServerOpen" Content="本地模拟服务" 
+                    Click="btnServerOpen_Click"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            <TextBlock Text="字节格式" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <ComboBox Name="cmb_EndianFormat" Width="100" Margin="5"
+                      Padding="5,0,0,0"                      
+                      IsEditable="False" IsReadOnly="True">
+                <TextBlock Text="ABCD" VerticalAlignment="Center"/>
+                <TextBlock Text="BADC" VerticalAlignment="Center"/>
+                <TextBlock Text="CDAB" VerticalAlignment="Center"/>
+                <TextBlock Text="DCBA" VerticalAlignment="Center"/>
+            </ComboBox>
+            <TextBox Name="txt_dataPackage" Width="200" Margin="10,5,5,5"/>
+            <Button Name="btnSendData" Content="发送报文" 
+                    Click="btnSendData_Click"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            <CheckBox Name="chbShowPackage" Content="显示报文" Margin="5"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <RadioButton Name="rd_coil" Content="线圈" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_discrete" Content="离散" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_short" Content="short" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_ushort" Content="ushort" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_int" Content="int" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_uint" Content="uint" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_long" Content="long" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_ulong" Content="ulong" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_float" Content="float" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_double" Content="double" Margin="5,0,0,0"/>
+            <CheckBox Name="chk_plcadd" Content="PLC Addresses(Base 1)" Margin="5,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3">
+            <TextBlock Text="地址" VerticalAlignment="Center"/>
+            <TextBox Name="txt_address" Width="100" Margin="5"
+                     ToolTip="读取地址支持批量读取，如4-3将会读取4、5、6地址对应的数据&#13;
+如4、5、6、8将会读取4、5、6、8地址&#13;
+如4,5,6,8将会读取4、5、6、8地址&#13;
+如4，5，6，8将会读取4、5、6、8地址"                    
+                     />
+            <Button Name="btnRead" Content="读取" 
+                    Click="btnRead_Click"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            <TextBlock Text="值" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Name="txt_value" Width="100" Margin="5" />
+            <Button Name="btnWrite" Content="写入" 
+                    Click="btnWrite_Click"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            <Button Name="btnClear" Content="清空数据" 
+                    Click="btnClear_Click" Margin="20,0,0,0"
+                    Style="{DynamicResource ButtonPrimary}"/>
+            <Button Name="btnRefresh" Content="刷新串口列表" 
+                    Click="btnRefresh_Click"  Margin="20,0,0,0"
+                    Style="{DynamicResource ButtonPrimary}"/>
+
+            
+        </StackPanel>
+        <hc:TextBox Grid.Row="4" Name="txt_content"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"
+                 hc:InfoElement.Placeholder="读取地址支持批量读取，如4-3将会读取4、5、6地址对应的数据&#13;
+如4、5、6、8将会读取4、5、6、8地址&#13;
+如4,5,6,8将会读取4、5、6、8地址&#13;
+如4，5，6，8将会读取4、5、6、8地址"
+                 />
+    </Grid>
+</UserControl>

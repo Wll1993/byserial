@@ -21,7 +21,7 @@ namespace BYSerial.ViewModels
             }
         }
 
-        private string _Information = "Email:xuyuanbaoxyb@163.com\r\nWeChat/Phone:18694923164\r\nQQ:416315797\r\n";
+        private string _Information = "Email:xuyuanbaoxyb@163.com\r\nWeChat/Phone:18694923164\r\nQQ:416315797\r\nQQGroup:750923887";
         public string Information
         {
             get => _Information;

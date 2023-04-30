@@ -98,7 +98,7 @@ namespace BYSerial.Views
                     }));
                    
                 }               
-                this.Title+= "_Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                this.Title+= "_V:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
             catch (Exception ex)
             {

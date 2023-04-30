@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Width="600" Height="500"
         WindowStartupLocation="CenterScreen"
-		Icon="/Assets/yinyang_64.png"
+		Icon="/Assets/logo.png"
         Title="{StaticResource tbTitle}"
         >
     <Window.Resources>

@@ -19,7 +19,7 @@ namespace BYSerial.Views
     /// </summary>
     public partial class ScreenShot : Window
     {
-        public Image Image { get; set; }=new Image();
+        public Image Image { get; set; } = new Image();
         public ScreenShot()
         {
             InitializeComponent();
