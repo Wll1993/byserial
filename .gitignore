@@ -5,4 +5,5 @@ BYSerial/obj
 .vs
 IoTClient/bin
 IoTClient/obj
+packages
 

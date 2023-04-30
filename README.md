@@ -19,11 +19,13 @@ BYSerial
 Microsoft Window: WIN10 家庭中文版  版本2004 (内部版本19041)  
 Microsoft Window: WIN10 专业版  版本20H2 (内部版本19042)
 
-## 引用的第三方库  
+## 引用的部分第三方库  
 
 HandyControl  https://gitee.com/handyorg/HandyControl  
 Newtonsoft.Json https://github.com/JamesNK/Newtonsoft.Json  
 LiveCharts https://v0.lvcharts.com/  
+IOTClient https://gitee.com/zhaopeiym/IoTClient  
+MQTTnet https://github.com/dotnet/MQTTnet  
 
 ## 赞助者
 [![](Img/张海long.png)](https://gitee.com/zhang-hai-long325520)
