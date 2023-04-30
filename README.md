@@ -59,7 +59,7 @@ MQTTnet https://github.com/dotnet/MQTTnet
 4.支持中英文双语切换  
 5.自动检查版本更新  
 6.支持添加自定义快捷命令  
-7.支持ModbusRTU/ModbusAscii/ModbusTCP调试 
+7.支持ModbusRTU/ModbusAscii/ModbusTCP调试  
 8.支持西门子/三菱/欧姆龙/罗克韦尔PLC通讯调试  
 9.支持MQTT客户端，BACNet调试。  
 10.支持串口接收数据曲线显示。
