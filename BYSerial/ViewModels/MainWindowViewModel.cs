@@ -377,7 +377,7 @@ namespace BYSerial.ViewModels
             t.Start();
         }
 
-        private FlowDocument _ReciveFlowDoc=null;
+        private FlowDocument? _ReciveFlowDoc=null;
 
         public DelegateCommand OnSendCommand { get; private set; }
         private void OnSend(object para)
@@ -528,7 +528,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.SendColor;
                         }
-                        _ReciveFlowDoc.Blocks.Add(pg);
+                        _ReciveFlowDoc?.Blocks.Add(pg);
                     }));
 
                     if (LogPara.SaveLogMsg)
@@ -949,7 +949,7 @@ namespace BYSerial.ViewModels
         private void OnClearClick(object parameter)
         {
             App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                _ReciveFlowDoc.Blocks.Clear();
+                _ReciveFlowDoc?.Blocks.Clear();
             }));
             _SendedBytesNum = 0;
             _ReceivedBytesNum = 0;
@@ -1002,7 +1002,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.ReceiveColor;
                         }
-                        _ReciveFlowDoc.Blocks.Add(pg);
+                        _ReciveFlowDoc?.Blocks.Add(pg);
                     }
                     catch
                     {
@@ -1579,7 +1579,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.ReceiveColor;
                         }
-                        _ReciveFlowDoc.Blocks.Add(pg);
+                        _ReciveFlowDoc?.Blocks.Add(pg);
                     }
                     catch
                     {
@@ -2109,7 +2109,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.SendColor;
                         }
-                        _ReciveFlowDoc.Blocks.Add(pg);
+                        _ReciveFlowDoc?.Blocks.Add(pg);
                     }));
 
                     if (LogPara.SaveLogMsg)
