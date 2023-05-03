@@ -34,10 +34,10 @@ MQTTnet https://github.com/dotnet/MQTTnet
 ![](Img/Lf.png)
 ![](Img/顧.png)
 [![](Img/KafuuHiro.png)](https://github.com/KafuuHiro/)
-
+![](Img/艾犇.png)  
   
-界面
-----
+## 界面
+
 ![](Img/main_ch2.png)    
 ![](Img/main_ch.png)    
 ![](Img/工控工具.png)    
@@ -45,10 +45,13 @@ MQTTnet https://github.com/dotnet/MQTTnet
 ![](Img/toolbox.png)    
 ![](Img/toolbox2.png)    
 ![](Img/ascii.png)    
+![](Img/brush.png)    
+![](Img/colorpicker.png)    
 ![](Img/opt1.png)    
 ![](Img/opt2.png)    
 ![](Img/opt3.png)    
 ![](Img/opt4.png)    
+![](Img/opt5.png)    
  
 ## 功能介绍
 

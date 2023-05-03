@@ -48,7 +48,7 @@
             <CheckBox Name="chbShowPackage" Content="显示报文" Margin="5"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <RadioButton Name="rd_bit" Content="bit" Margin="5,0,0,0"/>
+            <RadioButton Name="rd_bit" Content="bit" Margin="5,0,0,0" IsChecked="True"/>
             <RadioButton Name="rd_byte" Content="byte" Margin="5,0,0,0"/>
             <RadioButton Name="rd_short" Content="short" Margin="5,0,0,0"/>
             <RadioButton Name="rd_ushort" Content="ushort" Margin="5,0,0,0"/>

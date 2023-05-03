@@ -1,4 +1,5 @@
-﻿using IoTClient.Clients.PLC;
+﻿//using HandyControl.Controls;
+using IoTClient.Clients.PLC;
 using IoTClient.Common.Enums;
 using IoTClient.Common.Helpers;
 using IoTClient.Enums;
@@ -41,7 +42,18 @@ namespace IoTClientDeskTop.Controls
             btnWrite.IsEnabled = false;
             btnSendData.IsEnabled = false;
             var config = ConnectionConfig.GetConfig();
-
+            //txt_content.
+            string str1 = "1、读取地址支持批量读取，如V2634、V2638、V2642。\r\n"
+                        + "2、关于PLC地址：VB263、VW263、VD263中的B、W、D分别表示byte、word、doubleword数据类型，\r\n"
+                        + "分别对应C#中的byte、ushort(UInt16)、uint(UInt32)类型。此工具直接传入地址（如:V263）即可。\r\n"
+                        + "3、写入时，地址不支持批量，如果地址写入了批量的，只读取第一个地址";
+            string str2 = "1、读取地址支持批量读取，如DB1.DBW2、DB1.DBW4、DB1.DBW6。\r\n"
+                        + "2、关于PLC地址：DB1.DBX1.0中DBX1.0的X代表bit(C# bit)，DB1.DBB1中的DBB1的第二个B表示byte(C# byte)，\r\n"
+                        + "DB1.DBW2中DBW2的W表示word(C# ushort)，DB1.DBD4中DBD4的第二个D代表doubleword(C# uint)数据类型，\r\n"
+                        + "此工具直接传入地址（如:DB1.1.0, DB1.1,DB1.2,DB1.4.）即可。\r\n"
+                        + "3、写入时，地址不支持批量，如果地址写入了批量的，只读取第一个地址";
+            string str3 = "V1.0";
+            string str4 = "DB1.DBX1.0";
             switch (version)
             {
                 case SiemensVersion.S7_200:
@@ -53,6 +65,9 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S7200_Rack)) txt_rack.Text = config.S7200_Rack;
                     chbShowPackage.IsChecked = config.S7200_ShowPackage;
                     InitDataType(config.S7200_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str1);
+                    txt_address.ToolTip = str1;
+                    txt_address.Text = str3;
                     break;
                 case SiemensVersion.S7_200Smart:
                     if (!string.IsNullOrWhiteSpace(config.S7200Smart_IP)) txt_ip.Text = config.S7200Smart_IP;
@@ -63,6 +78,9 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S7200Smart_Rack)) txt_rack.Text = config.S7200Smart_Rack;
                     chbShowPackage.IsChecked = config.S7200Smart_ShowPackage;
                     InitDataType(config.S7200Smart_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str1);
+                    txt_address.ToolTip = str1;
+                    txt_address.Text = str3;
                     break;
                 case SiemensVersion.S7_300:
                     if (!string.IsNullOrWhiteSpace(config.S7300_IP)) txt_ip.Text = config.S7300_IP;
@@ -73,6 +91,9 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S7300_Rack)) txt_rack.Text = config.S7300_Rack;
                     chbShowPackage.IsChecked = config.S7300_ShowPackage;
                     InitDataType(config.S7300_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str2);
+                    txt_address.ToolTip = str2;
+                    txt_address.Text = str4;
                     break;
                 case SiemensVersion.S7_400:
                     if (!string.IsNullOrWhiteSpace(config.S7400_IP)) txt_ip.Text = config.S7400_IP;
@@ -83,6 +104,9 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S7400_Rack)) txt_rack.Text = config.S7400_Rack;
                     chbShowPackage.IsChecked = config.S7400_ShowPackage;
                     InitDataType(config.S7400_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str2);
+                    txt_address.ToolTip = str2;
+                    txt_address.Text = str4;
                     break;
                 case SiemensVersion.S7_1200:
                     if (!string.IsNullOrWhiteSpace(config.S71200_IP)) txt_ip.Text = config.S71200_IP;
@@ -92,7 +116,10 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S71200_Slot)) txt_slot.Text = config.S71200_Slot;
                     if (!string.IsNullOrWhiteSpace(config.S71200_Rack)) txt_rack.Text = config.S71200_Rack;
                     chbShowPackage.IsChecked = config.S71200_ShowPackage;
-                    InitDataType(config.S71200_Datatype);                    
+                    InitDataType(config.S71200_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str2);
+                    txt_address.ToolTip = str2;
+                    txt_address.Text = str4;
                     break;
                 case SiemensVersion.S7_1500:
                     if (!string.IsNullOrWhiteSpace(config.S71500_IP)) txt_ip.Text = config.S71500_IP;
@@ -102,7 +129,10 @@ namespace IoTClientDeskTop.Controls
                     if (!string.IsNullOrWhiteSpace(config.S71500_Slot)) txt_slot.Text = config.S71500_Slot;
                     if (!string.IsNullOrWhiteSpace(config.S71500_Rack)) txt_rack.Text = config.S71500_Rack;
                     chbShowPackage.IsChecked = config.S71500_ShowPackage;
-                    InitDataType(config.S71500_Datatype);                    
+                    InitDataType(config.S71500_Datatype);
+                    HandyControl.Controls.InfoElement.SetPlaceholder(txt_content, str2);
+                    txt_address.ToolTip = str2;
+                    txt_address.Text = str4;
                     break;
             }
         }

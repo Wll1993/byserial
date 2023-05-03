@@ -1,1 +1,1 @@
-2000,https://gitee.com/LvYiWuHen/byserial/releases/download/V2.0.0/BYSerial_V2.0.zip
+2010,https://gitee.com/LvYiWuHen/byserial/releases/download/V2.0.1/BYSerial_V2.0.1.zip
