@@ -34,7 +34,7 @@ namespace BYSerial.Models
                 this.RaisePropertyChanged("EnableWriteBuf");
             }
         }
-        private string _FileName = "log_"+DateTime.Now.ToString("yyyyMMdd")+".txt";
+        private string _FileName =GlobalPara.LogFolder+ "\\"+DateTime.Now.ToString("yyyyMMddHHmmssfff")+".txt";
 
         public string FileName
         {
@@ -46,7 +46,7 @@ namespace BYSerial.Models
             }
         }
 
-        private int _MaxFileSize = 1024;  //MB
+        private int _MaxFileSize = 1024;  //单位字节，1024字节1MB
 
         public int MaxFileSize
         {
@@ -58,7 +58,7 @@ namespace BYSerial.Models
             }
         }
 
-        private int _BufSize = 1024;  //KB
+        private int _BufSize = 256;  //KB
 
         public int BufSize
         {

@@ -68,7 +68,9 @@
         </Grid.RowDefinitions>       
         <Menu Background="{DynamicResource PrimaryBrush}">
             <MenuItem Header="{DynamicResource menuTool}" Foreground="White" >
-                
+                <MenuItem Header="{DynamicResource menuModbus}"
+                      Command="{Binding ShowModbusCmd}">
+                </MenuItem>
                 <MenuItem 
                     Header="{DynamicResource menuToolBox}" 
                     Name="ToolBoxMenu"

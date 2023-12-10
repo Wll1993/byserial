@@ -19,7 +19,7 @@ namespace BYSerial.Util
         /// <returns></returns>
         public static bool SaveFailLog(string str)
         {
-            string logPath = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Err" + DateTime.Now.ToString("yyyy-MM-dd") + ".log"; ;
+            string logPath = GlobalPara.LogFolder + "\\Err_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log"; ;
 
             try
             {
@@ -32,7 +32,7 @@ namespace BYSerial.Util
                 {
                     sw = File.AppendText(logPath);
                 }
-                sw.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + str);
+                sw.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss_") + str);
                 sw.Flush();  //清空缓冲区
                 sw.Close();
 

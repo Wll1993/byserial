@@ -31,6 +31,9 @@ namespace BYSerial
         private static string _cfgfile = "my.cfg";
         private static string _hisfile = "his.cfg";
         private static string _cmdfile = "fastcmds.cfg";
+        public static string AppPath = System.Windows.Forms.Application.StartupPath;
+        public static string CfgPath = AppPath + "\\bycfg";
+        public static string LogFolder = AppPath + "\\Log";
         /// <summary>
         /// 曲线显示参数
         /// </summary>
@@ -43,7 +46,11 @@ namespace BYSerial
         {            
             try
             {
-                string path = Path.Combine(System.Windows.Forms.Application.StartupPath, _cfgfile);
+                if (!Directory.Exists(GlobalPara.LogFolder))
+                {
+                    Directory.CreateDirectory(GlobalPara.LogFolder);
+                }
+                string path = Path.Combine(CfgPath, _cfgfile);
                 
                 if (File.Exists(path))
                 {
@@ -61,12 +68,12 @@ namespace BYSerial
                     }
                     
                 }
-                path = Path.Combine(System.Windows.Forms.Application.StartupPath, _hisfile);
+                path = Path.Combine(CfgPath, _hisfile);
                 if (File.Exists(path))
                 {
                     HisCfg=JSONHelper.DeserializeJsonToObject<hiscfg>(File.ReadAllText(path));
                 }
-                path = Path.Combine(System.Windows.Forms.Application.StartupPath, _cmdfile);
+                path = Path.Combine(CfgPath, _cmdfile);
                 if (File.Exists (path))
                 {
                     FastCfg=JSONHelper.DeserializeJsonToObject<FastCmdsCfg>(File.ReadAllText(path));
@@ -83,10 +90,10 @@ namespace BYSerial
         {
              try
             {
-                string path=Path.Combine(System.Windows.Forms.Application.StartupPath, "bycfg");
-                if (!Directory.Exists(path))
+                
+                if (!Directory.Exists(CfgPath))
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(CfgPath);
                 }
                 MyCfg.LogPath = LogPara.FileName;
                 MyCfg.FormatDisColor=DisplayPara.FormatDisColor;
@@ -95,11 +102,11 @@ namespace BYSerial
                 MyCfg.CheckUpdate = IsCheckUpdate;
                 string txt=JSONHelper.SerializeObject(MyCfg);
 
-                File.WriteAllText(Path.Combine(path,_cfgfile), txt);
+                File.WriteAllText(Path.Combine(CfgPath,_cfgfile), txt);
                 txt=JSONHelper.SerializeObject(HisCfg);
-                File.WriteAllText(Path.Combine(path, _hisfile), txt);
+                File.WriteAllText(Path.Combine(CfgPath, _hisfile), txt);
                 txt=JSONHelper.SerializeObject(FastCfg);
-                File.WriteAllText(Path.Combine(path, _cmdfile), txt);
+                File.WriteAllText(Path.Combine(CfgPath, _cmdfile), txt);
             }
             catch(Exception ex)
             {

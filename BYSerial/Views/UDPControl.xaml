@@ -1,0 +1,396 @@
+﻿<UserControl x:Class="BYSerial.Views.UDPControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BYSerial.Views"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="670" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Button" x:Key="AddButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{StaticResource PrimaryBrush}" Name="back" CornerRadius="3" Padding="3">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          TextBlock.Foreground="White" Margin="5,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#cc3269de" TargetName="back"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="CmdListTemplate">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text=" s" VerticalAlignment="Center" FontSize="10"
+                           ToolTip="{DynamicResource qcSelTip}"/>
+                <CheckBox Content="{Binding CmdNumStr}" Grid.Column="1"
+                        IsChecked="{Binding Path=IsSelected}" 
+                        FontSize="15" Margin="2"                                  
+                        />
+                <TextBlock Grid.Column="2" Text="{Binding DelayTime}" VerticalAlignment="Center" FontSize="15"/>
+                <Button Grid.Column="3"
+                    Content="{Binding Remark}"                                      
+                    Style="{StaticResource AddButtonStyle}"
+                    Command="{Binding SendFastCmdCmd}"
+                    ToolTip="{DynamicResource qcCmdTip}"
+                    HorizontalAlignment="Stretch"
+                    >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseRightButtonUp">
+                            <i:CallMethodAction TargetObject="{Binding}"
+                                                MethodName="BtnFast_PreviewMouseRightButtonUp"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <DockPanel >
+            <Grid DockPanel.Dock="Left" 
+                  VerticalAlignment="Top"
+                  Width="222" Height="660"
+                  Visibility="{Binding UDPLeftSetingVisual}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="380"/>
+                    <RowDefinition Height="110"/>
+                    <RowDefinition Height="120"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="{DynamicResource mwSPS}" 
+                          BorderBrush="{StaticResource PrimaryBrush}"
+                          BorderThickness="1"
+                          Style="{StaticResource GroupBoxOriginal}">
+                    <Grid >
+                        <StackPanel Grid.Row="1" Orientation="Vertical"
+                                    Visibility="{Binding UDPara.IsClient}"
+                                    >
+                            <StackPanel Orientation="Horizontal" Height="35">
+                                <Label Content="Mode" 
+                                   Width="74" BorderBrush="Transparent"
+                                    HorizontalContentAlignment="Right"
+								    VerticalAlignment="Center" />
+                                <ComboBox Width="143" Margin="1,2,0,0"								  
+                                  SelectedIndex="{Binding UDPPara.UDPModeIndex}"
+                                   Padding="0" FontSize="15">                                   
+                                    <ComboBoxItem Content="UDP Client"/>
+                                    <ComboBoxItem Content="UDP Server"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="35"
+                                        >
+                                <Label Content="IP" 
+                                   Width="74" BorderBrush="Transparent"
+                                    HorizontalContentAlignment="Right"
+								    VerticalAlignment="Center" />
+                                <TextBox Text="{Binding UDPPara.IP}" Width="143" Margin="1,2,5,0"
+                                         />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="35">
+                                <Label Content="Port" 
+                                   Width="74" BorderBrush="Transparent"
+                                    HorizontalContentAlignment="Right"
+								    VerticalAlignment="Center" />
+                                <TextBox Text="{Binding UDPPara.Port}" Width="143" Margin="1,2,5,0"
+                                         />
+                            </StackPanel>
+                            <GroupBox Header="Connections"
+                                      Height="200" Margin="5"
+                                      Visibility="{Binding UDPPara.ServerVisual}"
+                                      Style="{StaticResource GroupBoxOriginal}"
+                                      >
+                                <ListBox ItemsSource="{Binding UDPPara.ClientsName}"
+                                         SelectedIndex="{Binding UDPPara.SvrClientsIndex}"
+                                         />
+                            </GroupBox>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <Border Grid.Row="1" 
+							BorderThickness="1" 
+                            BorderBrush="{StaticResource PrimaryBrush}"
+                            Margin="0"
+							CornerRadius="2">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+							Text="{DynamicResource mwReceiveSet}" Margin="5,0"/>
+                        <RadioButton Grid.Row="1" Grid.Column="0" GroupName="Receive"
+									Content="ASCII" Margin="10,5" VerticalContentAlignment="Center"
+                                 HorizontalAlignment="Left"
+									IsChecked="{Binding Path=UDPReceivePara.IsText,Mode=TwoWay}"/>
+                        <RadioButton Grid.Row="1" Grid.Column="1" GroupName="Receive"
+									Content="Hex" 
+								 VerticalContentAlignment="Center"	
+                                 HorizontalAlignment="Left"
+                                 IsChecked="{Binding Path=UDPReceivePara.IsHex,Mode=TwoWay}"/>
+                        <RadioButton Grid.Row="2" Grid.Column="0" GroupName="Receive"
+								Content="UTF8" Margin="10,5" 
+                                 HorizontalAlignment="Left"
+								IsChecked="{Binding Path=UDPReceivePara.IsUTF8,Mode=TwoWay}"
+                                 Visibility="{Binding UDPReceivePara.EncodingVisual}"
+                                 />
+                        <CheckBox Grid.Row="2" Grid.Column="1"                               
+								Content="{DynamicResource mwAutoFL}" 
+                                HorizontalAlignment="Left"
+								IsChecked="{Binding UDPReceivePara.AutoFeed}"/>
+
+                        <CheckBox Grid.Row="3" Grid.Column="0" 
+								Content="{DynamicResource mwDisSend}" 
+                              Margin="10,5" 
+								IsChecked="{Binding UDPReceivePara.DisplaySend}"/>
+                        <CheckBox Grid.Row="3" Grid.Column="1" 
+									Content="{DynamicResource mwDisTime}"
+                              Margin="0,5" 
+								IsChecked="{Binding UDPReceivePara.DisplayTime}"/>
+
+                    </Grid>
+                </Border>
+                <Border Grid.Row="2" 
+							BorderThickness="1"
+                            BorderBrush="{StaticResource PrimaryBrush}"
+                            Margin="0"
+							CornerRadius="2">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+							Text="{DynamicResource mwSendSet}" Margin="5,0"/>
+
+                        <RadioButton Grid.Row="1" Grid.Column="0" GroupName="Send"
+									Content="ASCII" HorizontalAlignment="Left"
+                                    Margin="10,5"
+									IsChecked="{Binding Path=UDPSendPara.IsText,Mode=TwoWay}"
+									/>
+                        <RadioButton Grid.Row="1" Grid.Column="1" GroupName="Send"
+								 Content="Hex" HorizontalAlignment="Left"
+                                 Margin="15,5,0,5" 
+									IsChecked="{Binding UDPSendPara.IsHex}"/>
+                        <RadioButton Grid.Row="2" Grid.Column="0" GroupName="Send"
+									Content="UTF8" HorizontalAlignment="Left"
+                                 Margin="10,5" Visibility="{Binding UDPSendPara.EncodingVisual}"
+									IsChecked="{Binding Path=UDPSendPara.IsUTF8,Mode=TwoWay}"
+									/>
+                        <CheckBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                              IsEnabled="{Binding UDPSendPara.AutoCRCEnable}"
+								Content="{DynamicResource mwAutoCRC}" Margin="17,5"                               
+								IsChecked="{Binding UDPSendPara.AutoCRC}"
+                              ToolTip="按标准Modbus16计算，低位在前高位在后"
+                              />
+
+                        <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+									Content="{DynamicResource mwLoop}" Margin="10,0,0,10"
+									VerticalAlignment="Stretch" 
+                              ToolTip="勾选后，单击【发送】开始发送，&#13;取消勾选后，停止发送"
+                              IsChecked="{Binding UDPSendPara.IsLoop}"
+								Name="chbLoop"  >
+
+                        </CheckBox>
+                        <hc:NumericUpDown Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" 
+									Margin="5,0,0,10" Padding="0" 
+									Value="{Binding UDPSendPara.LoopInterval}"
+									VerticalContentAlignment="Center"
+									/>
+                        <TextBlock Grid.Row="3" Grid.Column="2"
+									Text="ms" VerticalAlignment="Center" Margin="5,5,5,10" />
+                    </Grid>
+                </Border>
+            </Grid>
+            <Expander DockPanel.Dock="Right" Margin="2,2,0,0"
+                      ExpandDirection="Right" Header="{DynamicResource quickCmdList}"
+                      IsExpanded="False" IsEnabled="{Binding FastCmdIsEnable}">
+                
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{DynamicResource quickCmdList}" Foreground="White" Background="{StaticResource PrimaryBrush}"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               FontSize="15" FontWeight="Bold"
+                               />
+                    <TextBlock Text="{DynamicResource quickTip}" Foreground="Red" 
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               FontSize="10" FontWeight="Bold"
+                               Grid.Row="1" TextWrapping="Wrap"
+                               />
+                    <Border Grid.Row="2" Margin="5" 
+                        BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1">
+                        <Grid TextElement.FontSize="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text=" "
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{DynamicResource qcItemNo}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{DynamicResource qcItemDelay}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="{DynamicResource qcItemCmd}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <ListBox Grid.Row="1" Grid.ColumnSpan="4"
+                                     ItemsSource="{Binding FastCmdList}"
+                                     ItemTemplate="{StaticResource CmdListTemplate }"
+                                     SelectedIndex="{Binding FastCmdSelIndex}"
+                                     SelectedItem="{Binding CurSelectedFastCmdModel}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="1"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>                       
+                    </Border>
+
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" ToolTip="{DynamicResource qcAddCmd}" Padding="0"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Command="{Binding FastCmdAddCmd}" Margin="4,0"
+                                Background="Transparent" 
+                                >
+                            <Image Source="/Assets/plus.png"/>
+                        </Button>
+                        <Button Grid.Column="1" ToolTip="{DynamicResource qcDelCmd}" Padding="2"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Command="{Binding FastCmdDelCmd}" Margin="4,0,4,0"
+                                Background="Transparent"
+                                >
+                            <Image Source="/Assets/minus.png"/>
+                        </Button>
+                        <CheckBox Grid.Column="3" Content="{DynamicResource qcCycleMode}"
+                                  IsChecked="{Binding FastCmdIsCycle}"
+                                  FontSize="15"
+                                  ToolTip="{DynamicResource qcCycleTip}"
+                                  />
+                        <CheckBox Grid.Column="4" Content="{DynamicResource qcStartSend}"
+                                  IsChecked="{Binding FastCmdIsStartSend}"  
+                                  IsEnabled="{Binding FastSendCmdIsEnable}"
+                                  FontSize="15"
+                                  />
+                    </Grid>
+                </Grid>
+            </Expander>
+            <Grid  Margin="5,2,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,5,5"
+						VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+						VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        Padding="5,0" IsReadOnly="True"
+                        Name="txtRich"
+                        TextChanged="txtRich_TextChanged">
+                    <FlowDocument Name="fdReceive"                                  
+                                 />
+                </RichTextBox>
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,5,5" 
+						 Padding="5,0" FontSize="20" VerticalContentAlignment="Top"
+						 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Text="{Binding SendTxt}"
+						>
+                </TextBox>
+                <ComboBox Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,5,5"
+						  SelectedIndex="{Binding SendTxtHisSelIndex}" ItemsSource="{Binding SendTxtHistory}"
+                          Name="CbbHistory">
+
+                </ComboBox>
+                <Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch" Margin="0,0,5,5"
+						Content="{DynamicResource mwSend}" FontSize="15" Padding="0" 
+						VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+						Command="{Binding OnSendCommand}"                        
+						IsEnabled="{Binding SendCmdIsEnable}"
+                        Style="{StaticResource ButtonPrimary}"
+						/>
+            </Grid>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding ComPortState}" 
+					   VerticalAlignment="Bottom" Margin="5"
+					   Foreground="{Binding ComPortStateColor}"
+					   />
+            <TextBlock Grid.Column="1" Text="{Binding ReceiveBytesStr}" 
+					   Foreground="{Binding ReceiveBytesColor}" 
+					   VerticalAlignment="Bottom" Margin="5"/>
+            <TextBlock Grid.Column="2" Text="{Binding SendBytesStr}" 
+					   Foreground="{Binding SendBytesColor}"
+					   VerticalAlignment="Bottom" Margin="5"/>
+        </Grid>
+    </Grid>
+</UserControl>

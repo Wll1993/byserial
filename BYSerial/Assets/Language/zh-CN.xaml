@@ -21,7 +21,7 @@
     <system:String x:Key="menuEn">英语</system:String>
     <system:String x:Key="menuDonate">捐助</system:String>
     <system:String x:Key="menuUpdate">检查更新</system:String>
-    <system:String x:Key="mwSPS">串口设置</system:String>
+    <system:String x:Key="mwSPS">端口设置</system:String>
     <system:String x:Key="mwPort">端口</system:String>
     <system:String x:Key="mwBaudRate">通讯速率</system:String>
     <system:String x:Key="RightStation">右工位</system:String>
@@ -103,7 +103,7 @@
     <system:String x:Key="tbToImg">Base64转图片</system:String>
     <system:String x:Key="tbAnalogToReal">模拟量转工程量</system:String>
     <system:String x:Key="asciiTitle">ASCII码表</system:String>
-    <system:String x:Key="ProTitle">BYSerial</system:String>
+    <system:String x:Key="ProTitle">BYAssistant</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
     <system:String x:Key="quickCmdSetTitle">命令设置</system:String>
@@ -124,4 +124,8 @@
     <system:String x:Key="qcButtonCmd">按钮命令</system:String>
     <system:String x:Key="qcButtonDelay">延时时间</system:String>
     <system:String x:Key="updateTip">更新提示</system:String>
+    <system:String x:Key="remoteIP">远程IP</system:String>
+    <system:String x:Key="remotePort">远程端口</system:String>
+    <system:String x:Key="localIP">本机IP</system:String>
+    <system:String x:Key="localPort">本机端口</system:String>
 </ResourceDictionary>

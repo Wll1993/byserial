@@ -21,7 +21,7 @@
     <system:String x:Key="menuEn">_English</system:String>
     <system:String x:Key="menuDonate">Do_nate</system:String>
     <system:String x:Key="menuUpdate">Check_Update</system:String>
-    <system:String x:Key="mwSPS">SerialPortSettings</system:String>
+    <system:String x:Key="mwSPS">PortSettings</system:String>
     <system:String x:Key="mwPort">Port</system:String>
     <system:String x:Key="mwBaudRate">BaudRate</system:String>
     <system:String x:Key="mwDataBits">DataBits</system:String>
@@ -102,7 +102,7 @@
     <system:String x:Key="tbToImg">ToImage</system:String>
     <system:String x:Key="tbAnalogToReal">AnalogToReal</system:String>
     <system:String x:Key="asciiTitle">ASCIITable</system:String>
-    <system:String x:Key="ProTitle">BYSerial</system:String>
+    <system:String x:Key="ProTitle">BYAssistant</system:String>
     <system:String x:Key="GitHub">Gitee: https://gitee.com/LvYiWuHen/byserial</system:String>
     <system:String x:Key="Blog">Blog: https://blog.csdn.net/lvyiwuhen</system:String>
     <system:String x:Key="quickCmdSetTitle">Command Settings</system:String>

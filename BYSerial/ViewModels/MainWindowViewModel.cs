@@ -37,7 +37,7 @@ namespace BYSerial.ViewModels
         private void Init()
         {
             try
-            {
+            {                
                 GlobalPara.GetLocSet();
                 if (GlobalPara.HisCfg.his != null)
                 {
@@ -377,7 +377,7 @@ namespace BYSerial.ViewModels
             t.Start();
         }
 
-        private FlowDocument? _ReciveFlowDoc=null;
+        private FlowDocument _ReciveFlowDoc=null;
 
         public DelegateCommand OnSendCommand { get; private set; }
         private void OnSend(object para)
@@ -528,7 +528,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.SendColor;
                         }
-                        _ReciveFlowDoc?.Blocks.Add(pg);
+                        _ReciveFlowDoc.Blocks.Add(pg);
                     }));
 
                     if (LogPara.SaveLogMsg)
@@ -868,6 +868,7 @@ namespace BYSerial.ViewModels
             }
         }
 
+
         private SolidColorBrush _PauseBtnBackColor = new SolidColorBrush(Colors.Transparent);
         public SolidColorBrush PauseBtnBackColor
         {
@@ -949,7 +950,7 @@ namespace BYSerial.ViewModels
         private void OnClearClick(object parameter)
         {
             App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                _ReciveFlowDoc?.Blocks.Clear();
+                _ReciveFlowDoc.Blocks.Clear();
             }));
             _SendedBytesNum = 0;
             _ReceivedBytesNum = 0;
@@ -1002,7 +1003,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.ReceiveColor;
                         }
-                        _ReciveFlowDoc?.Blocks.Add(pg);
+                        _ReciveFlowDoc.Blocks.Add(pg);
                     }
                     catch
                     {
@@ -1416,10 +1417,11 @@ namespace BYSerial.ViewModels
                 long listlen = _LogList.Count;
                 if (listlen > 0)
                 {
-                    for (int i = 0; i < listlen; i++)
-                    {
-                        len += System.Text.Encoding.Default.GetBytes(_LogList[i]).Length;
-                    }
+                    //for (int i = 0; i < listlen; i++)
+                    //{
+                    //    len += System.Text.Encoding.Default.GetBytes(_LogList[i]).Length;
+                    //}
+                    len = System.Runtime.InteropServices.Marshal.SizeOf(_LogList);
                 }
                 if (len >= LogPara.BufSize)
                 {
@@ -1456,7 +1458,7 @@ namespace BYSerial.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Util.FileTool.SaveFailLog(ex.Message);
+                    Util.FileTool.SaveFailLog("LogErr_"+ex.Message);
                     return false;
                 }
                 
@@ -1465,13 +1467,8 @@ namespace BYSerial.ViewModels
                     System.Diagnostics.FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(LogPara.FileName);
                     long filsizeMB = fileInfo.Length;
                     if (filsizeMB >= LogPara.MaxFileSize)
-                    {
-                        string filepath = Path.GetDirectoryName(LogPara.FileName);
-                        if (filepath == null || filepath == "")
-                        {
-                            filepath = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                        }
-                        LogPara.FileName = Path.Combine(filepath, "Log_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                    {                       
+                        LogPara.FileName = Path.Combine(GlobalPara.LogFolder, "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt");
                     }
                 }
 
@@ -1579,7 +1576,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.ReceiveColor;
                         }
-                        _ReciveFlowDoc?.Blocks.Add(pg);
+                        _ReciveFlowDoc.Blocks.Add(pg);
                     }
                     catch
                     {
@@ -2109,7 +2106,7 @@ namespace BYSerial.ViewModels
                         {
                             pg.Foreground = DisplayPara.SendColor;
                         }
-                        _ReciveFlowDoc?.Blocks.Add(pg);
+                        _ReciveFlowDoc.Blocks.Add(pg);
                     }));
 
                     if (LogPara.SaveLogMsg)
@@ -2296,6 +2293,53 @@ namespace BYSerial.ViewModels
             }
         }
 
+
+
+        #endregion
+
+        #region UDP
+
+        private UDPPara _UDPPara;
+
+        public UDPPara UDPPara
+        {
+            get { return _UDPPara; }
+            set { _UDPPara = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        private Visibility _UDPLeftSetingVisual = Visibility.Visible;
+        public Visibility UDPLeftSetingVisual
+        {
+            get => _UDPLeftSetingVisual;
+            set
+            {
+                _UDPLeftSetingVisual = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ReceivePara _UDPReceivePara;
+
+        public ReceivePara UDPReceivePara
+        {
+            get { return _UDPReceivePara; }
+            set { _UDPReceivePara = value; 
+            RaisePropertyChanged();
+            }
+        }
+
+        private SendPara _UDPSendPara;
+
+        public SendPara UDPSendPara
+        {
+            get { return _UDPSendPara; }
+            set { _UDPSendPara = value;
+            RaisePropertyChanged() ;
+            }
+        }
 
 
         #endregion

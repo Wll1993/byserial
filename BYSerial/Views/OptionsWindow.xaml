@@ -121,36 +121,12 @@
                     </Grid.ColumnDefinitions>
                     <CheckBox Content="{StaticResource optSaveLog}" Grid.ColumnSpan="2"
 							  IsChecked="{Binding LogPara.SaveLogMsg}"
-							  />
-                    <TextBlock Grid.Row="1" Text="{StaticResource optFileName}" VerticalAlignment="Center" HorizontalAlignment="Right"
-							   Margin="0,5,5,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"
-							 VerticalAlignment="Stretch" Margin="0,0,5,5"
-							 Text="{Binding LogPara.FileName}"
-							 />
-                    <Button Name="btnOpenFile" Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch"
-							VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
-							HorizontalContentAlignment="Center"  Margin="0,0,5,5"
-							Content="{StaticResource btnOpen}"
-							Command="{Binding OpenFileCommand}"
-							CommandParameter="{Binding ElementName=OptWindow}"
-							/>
-                    <TextBlock Grid.Row="2" Text="{StaticResource optMaxFileSize}" VerticalAlignment="Center" HorizontalAlignment="Right"
-							   Margin="0,5,5,5"/>
-                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"
-							 VerticalAlignment="Stretch" Margin="0,0,5,5"
-								   Value="{Binding LogPara.MaxFileSize}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="MB" VerticalAlignment="Center" HorizontalAlignment="Left"
-							   Margin="0,5,5,5"/>
-                    <CheckBox Grid.Row="3" Content="{StaticResource optEnableWriteBuf}" Grid.ColumnSpan="2"
-							  IsChecked="{Binding LogPara.EnableWriteBuf}"/>
-                    <TextBlock Grid.Row="4" Text="{StaticResource optBufSize}" VerticalAlignment="Center" HorizontalAlignment="Right"
-								   Margin="0,5,5,5"/>
-                    <hc:NumericUpDown Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center"
-							 VerticalAlignment="Stretch" Margin="0,0,5,5"
-								   Value="{Binding LogPara.BufSize}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="2" Text="KB" VerticalAlignment="Center" HorizontalAlignment="Left"
-								   Margin="0,5,5,5" />
+                              Name="chkSave"/>                    
+                    <CheckBox Grid.Row="1" Margin="20,0"
+                              Content="{StaticResource optEnableWriteBuf}" Grid.ColumnSpan="2"
+							  IsChecked="{Binding LogPara.EnableWriteBuf}"
+                              IsEnabled="{Binding Path=IsChecked, ElementName=chkSave}"/>
+                   
                 </Grid>
             </TabItem>
             <TabItem Header="{StaticResource optDisplay}" >

@@ -88,14 +88,17 @@ namespace BYSerial.Views
             try
             {                
                 if(GlobalPara.IsCheckUpdate)
-                {                    
-                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                {
+                    Task.Factory.StartNew(() =>
+                    {
                         int i = 0;
                         if (Util.Update.InternetGetConnectedState(out i, 0))
-                        {
-                            BYSerial.Util.Update.CheckUpdate();
+                        {                            
+                            App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                                BYSerial.Util.Update.CheckUpdate();
+                            }));
                         }
-                    }));
+                    });
                    
                 }               
                 this.Title+= "_V:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
