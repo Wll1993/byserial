@@ -1,0 +1,77 @@
+﻿<Window x:Class="BYSerial.Views.SelfDevWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BYSerial.Views"
+        mc:Ignorable="d"
+         WindowStartupLocation="CenterScreen"
+        Icon="/Assets/logo.png"
+        Title="{DynamicResource menuSelfDev}"
+        Height="620" Width="800"
+        ResizeMode="NoResize">
+    <ScrollViewer VerticalScrollBarVisibility="Visible"
+                  Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="220"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="/Assets/4DIDO.PNG" Grid.Row="0"/>
+            <Label Grid.Row="0" Grid.Column="1" BorderBrush="Transparent"
+                Content="数字量4入4出模块，ModbusRTU协议，RS485接口，
+                      &#10;输入输出均采用光耦隔离保护，
+                      &#10;4路干接点输入，不可接带电负载
+                      &#10;直流宽电压9-24V输入，带电源正负防反接保护
+                      &#10;
+                      &#10;    单击此处进入淘宝页面"
+                   Name="lbl4DIDO"
+                   MouseDown="lbl4DIDO_MouseDown"   />
+
+            <Image Source="/Assets/4DO.png" Grid.Row="1"/>
+            <Label Grid.Row="1" Grid.Column="1" BorderBrush="Transparent"
+                Content="继电器4出模块，ModbusRTU协议，RS485接口，
+                      &#10;采用光耦隔离保护，直流宽电压9-24V输入，
+                      &#10;带电源正负防反接保护
+                      &#10;
+                      &#10;    单击此处进入淘宝页面"
+                   Name="lbl4DO"
+                   MouseDown="lbl4DO_MouseDown"   />
+            <Image Source="/Assets/4DO_WIFI.png" Grid.Row="2"/>
+            <Label Grid.Row="2" Grid.Column="1" BorderBrush="Transparent"
+                Content="4路WIFI继电器模块，ModbusTCP协议/MQTT协议双版本，
+                      &#10;直流宽电压9-24V输入，5V TypeC接口输入，
+                      &#10;两个输入接一个即可,带电源正负防反接保护,
+                      &#10;提供PC端/安卓端调试软件及源码
+                      &#10;    单击此处进入淘宝页面"
+                   Name="lbl4DOWIFI" 
+                   MouseDown="lbl4DOWIFI_MouseDown"/>
+            <Image Source="/Assets/eleclbl1.png" Grid.Row="3"/>
+            <Label Grid.Row="3" Grid.Column="1" BorderBrush="Transparent"
+                Content="电子标签显示屏，ModbusRTU协议，RS485接口，5V输入。
+                      &#10; 解决仓库货柜存放货物太多，无法快速定位货物位置难题。
+                      &#10;可配合库管系统，取货时亮屏显示货物信息，并亮灯提示
+                      &#10;方便人员快速看到物品所在位置；取货后，按下按键
+                      &#10;代表取货完成，并反馈信息给库管系统，然后熄屏。
+                      &#10;侧面滑动开关可手动亮屏熄屏，也可作为公司盘点快速
+                      &#10;统计使用。
+                      &#10;    单击此处进入淘宝页面"
+                   Name="lblElec"
+                   MouseDown="lblElec_MouseDown"/>
+            <StackPanel Grid.Row="0" Grid.Column="2" 
+                        Grid.RowSpan="2" Orientation="Vertical">
+                <TextBlock Text="手机淘宝店铺" FontSize="20" FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+                <Image Grid.Column="2" Source="/Assets/mobile.png"/>
+            </StackPanel>
+            
+        </Grid>
+    </ScrollViewer>    
+</Window>

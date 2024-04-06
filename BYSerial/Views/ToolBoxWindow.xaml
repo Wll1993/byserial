@@ -38,6 +38,7 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -85,11 +86,19 @@
                             HorizontalAlignment="Stretch" Margin="2"
 							Command="{Binding OnCRC16LoHiCommand}"
 							/>
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="{StaticResource tbwFullStr}"/>
-                    <TextBox Grid.Row="6" Grid.Column="1"  VerticalAlignment="Stretch"
+                    <TextBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Stretch"
+							 Text="{Binding StrCRC32}"/>
+                    <Button Grid.Row="6" Grid.Column="2" VerticalAlignment="Stretch"
+							Content="CRC32" ToolTip="Standard Modbus CRC16 format" 
+                             Style="{StaticResource ButtonPrimary}"
+                            HorizontalAlignment="Stretch" Margin="2"
+							Command="{Binding OnCRC32Command}"
+							/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="{StaticResource tbwFullStr}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1"  VerticalAlignment="Stretch"
                              VerticalContentAlignment="Top" TextWrapping="Wrap"
 							 Text="{Binding StrFullStr}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                    <Button Grid.Row="6" Grid.Column="2" VerticalAlignment="Stretch"
+                    <Button Grid.Row="7" Grid.Column="2" VerticalAlignment="Stretch"
 							Content="{StaticResource tbCopy}" ToolTip="复制到剪贴板" 
                              Style="{StaticResource ButtonPrimary}"
                             HorizontalAlignment="Stretch" Margin="2"

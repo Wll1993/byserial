@@ -21,6 +21,7 @@
     <system:String x:Key="menuEn">英语</system:String>
     <system:String x:Key="menuDonate">捐助</system:String>
     <system:String x:Key="menuUpdate">检查更新</system:String>
+    <system:String x:Key="menuSelfDev">自研硬件</system:String>
     <system:String x:Key="mwSPS">端口设置</system:String>
     <system:String x:Key="mwPort">端口</system:String>
     <system:String x:Key="mwBaudRate">通讯速率</system:String>

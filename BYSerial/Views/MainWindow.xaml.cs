@@ -137,5 +137,11 @@ namespace BYSerial.Views
                 MessageBox.Show(ex.Message,"错误提示");
             }
         }
+
+        private void RunningBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SelfDevWindow window = new SelfDevWindow();
+            window.Show();
+        }
     }
 }

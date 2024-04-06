@@ -196,7 +196,7 @@ namespace BYSerial.ViewModels
             try
             {
                 string html = "https://gitee.com/LvYiWuHen/byserial";
-                Util.FileTool.OpenWebWithUrl(html);
+                Util.FileTool.OpenUrlWithDefaultBrowser(html);
             }
             catch (Exception ex)
             {
@@ -207,7 +207,7 @@ namespace BYSerial.ViewModels
         private void ShowQuestion(object para)
         {
             string html = "https://gitee.com/LvYiWuHen/byserial/issues";
-            Util.FileTool.OpenWebWithUrl(html);
+            Util.FileTool.OpenUrlWithDefaultBrowser(html);
         }
 
         public DelegateCommand ShowAboutCmd { get; private set; }
@@ -246,6 +246,7 @@ namespace BYSerial.ViewModels
             }
             
         }
+
 
         public DelegateCommand ChangeToChCmd { get; private set; }
         private void ChangeToCh(object para)

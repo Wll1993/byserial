@@ -27,6 +27,9 @@ namespace BYSerial.ViewModels
             OnFCSCommand.ExecuteAction = new Action<object>(OnFCS);
             OnCRC16LoHiCommand = new DelegateCommand();
             OnCRC16LoHiCommand.ExecuteAction = new Action<object>(OnCRC16LoHi);
+            OnCRC32Command= new DelegateCommand();
+            OnCRC32Command.ExecuteAction=new Action<object>(OnCRC32);
+
             OnDecimalTo16HexCommand = new DelegateCommand();
             OnDecimalTo16HexCommand.ExecuteAction = new Action<object>(OnDecimalTo16Hex);
             OnSingleHexToDecimalCommand = new DelegateCommand();
@@ -92,6 +95,14 @@ namespace BYSerial.ViewModels
             StrCRC16LoHi = CommonCheck.CheckCRC16Modbus(SrcStrings);
             StrFullStr = SrcStrings + StrCRC16LoHi;
         }
+
+        public DelegateCommand OnCRC32Command { get; }
+
+        private void OnCRC32(object para)
+        {
+            StrCRC32 = CommonCheck.CalculateCRC32(SrcStrings);            
+        }
+
         public DelegateCommand OnDecimalTo16HexCommand { get; }
         private void OnDecimalTo16Hex(object para)
         {
@@ -331,6 +342,18 @@ namespace BYSerial.ViewModels
                 this.RaisePropertyChanged("StrCRC16LoHi");
             }
         }
+
+        private string _StrCRC32="";
+
+        public string StrCRC32
+        {
+            get { return _StrCRC32; }
+            set { _StrCRC32 = value;
+                RaisePropertyChanged("StrCRC32");
+            }
+        }
+
+
         private string _StrFullStr = "";
         public string StrFullStr
         {

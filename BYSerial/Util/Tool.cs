@@ -104,7 +104,7 @@ namespace BYSerial.Util
         }
 
         /// <summary>
-        /// 在Ubuntu中打开网址
+        /// 打开网址
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -119,12 +119,17 @@ namespace BYSerial.Util
                 process.StartInfo.Arguments = url;
                 process.Start();
                 Thread.Sleep(1000);
+                
             }
             catch
             {
 
             }
             return bret;
+        }
+       public static void OpenUrlWithDefaultBrowser(string url)
+        {
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
     }
 }
