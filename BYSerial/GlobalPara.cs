@@ -57,8 +57,7 @@ namespace BYSerial
                     MyCfg=JSONHelper.DeserializeJsonToObject<mycfg>(File.ReadAllText(path));                    
                     if(MyCfg!=null)
                     {
-                        LogPara.FileName = MyCfg.LogPath;
-
+                        LogPara.FileName = Path.Combine(GlobalPara.LogFolder,  DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt"); ;                       
                         var converter = new BrushConverter();
                         DisplayPara.FormatDisColor=MyCfg.FormatDisColor;
                         DisplayPara.SendColor = (SolidColorBrush)converter.ConvertFromString(MyCfg.SendColor);
@@ -95,7 +94,7 @@ namespace BYSerial
                 {
                     Directory.CreateDirectory(CfgPath);
                 }
-                MyCfg.LogPath = LogPara.FileName;
+                //MyCfg.LogPath =Path.GetFullPath(Path.Combine(LogFolder, LogPara.FileName));
                 MyCfg.FormatDisColor=DisplayPara.FormatDisColor;
                 MyCfg.SendColor=DisplayPara.SendColor.ToString();
                 MyCfg.RecColor=DisplayPara.ReceiveColor.ToString();

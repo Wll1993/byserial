@@ -196,7 +196,7 @@ namespace BYSerial.ViewModels
             try
             {
                 string html = "https://gitee.com/LvYiWuHen/byserial";
-                Util.FileTool.OpenWebWithUrl(html);
+                Util.FileTool.OpenUrlWithDefaultBrowser(html);
             }
             catch (Exception ex)
             {
@@ -207,7 +207,7 @@ namespace BYSerial.ViewModels
         private void ShowQuestion(object para)
         {
             string html = "https://gitee.com/LvYiWuHen/byserial/issues";
-            Util.FileTool.OpenWebWithUrl(html);
+            Util.FileTool.OpenUrlWithDefaultBrowser(html);
         }
 
         public DelegateCommand ShowAboutCmd { get; private set; }
@@ -246,6 +246,7 @@ namespace BYSerial.ViewModels
             }
             
         }
+
 
         public DelegateCommand ChangeToChCmd { get; private set; }
         private void ChangeToCh(object para)
@@ -518,19 +519,8 @@ namespace BYSerial.ViewModels
                     {
                         txtsend =DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
                     }
-                    txtsend = "[SEND]" + txtsend;                   
-                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                        Paragraph pg = new Paragraph();
-                        pg.Margin = new Thickness(1);
-                        pg.Padding = new Thickness(0);
-                        pg.Inlines.Add(new Run(txtsend));
-                        if (DisplayPara.FormatDisColor)
-                        {
-                            pg.Foreground = DisplayPara.SendColor;
-                        }
-                        _ReciveFlowDoc.Blocks.Add(pg);
-                    }));
-
+                    txtsend = "[SEND]" + txtsend;
+                    ShowMsgToMain(txtsend);
                     if (LogPara.SaveLogMsg)
                     {
                         SaveLogAsync(txtsend);
@@ -990,28 +980,7 @@ namespace BYSerial.ViewModels
                     receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
                 }                
                 receivestr = "[REC]" + receivestr;
-                ////20220324切换为RichTextBox,此处暂丢弃
-                // ReceiveTxt +=receivestr;                
-                App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                    try
-                    {
-                        Paragraph pg = new Paragraph();
-                        pg.Margin = new Thickness(1);
-                        pg.Padding= new Thickness(0);
-                        pg.Inlines.Add(new Run(receivestr));
-                        if (DisplayPara.FormatDisColor)
-                        {
-                            pg.Foreground = DisplayPara.ReceiveColor;
-                        }
-                        _ReciveFlowDoc.Blocks.Add(pg);
-                    }
-                    catch
-                    {
-                        ComPortState = SerialPortList[PortNameIndex] + " Recive Process Error!";
-                        ComPortStateColor = GlobalPara.RedBrush;
-                        return;
-                    }
-                }));
+                ShowMsgToMain(receivestr);
                 _ReceivedBytesNum += bytes.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
 
@@ -1417,18 +1386,32 @@ namespace BYSerial.ViewModels
                 long listlen = _LogList.Count;
                 if (listlen > 0)
                 {
-                    //for (int i = 0; i < listlen; i++)
-                    //{
-                    //    len += System.Text.Encoding.Default.GetBytes(_LogList[i]).Length;
-                    //}
-                    len = System.Runtime.InteropServices.Marshal.SizeOf(_LogList);
+                    if(SendPara.IsText ||SendPara.IsUTF8)
+                    {
+                        for (int i = 0; i < listlen; i++)
+                        {
+                            len += System.Text.Encoding.Default.GetBytes(_LogList[i]).Length;
+                        }
+                    }
+                    else if(SendPara.IsHex)
+                    {
+                        for (int i = 0; i < listlen; i++)
+                        {
+                            len +=_LogList[i].Length/2;
+                        }
+                    }
+                   
+                    //len = System.Runtime.InteropServices.Marshal.SizeOf(_LogList);
                 }
                 if (len >= LogPara.BufSize)
                 {
+                    string strtmp = "";
                     for (int i = 0; i < listlen; i++)
                     {
-                        await SaveLogBaseAsync(_LogList[i]);
+                        //SaveLogBaseAsync(_LogList[i]); 
+                        strtmp += _LogList[i]+Environment.NewLine;
                     }
+                    await SaveLogBaseAsync(strtmp);
                     _LogList.Clear();
                 }
                 else
@@ -1438,6 +1421,7 @@ namespace BYSerial.ViewModels
             }
             else
             {
+                //SaveLogBaseAsync(strlog);
                 await SaveLogBaseAsync(strlog);
             }
 
@@ -1464,11 +1448,11 @@ namespace BYSerial.ViewModels
                 
                 if (fileInfo != null && fileInfo.Exists)
                 {
-                    System.Diagnostics.FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(LogPara.FileName);
-                    long filsizeMB = fileInfo.Length;
+                    //System.Diagnostics.FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(LogPara.FileName);
+                    float filsizeMB = fileInfo.Length/1024.0f;
                     if (filsizeMB >= LogPara.MaxFileSize)
                     {                       
-                        LogPara.FileName = Path.Combine(GlobalPara.LogFolder, "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt");
+                        LogPara.FileName = Path.Combine(GlobalPara.LogFolder,  DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt");
                     }
                 }
 
@@ -1564,28 +1548,8 @@ namespace BYSerial.ViewModels
                     receivestr = DateTime.Now.ToString(ReceivePara.TimeFormat) + receivestr;
                 }
                 
-                receivestr = "[REC]" + receivestr;                         
-                App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                    try
-                    {
-                        Paragraph pg = new Paragraph();
-                        pg.Margin = new Thickness(1);
-                        pg.Padding = new Thickness(0);
-                        pg.Inlines.Add(new Run(receivestr));
-                        if (DisplayPara.FormatDisColor)
-                        {
-                            pg.Foreground = DisplayPara.ReceiveColor;
-                        }
-                        _ReciveFlowDoc.Blocks.Add(pg);
-                    }
-                    catch
-                    {
-
-                        ComPortState = client.Client.RemoteEndPoint.ToString() + " Recive Error!";
-                        ComPortStateColor = GlobalPara.RedBrush;
-                        return;
-                    }
-                }));
+                receivestr = "[REC]" + receivestr;
+                ShowMsgToMain(receivestr);               
                 _ReceivedBytesNum += msg.Length;
                 ReceiveBytesStr = "Rx: " + _ReceivedBytesNum + " Bytes";
                 
@@ -2076,6 +2040,7 @@ namespace BYSerial.ViewModels
                         }
                     }
                     byteNum = SendPara.TcpTextEncoding.GetBytes(txtsend).Length; // Encoding.UTF8.GetBytes(txtsend).Length;
+                    
                 }
 
                 if (ReceivePara.DisplaySend)
@@ -2097,18 +2062,7 @@ namespace BYSerial.ViewModels
                         txtsend = DateTime.Now.ToString(ReceivePara.TimeFormat) + txtsend;
                     }
                     txtsend = "[SEND]" + txtsend;
-                    App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                        Paragraph pg = new Paragraph();
-                        pg.Margin = new Thickness(1);
-                        pg.Padding = new Thickness(0);
-                        pg.Inlines.Add(new Run(txtsend));
-                        if (DisplayPara.FormatDisColor)
-                        {
-                            pg.Foreground = DisplayPara.SendColor;
-                        }
-                        _ReciveFlowDoc.Blocks.Add(pg);
-                    }));
-
+                    ShowMsgToMain(txtsend);                  
                     if (LogPara.SaveLogMsg)
                     {
                         SaveLogAsync(txtsend);
@@ -2123,6 +2077,28 @@ namespace BYSerial.ViewModels
                 MessageBox.Show(ex.Message);
             }
             return false;
+        }
+        /// <summary>
+        /// 显示到主界面，限制1000行信息
+        /// </summary>
+        /// <param name="pg"></param>
+        private void ShowMsgToMain(string msg)
+        {
+            App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                Paragraph pg = new Paragraph();
+                pg.Margin = new Thickness(1);
+                pg.Padding = new Thickness(0);
+                pg.Inlines.Add(new Run(msg));
+                if (DisplayPara.FormatDisColor)
+                {
+                    pg.Foreground = DisplayPara.SendColor;
+                }
+                if (_ReciveFlowDoc.Blocks.Count >= 1000)
+                {
+                    _ReciveFlowDoc.Blocks.Remove(_ReciveFlowDoc.Blocks.FirstBlock);
+                }
+                _ReciveFlowDoc.Blocks.Add(pg);
+            }));
         }
         private ObservableCollection<FastCmdModel> _FastCmdList = new ObservableCollection<FastCmdModel>();
         public ObservableCollection<FastCmdModel> FastCmdList
@@ -2236,11 +2212,11 @@ namespace BYSerial.ViewModels
                         if (!FastCmdIsStartSend || !_IsLooping || !IsStopCan)
                         {
                             break;
-                        }
-                        Thread.Sleep(_FastCmdList[i].DelayTime);
+                        }                        
                         if (_FastCmdList[i].IsSelected)
                         {
                             _FastCmdList[i].SendFastCmd(null);
+                            Thread.Sleep(_FastCmdList[i].DelayTime); //20240510 修正命令行被选中时再等待。
                         }
                     }
                 }
@@ -2285,6 +2261,7 @@ namespace BYSerial.ViewModels
                 if (ret)
                 {
                     FastCmdList.Add(model);
+                    FastCmdSelIndex = FastCmdSelIndex;
                 }
             }
             catch (Exception ex)

@@ -21,6 +21,7 @@
     <system:String x:Key="menuEn">_English</system:String>
     <system:String x:Key="menuDonate">Do_nate</system:String>
     <system:String x:Key="menuUpdate">Check_Update</system:String>
+    <system:String x:Key="menuSelfDev">Self Device</system:String>
     <system:String x:Key="mwSPS">PortSettings</system:String>
     <system:String x:Key="mwPort">Port</system:String>
     <system:String x:Key="mwBaudRate">BaudRate</system:String>

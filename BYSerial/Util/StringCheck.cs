@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -184,6 +185,28 @@ namespace BYSerial.Util
             byte[] ret = BitConverter.GetBytes(crc);
            // Array.Reverse(ret);
             return ret;
+        }
+        public static string CalculateCRC32(string input)
+        {
+            using (var crc32 = new CRC32Tool())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = crc32.ComputeHash(bytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+            }
+        }
+
+        public static int CalcCRC32_ByTable(string text)
+        {
+            byte[] bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            uint crc32 = 0xFFFFFFFF;
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                crc32 = (CRC32Tool.CRC_32_TAB[(crc32 ^ bytes[i]) & 0xff] ^ (crc32 >> 8));
+            }
+
+            crc32 = ~crc32;
+            return (int)(crc32);
         }
     }
 }

@@ -161,7 +161,7 @@ namespace BYSerial.ViewModels
             GlobalPara.SendPara.FormatNLCR = SendPara.FormatNLCR;
 
             GlobalPara.LogPara.SaveLogMsg = LogPara.SaveLogMsg;
-            GlobalPara.LogPara.FileName = LogPara.FileName;
+            //GlobalPara.LogPara.FileName = LogPara.FileName;
             GlobalPara.LogPara.MaxFileSize = LogPara.MaxFileSize;
             GlobalPara.LogPara.EnableWriteBuf = LogPara.EnableWriteBuf;
             GlobalPara.LogPara.BufSize = LogPara.BufSize;
@@ -195,7 +195,7 @@ namespace BYSerial.ViewModels
                     break;
                 case 2:
                     GlobalPara.LogPara.SaveLogMsg = LogPara.SaveLogMsg;
-                    GlobalPara.LogPara.FileName = LogPara.FileName;
+                    //GlobalPara.LogPara.FileName = LogPara.FileName;
                     GlobalPara.LogPara.MaxFileSize = LogPara.MaxFileSize;
                     GlobalPara.LogPara.EnableWriteBuf = LogPara.EnableWriteBuf;
                     GlobalPara.LogPara.BufSize = LogPara.BufSize;

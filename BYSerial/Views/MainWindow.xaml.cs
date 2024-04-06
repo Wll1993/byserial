@@ -93,10 +93,11 @@ namespace BYSerial.Views
                     {
                         int i = 0;
                         if (Util.Update.InternetGetConnectedState(out i, 0))
-                        {                            
-                            App.Current.Dispatcher.BeginInvoke(new Action(() => {
-                                BYSerial.Util.Update.CheckUpdate();
-                            }));
+                        {
+                            //App.Current.Dispatcher.BeginInvoke(new Action(() => {
+                            //    BYSerial.Util.Update.CheckUpdate();
+                            //}));
+                            BYSerial.Util.Update.CheckUpdate();
                         }
                     });
                    
@@ -136,6 +137,12 @@ namespace BYSerial.Views
             {
                 MessageBox.Show(ex.Message,"错误提示");
             }
+        }
+
+        private void RunningBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SelfDevWindow window = new SelfDevWindow();
+            window.Show();
         }
     }
 }

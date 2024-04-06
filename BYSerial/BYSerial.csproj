@@ -232,6 +232,7 @@
     <Compile Include="TCPHelper\ClientAsync.cs" />
     <Compile Include="TCPHelper\ServerAsync.cs" />
     <Compile Include="Util\BitmapWPF.cs" />
+    <Compile Include="Util\CRC32Tool.cs" />
     <Compile Include="Util\DataConvertUtility.cs" />
     <Compile Include="Util\JSONHelper.cs" />
     <Compile Include="Util\LocalizeExtension.cs" />
@@ -266,6 +267,9 @@
     </Compile>
     <Compile Include="Views\ScreenShot.xaml.cs">
       <DependentUpon>ScreenShot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelfDevWindow.xaml.cs">
+      <DependentUpon>SelfDevWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolBoxWindow.xaml.cs">
       <DependentUpon>ToolBoxWindow.xaml</DependentUpon>
@@ -308,6 +312,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SelfDevWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ToolBoxWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -320,6 +328,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Assets\4DO_WIFI.png" />
     <Resource Include="Assets\Language\en-US.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -462,6 +471,16 @@
       <Project>{b7da0ce8-a87a-416d-bca8-cc1b3b73ae21}</Project>
       <Name>IoTClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\4DIDO.PNG" />
+    <Resource Include="Assets\4DO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\mobile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\eleclbl1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.5.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.5\build\Fody.targets')" />

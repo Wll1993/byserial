@@ -35,10 +35,11 @@ namespace BYSerial.Util
                 if(reVer > Ver)
                 {
                     string tip = Encoding.UTF8.GetString(wc.DownloadData("https://gitee.com/LvYiWuHen/byserial/raw/master/UpdateTip.txt"));
-                    
-                    UpdateWindow uw=new UpdateWindow();
-                    uw.SetUpdateMsg(tip, vers[1]);
-                    uw.ShowDialog();
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+                        UpdateWindow uw = new UpdateWindow();
+                        uw.SetUpdateMsg(tip, vers[1]);
+                        uw.ShowDialog();
+                    }));
                     return true;
                 }
             }

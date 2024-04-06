@@ -42,7 +42,7 @@ namespace BYSerial.Views
                 int len = txt.Length;
                 string html = txt.Substring(7, len - 7);
 
-                Util.FileTool.OpenWebWithUrl(html);
+                Util.FileTool.OpenUrlWithDefaultBrowser(html);
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace BYSerial.Views
                 int len =txt.Length;
                 string html = txt.Substring(5, len - 5);
 
-                Util.FileTool.OpenWebWithUrl(html);
+                Util.FileTool.OpenUrlWithDefaultBrowser(html);
             }
             catch (Exception ex)
             {

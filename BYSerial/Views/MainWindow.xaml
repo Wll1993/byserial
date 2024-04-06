@@ -154,9 +154,14 @@
                       Command="{Binding CheckUpdateCmd}"
                        Foreground="White"
                       >
-            </MenuItem>
-
+            </MenuItem>            
         </Menu>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Width="200"  Height="30">
+            <hc:RunningBlock Content="自研硬件" BorderBrush="Transparent"
+                    FontSize="15" FontWeight="Bold" Foreground="White"
+                    Duration="0:0:10" Margin="0,5,5,0" Padding="0"
+                             MouseDown="RunningBlock_MouseDown"/>
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="32"/>

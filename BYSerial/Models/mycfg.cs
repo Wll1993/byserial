@@ -13,7 +13,7 @@ namespace BYSerial.Models
         public bool FormatDisColor { get; set; }
         public string SendColor { get; set; }
         public string RecColor { get; set; }
-        public string LogPath { get; set; }
+        //public string LogPath { get; set; }
         public bool CheckUpdate { get; set; }
     }
     public class hiscfg
