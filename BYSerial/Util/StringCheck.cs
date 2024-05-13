@@ -196,6 +196,52 @@ namespace BYSerial.Util
             }
         }
 
+        public static string CalculateCRC32MPEG2(string input)
+        {
+            uint[] CRC32_Data;
+            CRC32_Data = strToHexByte(input);
+            UInt32 CRC32_Result = 0;
+            CRC32_Result = CRC32_MPEG_2(CRC32_Data, CRC32_Data.Length);
+            string temp = (CRC32_Result.ToString("X4"));
+            temp = temp.Length == 8 ? temp : "0" + temp;
+            return temp;
+        }
+        private static uint[] strToHexByte(string hexString)
+        {
+            hexString = hexString.Replace(" ", "");
+            if ((hexString.Length % 2) != 0)
+                hexString += " ";
+            uint[] returnBytes = new uint[hexString.Length / 2];
+            for (int i = 0; i < returnBytes.Length; i++)
+                returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            return returnBytes;
+        }
+
+        /// <summary> 
+        /// 获取文件的CRC32标识 
+        /// </summary> 
+        /// <param name="filePath"></param> 
+        /// <returns></returns> 
+        private static UInt32 CRC32_MPEG_2(uint[] data, int length)
+        {
+            uint i;
+            UInt32 crc = 0xffffffff, j = 0;
+
+            while ((length--) != 0)
+            {
+                crc ^= (UInt32)data[j] << 24;
+                j++;
+                for (i = 0; i < 8; ++i)
+                {
+                    if ((crc & 0x80000000) != 0)
+                        crc = (crc << 1) ^ 0x04C11DB7;
+                    else
+                        crc <<= 1;
+                }
+            }
+            return crc;
+        }
+
         public static int CalcCRC32_ByTable(string text)
         {
             byte[] bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(text);

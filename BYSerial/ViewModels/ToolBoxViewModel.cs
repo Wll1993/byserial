@@ -29,6 +29,8 @@ namespace BYSerial.ViewModels
             OnCRC16LoHiCommand.ExecuteAction = new Action<object>(OnCRC16LoHi);
             OnCRC32Command= new DelegateCommand();
             OnCRC32Command.ExecuteAction=new Action<object>(OnCRC32);
+            OnCRC32MPEG2Command=new DelegateCommand();
+            OnCRC32MPEG2Command.ExecuteAction = new Action<object>(OnCRC32MPEG2);
 
             OnDecimalTo16HexCommand = new DelegateCommand();
             OnDecimalTo16HexCommand.ExecuteAction = new Action<object>(OnDecimalTo16Hex);
@@ -101,6 +103,12 @@ namespace BYSerial.ViewModels
         private void OnCRC32(object para)
         {
             StrCRC32 = CommonCheck.CalculateCRC32(SrcStrings);            
+        }
+        public DelegateCommand OnCRC32MPEG2Command { get; }
+
+        private void OnCRC32MPEG2(object para)
+        {
+            StrCRC32MPEG2 = CommonCheck.CalculateCRC32MPEG2(SrcStrings);
         }
 
         public DelegateCommand OnDecimalTo16HexCommand { get; }
@@ -353,6 +361,17 @@ namespace BYSerial.ViewModels
             }
         }
 
+        private string _StrCRC32MPEG2= "";
+
+        public string StrCRC32MPEG2
+        {
+            get { return _StrCRC32MPEG2; }
+            set
+            {
+                _StrCRC32MPEG2 = value;
+                RaisePropertyChanged("StrCRC32MPEG2");
+            }
+        }
 
         private string _StrFullStr = "";
         public string StrFullStr
